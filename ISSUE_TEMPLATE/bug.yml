@@ -1,0 +1,53 @@
+name: Bug
+description: Create an issue for a bug or error in the project.
+labels: bug
+title: '[BUG] '
+
+body:
+  - type: dropdown
+    id: os
+    attributes:
+      label: 'Operating System'
+      options:
+        - 'Linux'
+        - 'Windows'
+        - 'MacOS'
+        - "Web"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 'Version '
+      placeholder: 'Enter version, if none, use the commit hash'
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 'Description'
+      placeholder: 'Describe the Bug'
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 'Reproduction'
+      placeholder: |
+        - [ ] step 1
+        - [ ] step 2
+        - [ ] step 3
+        - [ ] X goes wrong
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: 'Screenshots'
+      description: 'Upload screenshots that helps describe the bug'
+    validations:
+      required: false
