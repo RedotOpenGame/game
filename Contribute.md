@@ -18,6 +18,8 @@ receiving some of the advantages of a more advanced Branching schema like:
 There are a lot of different definitions of **Trunk Based Development** and **Semantic Versioning**,
 so to ensure everybody is on the same foot, we are writing down our definitions.
 
+---
+
 ### Trunk Based Development
 
 In **Trunk Based Development**, there is a main branch called the **trunk** (or main/master) in which
@@ -53,7 +55,7 @@ in the [Slug](https://en.wikipedia.org/wiki/Clean_URL#Slug) format for readabill
 If you are not sure how to "slugify" a description,
 you can use tools like [this](https://blog.tersmitten.nl/slugify/).
 
-###### Example Nmes
+###### Example Names
 
 Branch for a Bugfix where a Player can walk throug walls:
 `bugfix/player-wall-collisions`
@@ -63,6 +65,8 @@ Branch for implementing a system for NPCs
 
 Branch for updating some links in the Credits of the Game and the Readme
 `chore/update-credit-links`
+
+---
 
 ### Semantic Versioning
 
@@ -84,6 +88,8 @@ it is a Minor change.
 #### Patch
 
 If the changes between versions only fix Bugs and CVEs, it is seen as a Patch version.
+
+---
 
 ### Commits
 
