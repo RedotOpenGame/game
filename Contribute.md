@@ -6,14 +6,15 @@ It solely focusses on the technical Rules and Processes
 
 ## Git Ops
 
-There are a lot of different ways to interact with git, from no schema at all over to **Git-Flow**.
-For This Project we are doing **Trunk Based Development**.
+There are a lot of different ways to interact with git, from no schema at all, over to **Git-Flow**. <br>
+For This Project we are doing **Trunk Based Development**. <br>
 We are using this schema, so we have minimal overhead from git, while still
 receiving some of the advantages of a more advanced Branching schema like:
 
 - consistent naming
 - easier merges thanks to short living branches
-  while not having **Release Hell** which is quite common with **Git-Flow**.
+
+while not having **Release Hell** which is quite common with **Git-Flow**.
 
 There are a lot of different definitions of **Trunk Based Development** and **Semantic Versioning**,
 so to ensure everybody is on the same foot, we are writing down our definitions.
@@ -24,7 +25,7 @@ so to ensure everybody is on the same foot, we are writing down our definitions.
 
 In **Trunk Based Development**, there is a main branch called the **trunk** (or main/master) in which
 all Features are merged into.
-Developers don't commit directly into the trunk, but into short lived **Feature Branches** which are merged with **PRs**.
+Developers don't commit directly into the trunk, but into short lived **Feature Branches** which are merged with **PRs**.  <br>
 Releases are marked on the trunk with the usage of **Git Tags** for this most often **Semantic Versioning** is used.
 
 #### Feature Branches
