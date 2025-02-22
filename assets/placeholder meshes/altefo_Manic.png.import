@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://731ycajmsreb"
+path.s3tc="res://.godot/imported/altefo_Manic.png-59167c8f9666fb7fd014a12d3a6df967.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "c4ebbd971a7b0f3ccae09c18bfc95a8d"
+}
+
+[deps]
+
+source_file="res://assets/placeholder meshes/altefo_Manic.png"
+dest_files=["res://.godot/imported/altefo_Manic.png-59167c8f9666fb7fd014a12d3a6df967.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

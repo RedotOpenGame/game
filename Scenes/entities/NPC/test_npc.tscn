@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkee5y6wnd1kn"]
+
+[ext_resource type="PackedScene" uid="uid://cfrdkh0fuy48" path="res://assets/placeholder meshes/altefo.glb" id="1_7qe8m"]
+[ext_resource type="Script" path="res://Scenes/entities/NPC/test_npc.gd" id="1_rpea0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7qe8m"]
+height = 2.79043
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_i6s1d"]
+radius = 2.17249
+
+[node name="TestNPC" type="CharacterBody3D"]
+script = ExtResource("1_rpea0")
+
+[node name="altefo" parent="." instance=ExtResource("1_7qe8m")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40822, 0)
+shape = SubResource("CapsuleShape3D_7qe8m")
+
+[node name="Interactable" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00844, 0)
+shape = SubResource("CylinderShape3D_i6s1d")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.12849, 0)
+pixel_size = 0.008
+billboard = 1
+text = "Interact"
+
+[connection signal="body_entered" from="Interactable" to="." method="_on_interactable_body_entered"]
+[connection signal="body_exited" from="Interactable" to="." method="_on_interactable_body_exited"]
