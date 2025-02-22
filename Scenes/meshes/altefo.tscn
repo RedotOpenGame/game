@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbksyi705d64g"]
+
+[ext_resource type="PackedScene" uid="uid://cfrdkh0fuy48" path="res://assets/placeholder meshes/altefo.glb" id="1_jdtox"]
+
+[node name="altefo" instance=ExtResource("1_jdtox")]
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/2/rotation = Quaternion(-0.0861167, 0.0230214, 0.0260209, 0.995679)
+bones/6/rotation = Quaternion(-0.0647689, 0.00030537, -0.0283484, 0.997498)
+bones/11/rotation = Quaternion(-0.693892, -0.20099, 0.196598, 0.662923)
+
+[node name="Cube_001" parent="Armature/Skeleton3D" index="0"]
+transform = Transform3D(0.883256, -1.66949e-09, -1.45519e-11, 2.05637e-09, 0.883256, 3.72529e-09, 7.27596e-12, -5.58794e-09, 0.627269, -0.0425649, 1.91834, 5.58794e-09)
+
+[node name="copy_me_001" parent="Armature/Skeleton3D" index="1"]
+transform = Transform3D(0.404019, 0, 0, 0, 0.404019, 0, 0, 0, 0.286926, -0.00936078, 0.291332, 0)
+
+[node name="copy_me_003" parent="Armature/Skeleton3D" index="2"]
+transform = Transform3D(-0.28019, -0.0223095, 6.70552e-08, 0.0223095, -0.28019, 2.51457e-08, 8.19564e-08, 3.86499e-08, 0.199615, -0.341762, -0.957527, -2.30037e-07)
+
+[node name="copy_me_004" parent="Armature/Skeleton3D" index="3"]
+transform = Transform3D(-0.27741, 0.0452509, -3.72529e-08, -0.0452509, -0.27741, 2.65427e-08, -7.82311e-08, 3.67872e-08, 0.199615, 0.28578, -0.976204, -2.27243e-07)
