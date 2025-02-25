@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cbi3e253383to"]
+[gd_scene load_steps=9 format=3 uid="uid://cbi3e253383to"]
 
+[ext_resource type="Script" path="res://Scenes/Levels/gameplay.gd" id="1_1121w"]
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_i7xot"]
 [ext_resource type="PackedScene" uid="uid://dkee5y6wnd1kn" path="res://Scenes/entities/NPC/test_npc.tscn" id="2_djta3"]
-[ext_resource type="PackedScene" uid="uid://by1vby6cuwjab" path="res://Scenes/entities/NPC/follower.tscn" id="3_emwhu"]
+[ext_resource type="PackedScene" uid="uid://cfwclg1bc1icc" path="res://Scenes/entities/NPC/follower_v_2.tscn" id="3_emwhu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5yywe"]
 size = Vector3(50, 0.5, 50)
@@ -20,6 +21,7 @@ outline_size = 4
 outline_color = Color(0, 1, 0, 1)
 
 [node name="Gameplay" type="Node3D"]
+script = ExtResource("1_1121w")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -54,26 +56,36 @@ label_settings = SubResource("LabelSettings_djta3")
 
 [node name="Units" type="Node3D" parent="."]
 
-[node name="Follower" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00145, 2.59445, 3.16137)
+[node name="follower_v2" parent="Units" instance=ExtResource("3_emwhu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 0)
 
-[node name="Follower2" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00145, 2.59445, 4.50321)
+[node name="follower_v3" parent="Units" instance=ExtResource("3_emwhu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 1.39727)
 
-[node name="Follower3" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00145, 2.59445, 5.9764)
+[node name="follower_v4" parent="Units" instance=ExtResource("3_emwhu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 2.82336)
 
-[node name="Follower4" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00145, 2.59445, 7.31824)
+[node name="follower_v5" parent="Units" instance=ExtResource("3_emwhu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 4.22063)
 
-[node name="Follower5" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00145, 2.59445, 8.61092)
+[node name="follower_v6" parent="Units" instance=ExtResource("3_emwhu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, -5.91457)
 
-[node name="Follower6" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00145, 2.59445, 9.95276)
+[node name="follower_v7" parent="Units" instance=ExtResource("3_emwhu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, -4.5173)
 
-[node name="Follower7" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00145, 2.59445, 0.337961)
+[node name="follower_v8" parent="Units" instance=ExtResource("3_emwhu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, -3.09121)
 
-[node name="Follower8" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00145, 2.59445, 1.6798)
+[node name="follower_v9" parent="Units" instance=ExtResource("3_emwhu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, -1.69394)
+
+[node name="Button" type="Button" parent="."]
+offset_right = 115.0
+offset_bottom = 47.0
+text = "spawn new follower"
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.33548, 5.13141)
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

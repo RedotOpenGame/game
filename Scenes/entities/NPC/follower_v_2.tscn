@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://cfwclg1bc1icc"]
+
+[ext_resource type="Script" path="res://Scenes/entities/NPC/follower_v_2.gd" id="1_0q7fp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_18wow"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_y6wky"]
+material = SubResource("StandardMaterial3D_18wow")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8ujt7"]
+
+[node name="follower_v2" type="CharacterBody3D"]
+script = ExtResource("1_0q7fp")
+
+[node name="characterMesh" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="characterMesh"]
+mesh = SubResource("CapsuleMesh_y6wky")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8ujt7")

@@ -7,6 +7,7 @@ const JUMP_VELOCITY = 4.5
 
 var interact_target:Node3D
 var follower:CharacterBody3D #meant to get who is following me so we could be in a snake-like f0rmation.
+var follower_amount:int = 0
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -42,3 +43,5 @@ func _physics_process(delta: float) -> void:
 
 func signal_follow(body):
 	follower = body
+	body.unit_index = follower_amount
+	follower_amount += 1
