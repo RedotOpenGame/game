@@ -9,7 +9,7 @@ size = Vector3(0.3, 0.3, 1.2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cstqs"]
 
-[node name="PlayerActor" type="CharacterBody3D"]
+[node name="PlayerActor" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_cstqs")
 
 [node name="characterMesh" type="Node3D" parent="."]

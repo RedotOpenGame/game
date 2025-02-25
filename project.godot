@@ -11,9 +11,14 @@ config_version=5
 [application]
 
 config/name="3d_adventure"
+config/tags=PackedStringArray("github_import")
 run/main_scene="res://Scenes/Levels/gameplay.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
+
+[global_group]
+
+Player="player node. Self-explainatory. For easier time retrieving him."
 
 [input]
 
