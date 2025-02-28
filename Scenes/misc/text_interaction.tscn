@@ -34,7 +34,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_80s33")
 theme_override_styles/background = SubResource("StyleBoxFlat_kln28")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hsu51")
 theme_override_styles/normal = SubResource("StyleBoxFlat_4sqo8")
-text = "THE FOG IS COMING THE FOG IS COMING THE FOG IS COMINGTHE FOG IS COMINGTHE FOG IS COMINGTHE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMING THE FOG IS COMINGTHE FOG IS COMING THE FOG IS COMING "
+text = "What if Pewweper was Freakeper and his favourite rifle was Steyr AUGoon A1?"
 
 [node name="TextureRect" type="TextureRect" parent="."]
 anchors_preset = 7

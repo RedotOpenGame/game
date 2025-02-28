@@ -24,6 +24,8 @@ outline_color = Color(0, 1, 0, 1)
 script = ExtResource("1_1121w")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 4
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_5yywe")
