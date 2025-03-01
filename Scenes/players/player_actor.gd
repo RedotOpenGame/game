@@ -9,23 +9,29 @@ const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180)
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0)
 
 var interact_target:Node3D
-var follower:CharacterBody3D #meant to get who is following me so we could be in a snake-like f0rmation.
+var followers:Array = [] #meant to get who is following me so we could be in a snake-like f0rmation.
 var follower_amount:int = 0
+var ignore_first_input:bool = true
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("right_click"):
-		
-		camera_control.rotation.x -= deg_to_rad(event.velocity.y / 350)
-		if camera_control.rotation.x > deg_to_rad(CAMERA_CONSTRAITS.x):
-			camera_control.rotation.x = deg_to_rad(CAMERA_CONSTRAITS.x)
-		elif camera_control.rotation.x < 0:
-			camera_control.rotation.x = 0
-		camera_control.rotation.y -= deg_to_rad(event.velocity.x / 350)
+		if !ignore_first_input:
+			camera_control.rotation.x -= deg_to_rad(event.velocity.y / 350)
+			if camera_control.rotation.x > deg_to_rad(CAMERA_CONSTRAITS.x):
+				camera_control.rotation.x = deg_to_rad(CAMERA_CONSTRAITS.x)
+			elif camera_control.rotation.x < 0:
+				camera_control.rotation.x = 0
+			camera_control.rotation.y -= deg_to_rad(event.velocity.x / 350)
+		else:
+			ignore_first_input = false
 	if event is InputEventMouseButton:
 		if event.button_index == 4:
 			camera.position.y = max(camera.position.y - 1, CAMERA_SCALE_CONSTRAINTS.x)
 		if event.button_index == 5:
 			camera.position.y = min(camera.position.y + 1, CAMERA_SCALE_CONSTRAINTS.y)
+	
+	if Input.is_action_just_released("right_click"):
+		ignore_first_input = true
 	if Input.is_action_just_pressed("["):
 		camera_control.rotation.y -= deg_to_rad(45)
 	if Input.is_action_just_pressed("]"):
@@ -34,7 +40,9 @@ func _input(event: InputEvent) -> void:
 		camera_control.rotation.x = deg_to_rad(40)
 		camera_control.rotation.y = 0
 		camera.position.y = 8
-
+	
+	if Input.is_action_just_pressed("f"):
+		followers.pick_random().death()
 		
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -69,6 +77,14 @@ func _physics_process(delta: float) -> void:
 
 
 func signal_follow(body):
-	follower = body
+	followers.append(body)
 	body.unit_index = follower_amount
 	follower_amount += 1
+
+func ally_died(body) -> void:
+	follower_amount -= 1
+	followers.erase(body)
+	var incrementer:int = 0
+	for i in followers:
+		i.unit_index = incrementer
+		incrementer += 1

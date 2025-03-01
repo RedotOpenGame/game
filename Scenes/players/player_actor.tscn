@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=6 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
+[ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_cj8p5"]
 
@@ -16,13 +17,18 @@ script = ExtResource("1_cstqs")
 [node name="characterMesh" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="characterMesh"]
+visible = false
 mesh = SubResource("CapsuleMesh_cj8p5")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="characterMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.672932, 0, -0.43058)
+visible = false
 mesh = SubResource("BoxMesh_cstqs")
 skeleton = NodePath("../..")
+
+[node name="AllyBot" parent="characterMesh" instance=ExtResource("2_o1g43")]
+transform = Transform3D(-0.533594, 0, -4.66483e-08, 0, 0.533594, 0, 4.66483e-08, 0, -0.533594, 0.00765601, -0.785634, -0.00859171)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cstqs")
@@ -32,3 +38,4 @@ transform = Transform3D(1, 0, 0, 0, 0.766044, -0.642788, 0, 0.642788, 0.766044, 
 
 [node name="Camera3D" type="Camera3D" parent="CameraControl"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
+current = true

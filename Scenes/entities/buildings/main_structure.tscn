@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqvdey8p0suiw"]
+
+[ext_resource type="Script" path="res://Scenes/entities/buildings/main_structure.gd" id="1_8s6vs"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_evnax"]
+frequency = 0.03
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8s6vs"]
+in_3d_space = true
+noise = SubResource("FastNoiseLite_evnax")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a5aq8"]
+albedo_texture = SubResource("NoiseTexture2D_8s6vs")
+
+[sub_resource type="BoxMesh" id="BoxMesh_1ivhs"]
+material = SubResource("StandardMaterial3D_a5aq8")
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_evnax"]
+size = Vector3(2, 2, 2)
+
+[node name="MainStructure" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 7
+floor_constant_speed = true
+script = ExtResource("1_8s6vs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_1ivhs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_evnax")
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.954154, -2.59532)
