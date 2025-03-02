@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://co2fvqwhncn08"]
+
+[ext_resource type="Script" path="res://Scenes/misc/resource_pile.gd" id="1_k3m5y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_081xx"]
+albedo_color = Color(1, 0.372549, 0, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_k3m5y"]
+material = SubResource("StandardMaterial3D_081xx")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q7b5l"]
+albedo_color = Color(0.721569, 1, 0.211765, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_85nc2"]
+material = SubResource("StandardMaterial3D_q7b5l")
+size = Vector3(0.8, 0.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q7b5l"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_85nc2"]
+height = 1.38802
+radius = 0.774802
+
+[node name="ResourcePile" type="CharacterBody3D"]
+script = ExtResource("1_k3m5y")
+
+[node name="mesh" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("PrismMesh_k3m5y")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_85nc2")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15534, 0)
+billboard = 1
+text = "I am a pile of scrap. Collect me.
+To do that, get close to me and press E"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_q7b5l")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.693771, 0)
+shape = SubResource("CylinderShape3D_85nc2")
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]

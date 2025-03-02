@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=3 uid="uid://b4c05mkr5u63a"]
+
+[ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
+[ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cj8p5"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cstqs"]
+size = Vector3(0.3, 0.3, 1.2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cstqs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_o1g43"]
+font_size = 26
+
+[node name="PlayerActor" type="CharacterBody3D" groups=["Player"]]
+collision_mask = 5
+script = ExtResource("1_cstqs")
+
+[node name="characterMesh" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="characterMesh"]
+visible = false
+mesh = SubResource("CapsuleMesh_cj8p5")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="characterMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.672932, 0, -0.43058)
+visible = false
+mesh = SubResource("BoxMesh_cstqs")
+skeleton = NodePath("../..")
+
+[node name="AllyBot" parent="characterMesh" instance=ExtResource("2_o1g43")]
+transform = Transform3D(-0.533594, 0, -4.66483e-08, 0, 0.533594, 0, 4.66483e-08, 0, -0.533594, 0.00765601, -0.785634, -0.00859171)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_cstqs")
+
+[node name="CameraControl" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.766044, -0.642788, 0, 0.642788, 0.766044, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraControl"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -124.0
+offset_top = -23.0
+offset_right = 124.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "You are carrying curr/max scrap"
+label_settings = SubResource("LabelSettings_o1g43")

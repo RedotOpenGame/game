@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://5hw0hg5wing2"]
+
+[sub_resource type="GDScript" id="GDScript_25ywp"]
+script/source = "extends Button
+var optionality:String = \"\"
+
+signal returnage(optionality)
+
+
+func _on_pressed() -> void:
+	returnage.emit(optionality)
+"
+
+[node name="InteractionButton" type="Button"]
+offset_right = 105.0
+offset_bottom = 31.0
+text = "Sample text."
+script = SubResource("GDScript_25ywp")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -1,0 +1,97 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqdrkbpr74nd5"]
+
+[ext_resource type="Script" path="res://Scenes/misc/text_interaction.gd" id="1_ou5r2"]
+[ext_resource type="Texture2D" uid="uid://cr7tt5k04u075" path="res://icon.svg" id="2_nbcca"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_80s33"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kln28"]
+bg_color = Color(0.646029, 0.646029, 0.646029, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hsu51"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4sqo8"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ou5r2"]
+bg_color = Color(0.227451, 0.227451, 0.227451, 0.505882)
+
+[node name="TextInteraction" type="CanvasLayer"]
+script = ExtResource("1_ou5r2")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -421.0
+offset_top = -130.0
+offset_right = 421.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_80s33")
+theme_override_styles/background = SubResource("StyleBoxFlat_kln28")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hsu51")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4sqo8")
+text = "What if Pewweper was Freakeper and his favourite rifle was Steyr AUGoon A1?"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -559.0
+offset_top = -130.0
+offset_right = -431.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("2_nbcca")
+
+[node name="ButtonOptions" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Instructions" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 117.0
+offset_top = -153.0
+offset_right = 420.0
+offset_bottom = -130.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ou5r2")
+text = "Press left click to continue the dialogue"
+
+[node name="REMOVE" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 421.0
+offset_top = -129.0
+offset_right = 575.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "STOP TALKING TO ME 
+AHHHHHHHHHHHHH"
+autowrap_mode = 3
+
+[connection signal="pressed" from="REMOVE" to="." method="_on_remove_pressed"]
