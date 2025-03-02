@@ -10,12 +10,15 @@ config_version=5
 
 [application]
 
-
 config/name="3d_adventure"
 config/tags=PackedStringArray("github_import")
 run/main_scene="res://Scenes/Levels/gameplay.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Gameplay="*res://Globals/Gameplay.gd"
 
 [global_group]
 
@@ -90,4 +93,3 @@ f={
 3d_physics/layer_1="Player"
 3d_physics/layer_2="Ally"
 3d_physics/layer_3="Object"
-

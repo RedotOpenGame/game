@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bqvdey8p0suiw"]
+[gd_scene load_steps=8 format=3 uid="uid://bqvdey8p0suiw"]
 
 [ext_resource type="Script" path="res://Scenes/entities/buildings/main_structure.gd" id="1_8s6vs"]
 
@@ -19,6 +19,10 @@ size = Vector3(2, 2, 2)
 [sub_resource type="BoxShape3D" id="BoxShape3D_evnax"]
 size = Vector3(2, 2, 2)
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8s6vs"]
+height = 2.34085
+radius = 1.66954
+
 [node name="MainStructure" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 7
@@ -35,3 +39,17 @@ shape = SubResource("BoxShape3D_evnax")
 
 [node name="Marker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.954154, -2.59532)
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.66955, 0)
+billboard = 1
+text = "Got scrap? Good. Bring it back to me."
+
+[node name="interactionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="interactionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.11039, 0)
+shape = SubResource("CylinderShape3D_8s6vs")
+
+[connection signal="body_entered" from="interactionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="interactionArea" to="." method="_on_interaction_area_body_exited"]

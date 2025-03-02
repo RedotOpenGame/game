@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cbi3e253383to"]
+[gd_scene load_steps=11 format=3 uid="uid://cbi3e253383to"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/gameplay.gd" id="1_1121w"]
 [ext_resource type="PackedScene" uid="uid://dkee5y6wnd1kn" path="res://Scenes/entities/NPC/test_npc.tscn" id="2_djta3"]
 [ext_resource type="PackedScene" uid="uid://cvnyxk681g27h" path="res://assets/unsorted meshes/DebugRoom.glb" id="2_meabh"]
 [ext_resource type="PackedScene" uid="uid://cfwclg1bc1icc" path="res://Scenes/entities/NPC/follower_v_2.tscn" id="3_emwhu"]
 [ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="4_1121w"]
+[ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="6_gtugs"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5yywe"]
 size = Vector3(139.788, 0.5, 134.494)
@@ -101,5 +102,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.33548, 5.13141)
 
 [node name="Freecam" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 14, 15)
+
+[node name="ResourcePile" parent="." instance=ExtResource("6_gtugs")]
+transform = Transform3D(4.53142, 0, 0, 0, 4.53142, 0, 0, 0, 4.53142, 13.407, 0.307115, 8.88015)
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

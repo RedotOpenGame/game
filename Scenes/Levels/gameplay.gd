@@ -16,8 +16,8 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("left_click") and !main_structure.process_mode == Node.PROCESS_MODE_ALWAYS:
 		main_structure.process_mode = Node.PROCESS_MODE_ALWAYS
 		main_structure.placed_down()
-		$CanvasLayer/Label.visible = false
-	
+	if main_structure.process_mode == Node.PROCESS_MODE_ALWAYS:
+		$CanvasLayer/Label.text = str("Scrap: ", Gameplay.scrap)
 
 func _on_button_pressed() -> void:
 	var loader = load("res://Scenes/entities/NPC/follower_v_2.tscn")

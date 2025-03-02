@@ -5,11 +5,14 @@ extends CharacterBody3D
 @onready var character = $characterMesh
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
-const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180)
+const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #up and down, if I remember
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0)
 
+var curr_scrap:int = 0
+var max_scrap:int = 3
+
 var interact_target:Node3D
-var followers:Array = [] #meant to get who is following me so we could be in a snake-like f0rmation.
+var followers:Array = [] 
 var follower_amount:int = 0
 var ignore_first_input:bool = true
 
@@ -75,6 +78,15 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("e") and is_instance_valid(interact_target):
 		interact_target.interaction()
 
+func get_scrap(amount) -> void:
+	curr_scrap = min(max_scrap, curr_scrap + amount)
+	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
+
+func remove_scrap() -> int:
+	var old_amount:int = curr_scrap
+	curr_scrap = 0
+	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
+	return old_amount
 
 func signal_follow(body):
 	followers.append(body)
