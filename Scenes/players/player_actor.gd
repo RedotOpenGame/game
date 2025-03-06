@@ -1,12 +1,20 @@
 extends CharacterBody3D
 
+
+@onready var area_3d: Area3D = $Area3D
+@onready var anim: AnimationPlayer = $AnimationPlayer
+@onready var health_label: Label = $CanvasLayer/Health
+
+
 @onready var camera = $CameraControl/Camera3D
 @onready var camera_control: Node3D = $CameraControl
 @onready var character = $characterMesh
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
-const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #up and down, if I remember
-const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0)
+const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down camera movement(which doesn't let you look upwards)
+const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
+var max_health:float = 100.0
+var health:float = max_health
 
 var curr_scrap:int = 0
 var max_scrap:int = 3
@@ -15,6 +23,9 @@ var interact_target:Node3D
 var followers:Array = [] 
 var follower_amount:int = 0
 var ignore_first_input:bool = true
+
+func _ready() -> void:
+	health_label.text = str("Health: ", health, "/", max_health)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("right_click"):
@@ -47,6 +58,11 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("f"):
 		followers.pick_random().death()
 		
+
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("left_click"):
+		anim.play("attack")
+
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
@@ -100,3 +116,16 @@ func ally_died(body) -> void:
 	for i in followers:
 		i.unit_index = incrementer
 		incrementer += 1
+
+func damage_func(amount:float) -> void:
+	health -= amount
+	health_label.text = str("Health: ", health, "/", max_health)
+	if health <= 0:
+		death()
+
+func death():
+	print("You are dead. Now what?")
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	if "damage_func" in body:
+		body.damage_func(8)

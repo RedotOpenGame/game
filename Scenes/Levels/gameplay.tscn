@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cbi3e253383to"]
+[gd_scene load_steps=13 format=3 uid="uid://cbi3e253383to"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/gameplay.gd" id="1_1121w"]
 [ext_resource type="PackedScene" uid="uid://dkee5y6wnd1kn" path="res://Scenes/entities/NPC/test_npc.tscn" id="2_djta3"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cfwclg1bc1icc" path="res://Scenes/entities/NPC/follower_v_2.tscn" id="3_emwhu"]
 [ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="4_1121w"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="6_gtugs"]
+[ext_resource type="PackedScene" uid="uid://birbcka7avuqd" path="res://Scenes/entities/Enemies/test_dummy.tscn" id="7_mxjca"]
+[ext_resource type="PackedScene" uid="uid://dln1cwpwnap3m" path="res://Scenes/entities/Enemies/damagewall.tscn" id="8_h7lky"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5yywe"]
 size = Vector3(139.788, 0.5, 134.494)
@@ -105,5 +107,11 @@ transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 
 
 [node name="ResourcePile" parent="." instance=ExtResource("6_gtugs")]
 transform = Transform3D(4.53142, 0, 0, 0, 4.53142, 0, 0, 0, 4.53142, 13.407, 0.307115, 8.88015)
+
+[node name="TestDummy" parent="." instance=ExtResource("7_mxjca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4845, 1.25252, 4.25197)
+
+[node name="Damagewall" parent="." instance=ExtResource("8_h7lky")]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 12.5655, 2.39411, 15.7117)
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

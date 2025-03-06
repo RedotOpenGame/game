@@ -24,6 +24,7 @@ Gameplay="*res://Globals/Gameplay.gd"
 
 Player="player node. Self-explainatory. For easier time retrieving him."
 Ally="get all allies into this group."
+Hostile="meant to track all hostiles for easier time retrieving."
 
 [input]
 
@@ -93,3 +94,6 @@ f={
 3d_physics/layer_1="Player"
 3d_physics/layer_2="Ally"
 3d_physics/layer_3="Object"
+3d_physics/layer_4="Hostile"
+3d_physics/layer_5="Friendly projectile"
+3d_physics/layer_6="Hostile projectile"

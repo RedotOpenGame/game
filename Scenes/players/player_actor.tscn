@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=14 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -8,13 +8,86 @@
 [sub_resource type="BoxMesh" id="BoxMesh_cstqs"]
 size = Vector3(0.3, 0.3, 1.2)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_o1g43"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qow3q"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.14902)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gv87a"]
+material = SubResource("StandardMaterial3D_qow3q")
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cstqs"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_o1g43"]
 font_size = 26
 
+[sub_resource type="LabelSettings" id="LabelSettings_qow3q"]
+font_size = 25
+
+[sub_resource type="Animation" id="Animation_xjmh8"]
+resource_name = "attack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("characterMesh/DamageArea/CollisionShape3D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("characterMesh/DamageArea/MeshInstance3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_6m61b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("characterMesh/DamageArea/CollisionShape3D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("characterMesh/DamageArea/MeshInstance3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vmj44"]
+_data = {
+"RESET": SubResource("Animation_6m61b"),
+"attack": SubResource("Animation_xjmh8")
+}
+
 [node name="PlayerActor" type="CharacterBody3D" groups=["Player"]]
-collision_mask = 5
+collision_mask = 45
 script = ExtResource("1_cstqs")
 
 [node name="characterMesh" type="Node3D" parent="."]
@@ -32,6 +105,20 @@ skeleton = NodePath("../..")
 
 [node name="AllyBot" parent="characterMesh" instance=ExtResource("2_o1g43")]
 transform = Transform3D(-0.533594, 0, -4.66483e-08, 0, 0.533594, 0, 4.66483e-08, 0, -0.533594, 0.00765601, -0.785634, -0.00859171)
+
+[node name="DamageArea" type="Area3D" parent="characterMesh"]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="characterMesh/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.17384)
+shape = SubResource("BoxShape3D_o1g43")
+disabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="characterMesh/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.174)
+visible = false
+mesh = SubResource("BoxMesh_gv87a")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cstqs")
@@ -58,3 +145,20 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "You are carrying curr/max scrap"
 label_settings = SubResource("LabelSettings_o1g43")
+
+[node name="Health" type="Label" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -81.0
+offset_right = 219.0
+grow_vertical = 0
+text = "Health:CURR/MAX"
+label_settings = SubResource("LabelSettings_qow3q")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_vmj44")
+}
+
+[connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]

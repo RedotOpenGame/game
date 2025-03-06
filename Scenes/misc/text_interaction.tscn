@@ -34,7 +34,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_80s33")
 theme_override_styles/background = SubResource("StyleBoxFlat_kln28")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hsu51")
 theme_override_styles/normal = SubResource("StyleBoxFlat_4sqo8")
-text = "What if Pewweper was Freakeper and his favourite rifle was Steyr AUGoon A1?"
+text = "PLACEHOLDER TEXT"
 
 [node name="TextureRect" type="TextureRect" parent="."]
 anchors_preset = 7
@@ -90,8 +90,7 @@ offset_right = 575.0
 offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "STOP TALKING TO ME 
-AHHHHHHHHHHHHH"
+text = "Close dialog."
 autowrap_mode = 3
 
 [connection signal="pressed" from="REMOVE" to="." method="_on_remove_pressed"]

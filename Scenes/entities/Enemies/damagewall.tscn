@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://dln1cwpwnap3m"]
+
+[ext_resource type="Script" path="res://Scenes/entities/Enemies/damagewall.gd" id="1_3q474"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u1wih"]
+albedo_color = Color(1, 0.380392, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3q474"]
+material = SubResource("StandardMaterial3D_u1wih")
+size = Vector3(4, 4, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u8f2q"]
+size = Vector3(4, 4, 1)
+
+[node name="Damagewall" type="Area3D"]
+collision_layer = 32
+collision_mask = 35
+script = ExtResource("1_3q474")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_3q474")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.46989, 0)
+billboard = 1
+text = "Touch me to receive damage."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_u8f2q")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
