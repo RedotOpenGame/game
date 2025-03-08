@@ -4,25 +4,20 @@
 [ext_resource type="PackedScene" uid="uid://dkee5y6wnd1kn" path="res://Scenes/entities/NPC/test_npc.tscn" id="2_djta3"]
 [ext_resource type="PackedScene" uid="uid://cvnyxk681g27h" path="res://assets/unsorted meshes/DebugRoom.glb" id="2_meabh"]
 [ext_resource type="PackedScene" uid="uid://cfwclg1bc1icc" path="res://Scenes/entities/NPC/follower_v_2.tscn" id="3_emwhu"]
-[ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="4_1121w"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="6_gtugs"]
 [ext_resource type="PackedScene" uid="uid://birbcka7avuqd" path="res://Scenes/entities/Enemies/test_dummy.tscn" id="7_mxjca"]
+[ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="8_b2ufd"]
 [ext_resource type="PackedScene" uid="uid://dln1cwpwnap3m" path="res://Scenes/entities/Enemies/damagewall.tscn" id="8_h7lky"]
+[ext_resource type="PackedScene" uid="uid://bkusk72fdr812" path="res://Scenes/meshes/dungeon_exit.tscn" id="9_50qqp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5yywe"]
 size = Vector3(139.788, 0.5, 134.494)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7xot"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h7lky"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_i7xot"]
-material = SubResource("StandardMaterial3D_i7xot")
+material = SubResource("StandardMaterial3D_h7lky")
 size = Vector3(50, 0.5, 50)
-
-[sub_resource type="LabelSettings" id="LabelSettings_djta3"]
-font_size = 32
-font_color = Color(0, 0, 0, 1)
-outline_size = 4
-outline_color = Color(0, 1, 0, 1)
 
 [node name="Gameplay" type="Node3D"]
 script = ExtResource("1_1121w")
@@ -52,47 +47,19 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 9.3462
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Label" type="Label" parent="CanvasLayer"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -46.0
-offset_right = 46.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "First, place down the base."
-label_settings = SubResource("LabelSettings_djta3")
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+text = "Press F to \"throw\" your first follower. 
+[not working]"
 
 [node name="Units" type="Node3D" parent="."]
 
 [node name="follower_v2" parent="Units" instance=ExtResource("3_emwhu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 0)
-
-[node name="follower_v3" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 1.39727)
-
-[node name="follower_v4" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 2.82336)
-
-[node name="follower_v5" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 4.22063)
-
-[node name="follower_v6" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, -5.91457)
-
-[node name="follower_v7" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, -4.5173)
-
-[node name="follower_v8" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, -3.09121)
-
-[node name="follower_v9" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, -1.69394)
-
-[node name="buildings" type="Node3D" parent="."]
-
-[node name="MainStructure" parent="buildings" instance=ExtResource("4_1121w")]
-process_mode = 4
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.809863, 0.315615, 8.01843)
 
 [node name="Button" type="Button" parent="."]
 offset_right = 115.0
@@ -113,5 +80,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4845, 1.25252, 4.25197)
 
 [node name="Damagewall" parent="." instance=ExtResource("8_h7lky")]
 transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 12.5655, 2.39411, 15.7117)
+
+[node name="PlayerActor" parent="." instance=ExtResource("8_b2ufd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.13764, 27.8904)
+
+[node name="DungeonExit" parent="." instance=ExtResource("9_50qqp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 31.0345)
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

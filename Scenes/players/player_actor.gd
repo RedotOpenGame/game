@@ -56,7 +56,9 @@ func _input(event: InputEvent) -> void:
 		camera.position.y = 8
 	
 	if Input.is_action_just_pressed("f"):
-		followers.pick_random().death()
+		var throwable = followers.front()
+		if throwable:
+			throwable.throw()
 		
 
 func _process(delta: float) -> void:

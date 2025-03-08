@@ -1,0 +1,142 @@
+[gd_scene load_steps=14 format=3 uid="uid://clpvr1kbs1f52"]
+
+[ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_jjp5g"]
+[ext_resource type="PackedScene" uid="uid://bevcp75fxaeuc" path="res://Scenes/meshes/dungeon_entrance.tscn" id="2_v4ybm"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
+sky_top_color = Color(0.363219, 0.53037, 1, 1)
+sky_horizon_color = Color(0.478813, 0.254949, 0.522252, 1)
+ground_bottom_color = Color(1.1792e-06, 0.489421, 0.280815, 1)
+ground_horizon_color = Color(0.478813, 0.254949, 0.522252, 1)
+
+[sub_resource type="Sky" id="Sky_0q8xj"]
+sky_material = SubResource("ProceduralSkyMaterial_v4ybm")
+
+[sub_resource type="Environment" id="Environment_j1dxk"]
+background_mode = 2
+sky = SubResource("Sky_0q8xj")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v4ybm"]
+size = Vector3(140, 0.5, 140)
+
+[sub_resource type="Shader" id="Shader_jjp5g"]
+code = "shader_type spatial;
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	// Called for every pixel the material is visible on.
+	ALBEDO = vec3(0.0, 0.25, 0.0);
+	ROUGHNESS = 0.8;
+	RIM = 0.0;
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the material.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v4ybm"]
+render_priority = 1
+shader = SubResource("Shader_jjp5g")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0q8xj"]
+next_pass = SubResource("ShaderMaterial_v4ybm")
+albedo_color = Color(0, 0.231373, 0.14902, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_j1dxk"]
+material = SubResource("StandardMaterial3D_0q8xj")
+size = Vector3(140, 0.5, 140)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jjp5g"]
+albedo_color = Color(0.165656, 0.165656, 0.165656, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_v4ybm"]
+material = SubResource("StandardMaterial3D_jjp5g")
+top_radius = 7.0
+bottom_radius = 7.0
+height = 30.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0q8xj"]
+height = 30.0
+radius = 7.0
+
+[node name="Overworld" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_j1dxk")
+
+[node name="PlayerActor" parent="." instance=ExtResource("1_jjp5g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46153, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.486198, 0.873849, 0, -0.873849, 0.486198, 0, 0, 0)
+
+[node name="Objects" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Objects"]
+collision_layer = 4
+collision_mask = 11
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.51312, 0, 0)
+shape = SubResource("BoxShape3D_v4ybm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Floor"]
+mesh = SubResource("BoxMesh_j1dxk")
+
+[node name="Building(?)" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 0.962436, 0.271508, 0, -0.271508, 0.962436, -28.3619, 10.4959, 25.9627)
+collision_layer = 4
+collision_mask = 11
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Building(?)"]
+mesh = SubResource("CylinderMesh_v4ybm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Building(?)"]
+shape = SubResource("CylinderShape3D_0q8xj")
+
+[node name="Building(?)2" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(0.976695, 0.206571, 0.0582745, -0.209433, 0.976635, 0.0481834, -0.0469597, -0.0592651, 0.997137, 39.6701, 10.4959, -9.74237)
+collision_layer = 4
+collision_mask = 11
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Building(?)2"]
+mesh = SubResource("CylinderMesh_v4ybm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Building(?)2"]
+shape = SubResource("CylinderShape3D_0q8xj")
+
+[node name="Building(?)3" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(0.921375, -0.374074, -0.105528, 0.388674, 0.886765, 0.250161, 0, -0.271508, 0.962436, -28.3619, 9.38261, -13.6485)
+collision_layer = 4
+collision_mask = 11
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Building(?)3"]
+mesh = SubResource("CylinderMesh_v4ybm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Building(?)3"]
+shape = SubResource("CylinderShape3D_0q8xj")
+
+[node name="Building(?)4" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(0.946543, -0.321571, 0.0254643, 0.319142, 0.945029, 0.0711978, -0.0469597, -0.0592651, 0.997137, 39.6701, 10.4959, -49.3535)
+collision_layer = 4
+collision_mask = 11
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Building(?)4"]
+mesh = SubResource("CylinderMesh_v4ybm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Building(?)4"]
+shape = SubResource("CylinderShape3D_0q8xj")
+
+[node name="DungeonEntrance" parent="Objects" instance=ExtResource("2_v4ybm")]
+transform = Transform3D(0.937045, 0, 0.34921, 0, 1, 0, -0.34921, 0, 0.937045, 0, 0, -14.3544)
