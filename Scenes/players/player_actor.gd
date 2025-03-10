@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 
-@onready var area_3d: Area3D = $Area3D
+@onready var hostile_seeker: Area3D = $HostileSeeker
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var health_label: Label = $CanvasLayer/Health
 
@@ -23,6 +23,8 @@ var interact_target:Node3D
 var followers:Array = [] 
 var follower_amount:int = 0
 var ignore_first_input:bool = true
+
+var nearby_hostiles:Array = []
 
 func _ready() -> void:
 	health_label.text = str("Health: ", health, "/", max_health)
@@ -59,6 +61,7 @@ func _input(event: InputEvent) -> void:
 		var throwable = followers.front()
 		if throwable:
 			throwable.throw()
+		#followers.pick_random().death()
 		
 
 func _process(delta: float) -> void:
@@ -96,6 +99,10 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("e") and is_instance_valid(interact_target):
 		interact_target.interaction()
 
+func teleport_allies_with_me() -> void:
+	for i in followers:
+		i.global_position = global_position
+
 func get_scrap(amount) -> void:
 	curr_scrap = min(max_scrap, curr_scrap + amount)
 	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
@@ -127,7 +134,17 @@ func damage_func(amount:float) -> void:
 
 func death():
 	print("You are dead. Now what?")
+	get_tree().change_scene_to_file("res://Scenes/Levels/overworld.tscn")
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if "damage_func" in body:
 		body.damage_func(8)
+
+
+func _on_hostile_seeker_body_entered(body: Node3D) -> void:
+	if body.is_in_group("Hostile"):
+		nearby_hostiles.append(body)
+
+
+func _on_hostile_seeker_body_exited(body: Node3D) -> void:
+	nearby_hostiles.erase(body)

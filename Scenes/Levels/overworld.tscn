@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=15 format=3 uid="uid://clpvr1kbs1f52"]
 
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_jjp5g"]
 [ext_resource type="PackedScene" uid="uid://bevcp75fxaeuc" path="res://Scenes/meshes/dungeon_entrance.tscn" id="2_v4ybm"]
+[ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="3_0q8xj"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
 sky_top_color = Color(0.363219, 0.53037, 1, 1)
@@ -140,3 +141,7 @@ shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="DungeonEntrance" parent="Objects" instance=ExtResource("2_v4ybm")]
 transform = Transform3D(0.937045, 0, 0.34921, 0, 1, 0, -0.34921, 0, 0.937045, 0, 0, -14.3544)
+
+[node name="TestEnemy" parent="." instance=ExtResource("3_0q8xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.71138, 1.45254, -16.0271)
+max_health = 100.0

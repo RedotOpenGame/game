@@ -1,14 +1,16 @@
-[gd_scene load_steps=13 format=3 uid="uid://cbi3e253383to"]
+[gd_scene load_steps=21 format=3 uid="uid://cbi3e253383to"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/gameplay.gd" id="1_1121w"]
 [ext_resource type="PackedScene" uid="uid://dkee5y6wnd1kn" path="res://Scenes/entities/NPC/test_npc.tscn" id="2_djta3"]
 [ext_resource type="PackedScene" uid="uid://cvnyxk681g27h" path="res://assets/unsorted meshes/DebugRoom.glb" id="2_meabh"]
 [ext_resource type="PackedScene" uid="uid://cfwclg1bc1icc" path="res://Scenes/entities/NPC/follower_v_2.tscn" id="3_emwhu"]
+[ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="5_4dnnd"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="6_gtugs"]
 [ext_resource type="PackedScene" uid="uid://birbcka7avuqd" path="res://Scenes/entities/Enemies/test_dummy.tscn" id="7_mxjca"]
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="8_b2ufd"]
 [ext_resource type="PackedScene" uid="uid://dln1cwpwnap3m" path="res://Scenes/entities/Enemies/damagewall.tscn" id="8_h7lky"]
 [ext_resource type="PackedScene" uid="uid://bkusk72fdr812" path="res://Scenes/meshes/dungeon_exit.tscn" id="9_50qqp"]
+[ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="10_50qqp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5yywe"]
 size = Vector3(139.788, 0.5, 134.494)
@@ -19,22 +21,75 @@ size = Vector3(139.788, 0.5, 134.494)
 material = SubResource("StandardMaterial3D_h7lky")
 size = Vector3(50, 0.5, 50)
 
+[sub_resource type="LabelSettings" id="LabelSettings_50qqp"]
+font_size = 25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nfi4r"]
+transparency = 1
+albedo_color = Color(1, 0.462745, 0, 0.435294)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6yw87"]
+material = SubResource("StandardMaterial3D_nfi4r")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0rax1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xhpn5"]
+transparency = 1
+albedo_color = Color(0, 0.6, 1, 0.435294)
+
+[sub_resource type="BoxMesh" id="BoxMesh_p0g2s"]
+material = SubResource("StandardMaterial3D_xhpn5")
+
 [node name="Gameplay" type="Node3D"]
 script = ExtResource("1_1121w")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="Floors" type="Node3D" parent="."]
+
+[node name="Floor1" type="StaticBody3D" parent="Floors"]
 collision_layer = 4
 collision_mask = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floors/Floor1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.51312, 0, 0)
 shape = SubResource("BoxShape3D_5yywe")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floors/Floor1"]
 visible = false
 mesh = SubResource("BoxMesh_i7xot")
 
-[node name="DebugRoom" parent="StaticBody3D" instance=ExtResource("2_meabh")]
+[node name="DebugRoom" parent="Floors/Floor1" instance=ExtResource("2_meabh")]
+transform = Transform3D(0.348676, 0, 0, 0, 0.348676, 0, 0, 0, 0.348676, 3.60462, -0.158481, -2.6762)
+
+[node name="Floor2" type="StaticBody3D" parent="Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.1331, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floors/Floor2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.51312, 0, 0)
+shape = SubResource("BoxShape3D_5yywe")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floors/Floor2"]
+visible = false
+mesh = SubResource("BoxMesh_i7xot")
+
+[node name="DebugRoom" parent="Floors/Floor2" instance=ExtResource("2_meabh")]
+transform = Transform3D(0.348676, 0, 0, 0, 0.348676, 0, 0, 0, 0.348676, 3.60462, -0.158481, -2.6762)
+
+[node name="Floor3" type="StaticBody3D" parent="Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 55.4845, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floors/Floor3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.51312, 0, 0)
+shape = SubResource("BoxShape3D_5yywe")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floors/Floor3"]
+visible = false
+mesh = SubResource("BoxMesh_i7xot")
+
+[node name="DebugRoom" parent="Floors/Floor3" instance=ExtResource("2_meabh")]
 transform = Transform3D(0.348676, 0, 0, 0, 0.348676, 0, 0, 0, 0.348676, 3.60462, -0.158481, -2.6762)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -53,18 +108,46 @@ anchor_bottom = 1.0
 offset_top = -23.0
 offset_right = 40.0
 grow_vertical = 0
-text = "Press F to \"throw\" your first follower. 
-[not working]"
+text = "Scrap: CURR"
+label_settings = SubResource("LabelSettings_50qqp")
+
+[node name="SpawnFollower" type="Button" parent="CanvasLayer"]
+offset_right = 163.0
+offset_bottom = 47.0
+text = "spawn new follower"
+
+[node name="KillFollower" type="Button" parent="CanvasLayer"]
+offset_left = -1.0
+offset_top = 46.0
+offset_right = 164.0
+offset_bottom = 93.0
+text = "Kill random follower"
+
+[node name="KillAllFollowers" type="Button" parent="CanvasLayer"]
+offset_left = 1.0
+offset_top = 93.0
+offset_right = 164.0
+offset_bottom = 140.0
+text = "Kill all followers"
 
 [node name="Units" type="Node3D" parent="."]
 
 [node name="follower_v2" parent="Units" instance=ExtResource("3_emwhu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.00242, 1.86193, 25.8544)
 
-[node name="Button" type="Button" parent="."]
-offset_right = 115.0
-offset_bottom = 47.0
-text = "spawn new follower"
+[node name="Enemies" type="Node3D" parent="."]
+
+[node name="TestEnemy" parent="Enemies" instance=ExtResource("5_4dnnd")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.3107, -18.1438)
+
+[node name="TestEnemy4" parent="Enemies" instance=ExtResource("5_4dnnd")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 29.5243, 5.72282)
+
+[node name="TestEnemy2" parent="Enemies" instance=ExtResource("5_4dnnd")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.78893, 1.3107, -18.1438)
+
+[node name="TestEnemy3" parent="Enemies" instance=ExtResource("5_4dnnd")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.99208, 1.3107, -18.1438)
 
 [node name="Marker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.33548, 5.13141)
@@ -76,7 +159,7 @@ transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 
 transform = Transform3D(4.53142, 0, 0, 0, 4.53142, 0, 0, 0, 4.53142, 13.407, 0.307115, 8.88015)
 
 [node name="TestDummy" parent="." instance=ExtResource("7_mxjca")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4845, 1.25252, 4.25197)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.2536, 1.25252, 4.25197)
 
 [node name="Damagewall" parent="." instance=ExtResource("8_h7lky")]
 transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 12.5655, 2.39411, 15.7117)
@@ -87,4 +170,69 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.13764, 27.8904)
 [node name="DungeonExit" parent="." instance=ExtResource("9_50qqp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 31.0345)
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[node name="MainStructure" parent="." instance=ExtResource("10_50qqp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2601, 0, 10.8085)
+
+[node name="TeleportBricks" type="Node3D" parent="."]
+
+[node name="GoUp1" type="Area3D" parent="TeleportBricks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.946258, -25.945)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TeleportBricks/GoUp1"]
+mesh = SubResource("BoxMesh_6yw87")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TeleportBricks/GoUp1"]
+shape = SubResource("BoxShape3D_0rax1")
+
+[node name="Label3D" type="Label3D" parent="TeleportBricks/GoUp1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79697, 0)
+text = "Up."
+
+[node name="GoUp2" type="Area3D" parent="TeleportBricks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.9267, -25.945)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TeleportBricks/GoUp2"]
+mesh = SubResource("BoxMesh_6yw87")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TeleportBricks/GoUp2"]
+shape = SubResource("BoxShape3D_0rax1")
+
+[node name="Label3D" type="Label3D" parent="TeleportBricks/GoUp2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79697, 0)
+text = "Up."
+
+[node name="GoDown1" type="Area3D" parent="TeleportBricks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72422, 29.191, 27.7057)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TeleportBricks/GoDown1"]
+mesh = SubResource("BoxMesh_p0g2s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TeleportBricks/GoDown1"]
+shape = SubResource("BoxShape3D_0rax1")
+
+[node name="Label3D" type="Label3D" parent="TeleportBricks/GoDown1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79697, 0)
+text = "Down.
+"
+
+[node name="GoDown2" type="Area3D" parent="TeleportBricks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72422, 56.2433, 27.7057)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TeleportBricks/GoDown2"]
+mesh = SubResource("BoxMesh_p0g2s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TeleportBricks/GoDown2"]
+shape = SubResource("BoxShape3D_0rax1")
+
+[node name="Label3D" type="Label3D" parent="TeleportBricks/GoDown2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79697, 0)
+text = "Down.
+"
+
+[connection signal="pressed" from="CanvasLayer/SpawnFollower" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/KillFollower" to="." method="_on_kill_follower_pressed"]
+[connection signal="pressed" from="CanvasLayer/KillAllFollowers" to="." method="_on_kill_all_followers_pressed"]
+[connection signal="body_entered" from="TeleportBricks/GoUp1" to="." method="_on_go_up_1_body_entered"]
+[connection signal="body_entered" from="TeleportBricks/GoUp2" to="." method="_on_go_up_2_body_entered"]
+[connection signal="body_entered" from="TeleportBricks/GoDown1" to="." method="_on_go_down_1_body_entered"]
+[connection signal="body_entered" from="TeleportBricks/GoDown2" to="." method="_on_go_down_2_body_entered"]
