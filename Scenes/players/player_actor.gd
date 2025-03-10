@@ -64,7 +64,7 @@ func _input(event: InputEvent) -> void:
 		#followers.pick_random().death()
 		
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_pressed("left_click"):
 		anim.play("attack")
 
@@ -134,7 +134,7 @@ func damage_func(amount:float) -> void:
 
 func death():
 	print("You are dead. Now what?")
-	get_tree().change_scene_to_file("res://Scenes/Levels/overworld.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://Scenes/overworld.tscn")
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if "damage_func" in body:
