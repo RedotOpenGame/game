@@ -67,6 +67,14 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("left_click"):
+		var target_plane_mouse = Plane(Vector3(0, 1, 0), position.y)
+		var mouse_pos = get_viewport().get_mouse_position()
+		var ray_length = 1000
+		var from = camera.project_ray_origin(mouse_pos)
+		var to = from + camera.project_ray_normal(mouse_pos) * ray_length
+		var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
+		if cursor_pos_on_plane:
+			character.look_at(cursor_pos_on_plane)
 		anim.play("attack")
 
 func _physics_process(delta: float) -> void:
@@ -77,14 +85,7 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	if Input.is_action_just_pressed("space") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-	var target_plane_mouse = Plane(Vector3(0, 1, 0), position.y)
-	var mouse_pos = get_viewport().get_mouse_position()
-	var ray_length = 1000
-	var from = camera.project_ray_origin(mouse_pos)
-	var to = from + camera.project_ray_normal(mouse_pos) * ray_length
-	var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
-	if cursor_pos_on_plane:
-		character.look_at(cursor_pos_on_plane)
+
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("a", "d", "w", "s").rotated(-camera_control.rotation.y)
@@ -92,6 +93,7 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		character.rotation.y = lerp_angle(character.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)

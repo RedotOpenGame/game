@@ -36,6 +36,7 @@ func _process(delta):
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		
 	# Calculate row and column position in formation
 	change_logic()
 	if curr_logic == logic.FOLLOW_LEADER:
