@@ -6,8 +6,11 @@ extends CharacterBody3D
 @onready var health_label: Label = $CanvasLayer/Health
 
 
-@onready var camera = $CameraControl/Camera3D
+@onready var camera = $CameraControl/Yaw/Pitch/SpringArm3D/Camera3D
+@onready var cam_yaw = $CameraControl/Yaw
+@onready var cam_pitch = $CameraControl/Yaw/Pitch
 @onready var camera_control: Node3D = $CameraControl
+@onready var springArm = $CameraControl/Yaw/Pitch/SpringArm3D
 @onready var character = $characterMesh
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -32,22 +35,20 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("right_click"):
 		if !ignore_first_input:
-			camera_control.rotation.x -= deg_to_rad(event.velocity.y / 350)
-			if camera_control.rotation.x > deg_to_rad(CAMERA_CONSTRAITS.x):
-				camera_control.rotation.x = deg_to_rad(CAMERA_CONSTRAITS.x)
-			elif camera_control.rotation.x < 0:
-				camera_control.rotation.x = 0
-			camera_control.rotation.y -= deg_to_rad(event.velocity.x / 350)
+			cam_yaw.rotate_y(deg_to_rad(-event.relative.x * 0.5))
+			cam_pitch.rotate_x(deg_to_rad(-event.relative.y * 0.5))
+			cam_pitch.rotation.x = clamp(cam_pitch.rotation.x, deg_to_rad(-CAMERA_CONSTRAITS.x), deg_to_rad(180))
 		else:
 			ignore_first_input = false
 	if event is InputEventMouseButton:
 		if event.button_index == 4:
-			camera.position.y = max(camera.position.y - 1, CAMERA_SCALE_CONSTRAINTS.x)
+			springArm.spring_length = max(springArm.spring_length - 0.1, CAMERA_SCALE_CONSTRAINTS.x)
 		if event.button_index == 5:
-			camera.position.y = min(camera.position.y + 1, CAMERA_SCALE_CONSTRAINTS.y)
+			springArm.spring_length = min(springArm.spring_length + 0.1, CAMERA_SCALE_CONSTRAINTS.y)
 	
 	if Input.is_action_just_released("right_click"):
 		ignore_first_input = true
+
 	if Input.is_action_just_pressed("["):
 		camera_control.rotation.y -= deg_to_rad(45)
 	if Input.is_action_just_pressed("]"):
