@@ -179,7 +179,7 @@ spring_length = 15.0
 margin = 0.5
 
 [node name="Camera3D" type="Camera3D" parent="CameraControl/Yaw/Pitch/SpringArm3D"]
-fov = 30.0
+fov = 45.0
 
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]

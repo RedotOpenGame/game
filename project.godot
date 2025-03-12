@@ -29,6 +29,7 @@ project/assembly_name="3d_adventure"
 Player="player node. Self-explainatory. For easier time retrieving him."
 Ally="get all allies into this group."
 Hostile="meant to track all hostiles for easier time retrieving."
+Important="Meant for the AI to mark something as important. They will try and interact with it with higher priority"
 
 [input]
 

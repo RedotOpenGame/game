@@ -12,7 +12,7 @@ extends CharacterBody3D
 @onready var camera_control: Node3D = $CameraControl
 @onready var springArm = $CameraControl/Yaw/Pitch/SpringArm3D
 @onready var character = $characterMesh
-const SPEED = 5.0
+@export var SPEED = 6.5
 const JUMP_VELOCITY = 4.5
 const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down camera movement(which doesn't let you look upwards)
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
@@ -42,21 +42,21 @@ func _input(event: InputEvent) -> void:
 			ignore_first_input = false
 	if event is InputEventMouseButton:
 		if event.button_index == 4:
-			springArm.spring_length = max(springArm.spring_length - 0.1, CAMERA_SCALE_CONSTRAINTS.x)
+			springArm.spring_length = max(springArm.spring_length - 0.2, CAMERA_SCALE_CONSTRAINTS.x)
 		if event.button_index == 5:
-			springArm.spring_length = min(springArm.spring_length + 0.1, CAMERA_SCALE_CONSTRAINTS.y)
+			springArm.spring_length = min(springArm.spring_length + 0.2, CAMERA_SCALE_CONSTRAINTS.y)
 	
 	if Input.is_action_just_released("right_click"):
 		ignore_first_input = true
 
 	if Input.is_action_just_pressed("["):
-		camera_control.rotation.y -= deg_to_rad(45)
+		cam_yaw.rotation.y -= deg_to_rad(45)
 	if Input.is_action_just_pressed("]"):
-		camera_control.rotation.y += deg_to_rad(45)
+		cam_yaw.rotation.y += deg_to_rad(45)
 	if Input.is_action_just_pressed("backslash"):
-		camera_control.rotation.x = deg_to_rad(40)
-		camera_control.rotation.y = 0
-		camera.position.y = 8
+		cam_pitch.rotation.x = 0
+		cam_yaw.rotation.y = 0
+		springArm.spring_length = 15
 	
 	if Input.is_action_just_pressed("f"):
 		var throwable = followers.front()

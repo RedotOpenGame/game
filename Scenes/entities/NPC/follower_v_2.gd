@@ -47,7 +47,7 @@ func _process(delta):
 		var horizontal_offset := (c - r / 2.0) * column_spacing
 		
 		# Calculate target position relative to leader
-		var preffered_position = _leader.global_position + Vector3(horizontal_offset, 0, (r + 1) * row_spacing).rotated(Vector3(0, 1, 0), _leader.camera_control.global_rotation.y)
+		var preffered_position = _leader.global_position + Vector3(horizontal_offset, 0, (r + 1) * row_spacing).rotated(Vector3(0, 1, 0), _leader.cam_yaw.global_rotation.y)
 		var direction = (preffered_position - global_position).normalized()
 		
 		if global_position.distance_to(preffered_position) < movement_speed / 32:
