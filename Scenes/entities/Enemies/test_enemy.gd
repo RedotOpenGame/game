@@ -17,19 +17,20 @@ func _ready():
 	health_label.text = str("Health: ", health, "/", max_health)
 
 func _process(delta: float) -> void:
-	if not is_on_floor():
+	if !is_on_floor():
 		velocity += get_gravity() * delta
-	
-	if !is_instance_valid(curr_target):
-		velocity = Vector3(0, 0, 0)
-		if nearby_hostiles != []:
-			curr_target = find_closest_target()
-	else:
+	if nearby_hostiles != []:
+		curr_target = find_closest_target()
+	if is_instance_valid(curr_target):
 		look_at(curr_target.global_position)
 		var preffered_position = curr_target.global_position
 		var direction = (preffered_position - global_position).normalized()
-		velocity = direction * movement_speed
-	
+		velocity.x = direction.x * movement_speed
+		velocity.z = direction.z * movement_speed
+	for i in get_tree().get_nodes_in_group("Important"):
+		if i.is_in_group("Ally"):
+			if i not in nearby_hostiles:
+				nearby_hostiles.append(i)
 	move_and_slide()
 
 func _on_damage_area_body_entered(body: Node3D) -> void:
@@ -52,7 +53,8 @@ func find_closest_target() -> Node3D:
 	return self
 
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
-	nearby_hostiles.append(body)
+	if body.is_in_group("Ally"):
+		nearby_hostiles.append(body)
 
 
 func _on_hostile_seeker_body_exited(body: Node3D) -> void:

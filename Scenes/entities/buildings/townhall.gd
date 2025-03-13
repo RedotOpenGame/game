@@ -2,17 +2,15 @@ extends CharacterBody3D
 
 var max_health:float = 500
 var health:float = max_health
-@onready var progressbar_health: ProgressBar = $ProgressbarHealth
+@onready var health_label: Label3D = $HealthLabel
 
 func _ready() -> void:
-	progressbar_health.max_value = max_health
-	progressbar_health.value = health
-
+	health_label.text = str("Health: ", health, " / ", max_health)
 
 
 func damage_func(amount:float) -> void:
 	health -= amount
-	progressbar_health.value = health
+	health_label.text = str("Health: ", health, " / ", max_health)
 	if health <= 0:
 		death()
 	

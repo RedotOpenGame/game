@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @onready var marker_3d: Marker3D = $Marker3D
 @onready var make_ally: Button = $MakeAlly
+@onready var scrap_counter: Label3D = $ScrapCounter
 
 
 var track_body:CharacterBody3D #meant to track player mostly
@@ -12,6 +13,7 @@ var ally_char = preload("res://Scenes/entities/NPC/follower_v_2.tscn")
 
 func _ready() -> void:
 	make_ally.visible = false
+	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
 func placed_down() -> void:
 	var scene = player_char.instantiate()
@@ -24,6 +26,7 @@ func placed_down() -> void:
 func interaction() -> void:
 	if is_instance_valid(track_body):
 		Gameplay.scrap += track_body.remove_scrap()
+		scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
 
 func _on_interaction_area_body_entered(body: Node3D) -> void:
@@ -43,6 +46,7 @@ func _on_interaction_area_body_exited(body: Node3D) -> void:
 func _on_make_ally_pressed() -> void:
 	if Gameplay.scrap >= 3:
 		Gameplay.scrap -= 3
+		scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 		var scene = ally_char.instantiate()
 		scene.position = marker_3d.global_position
 		add_sibling(scene)

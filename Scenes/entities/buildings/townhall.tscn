@@ -13,7 +13,7 @@ size = Vector3(4, 4, 4)
 size = Vector3(4, 4, 4)
 
 [node name="Townhall" type="CharacterBody3D" groups=["Ally", "Important"]]
-collision_layer = 4
+collision_layer = 6
 collision_mask = 43
 script = ExtResource("1_25rbt")
 
@@ -29,6 +29,8 @@ billboard = 1
 text = "I am townhall. Protect me from threats!"
 font_size = 50
 
-[node name="ProgressbarHealth" type="ProgressBar" parent="."]
-offset_right = 309.0
-offset_bottom = 57.0
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.15253, 0)
+billboard = 1
+text = "Health: CURR / MAX"
+font_size = 72

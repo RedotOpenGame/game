@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://dumawgyndqbdp"]
+[gd_scene load_steps=13 format=3 uid="uid://dumawgyndqbdp"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/survival_mode.gd" id="1_f1ks2"]
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ldv0p"]
 [ext_resource type="PackedScene" uid="uid://cpru4ovaf6lfm" path="res://Scenes/entities/buildings/townhall.tscn" id="2_6cym4"]
+[ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="4_b17es"]
+[ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="5_26u23"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1ks2"]
 sky_top_color = Color(0.437432, 0, 0.164877, 1)
@@ -58,6 +60,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47333, 0)
 [node name="Townhall" parent="Entities/Buildings" instance=ExtResource("2_6cym4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56968, 19.0687)
 
+[node name="MainStructure" parent="Entities/Buildings" instance=ExtResource("4_b17es")]
+transform = Transform3D(1.37309, 0, 0, 0, 1.37309, 0, 0, 0, 1.37309, -7.29254, 0, 12.6068)
+
+[node name="Resources" type="Node3D" parent="Entities"]
+
+[node name="ResourcePile" parent="Entities/Resources" instance=ExtResource("5_26u23")]
+transform = Transform3D(1.84093, 0, 0, 0, 1.84093, 0, 0, 0, 1.84093, 6.78698, 0.503722, 10.4641)
+scrap = 5
+
 [node name="Floor1" type="StaticBody3D" parent="."]
 collision_layer = 4
 collision_mask = 3
@@ -79,12 +90,53 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 23.0
 grow_horizontal = 2
-text = "Wave:"
+text = "Wave: 0"
 label_settings = SubResource("LabelSettings_wktxd")
 
+[node name="NewWaveNow" type="Button" parent="CanvasLayer"]
+offset_left = 1.0
+offset_top = 59.0
+offset_right = 139.0
+offset_bottom = 110.0
+text = "[DEBUG]
+NEW WAVE NOW"
+
+[node name="IntermissionBar" type="ProgressBar" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -138.0
+offset_top = -106.0
+grow_horizontal = 0
+grow_vertical = 0
+fill_mode = 3
+show_percentage = false
+
+[node name="UntillNextWave" type="Label" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -132.0
+offset_top = -144.0
+offset_right = -7.0
+offset_bottom = -121.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Untill next wave"
+
 [node name="Intermission" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
 
 [node name="EnemySpawnpoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22682, 2.72236, -40.909)
 
 [node name="ResourceSpawnpoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 19.4475)
+
+[connection signal="pressed" from="CanvasLayer/NewWaveNow" to="." method="_on_new_wave_now_pressed"]
+[connection signal="timeout" from="Intermission" to="." method="_on_intermission_timeout"]
