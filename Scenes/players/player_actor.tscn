@@ -89,7 +89,7 @@ _data = {
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_o1g43"]
 radius = 11.0
 
-[node name="PlayerActor" type="CharacterBody3D" groups=["Player"]]
+[node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
 collision_mask = 45
 script = ExtResource("1_cstqs")
 
@@ -181,6 +181,11 @@ margin = 0.5
 [node name="Camera3D" type="Camera3D" parent="CameraControl/Yaw/Pitch/SpringArm3D"]
 fov = 45.0
 
+[node name="MercyFrame" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
 [connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
+[connection signal="timeout" from="MercyFrame" to="." method="_on_mercy_frame_timeout"]

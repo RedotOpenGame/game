@@ -18,18 +18,20 @@ var is_in_intermission:bool = false
 var enemy_list:Dictionary = {
 	#"Example":preload("path/to/enemy/scene.tscn"),
 	"Test_Enemy":preload("res://Scenes/entities/Enemies/test_enemy.tscn"),
+	"Shooter":preload("res://Scenes/entities/Enemies/shooting_enemy.tscn"),
+	"Test_Boss":preload("res://Scenes/entities/Enemies/test_boss.tscn"),
 }
 var wave_structure:Dictionary = {
-	1:{"Test_Enemy":3},
+	1:{"Test_Enemy":1},
 	2:{"Test_Enemy":6},
-	3:{},
-	4:{"Test_Enemy":3},
-	5:{"Test_Enemy":3},
-	6:{"Test_Enemy":3},
-	7:{"Test_Enemy":3},
-	8:{"Test_Enemy":3},
-	9:{"Test_Enemy":3},
-	10:{"Test_Enemy":3},
+	3:{"Test_Enemy":4, "Shooter":3},
+	4:{"Test_Enemy":3, "Shooter":5},
+	5:{"Test_Boss":1},
+	6:{"Test_Enemy":1},
+	7:{"Test_Enemy":1},
+	8:{"Test_Enemy":1},
+	9:{"Test_Enemy":1},
+	10:{"Test_Enemy":1},
 }
 
 var spawn_points:int = 0
@@ -41,6 +43,8 @@ func _process(delta: float) -> void:
 	if enemies.get_child_count() == 0 and !is_in_intermission:
 		is_in_intermission = true
 		intermission.start()
+		for i in get_tree().get_nodes_in_group("Ally"):
+			i.heal_func(666)
 	intermission_bar.value = intermission.time_left
 
 
@@ -49,7 +53,7 @@ func new_wave() -> void:
 	curr_wave += 1
 	spawn_points = curr_wave * 5
 	wave_counter.text = str("Wave: ", curr_wave)
-	if curr_wave > 10:
+	if curr_wave > 5:
 		wave_counter.text = str("Wave: no more lmao")
 		return
 	for i in wave_structure[curr_wave]:

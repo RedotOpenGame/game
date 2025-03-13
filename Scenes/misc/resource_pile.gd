@@ -5,8 +5,7 @@ var track_body:CharacterBody3D #meant to track player mostly
 
 func interaction() -> void:
 	if is_instance_valid(track_body):
-		track_body.get_scrap(1)
-		scrap -= 1
+		scrap -= track_body.get_scrap(1)
 		if scrap <= 0:
 			queue_free()
 

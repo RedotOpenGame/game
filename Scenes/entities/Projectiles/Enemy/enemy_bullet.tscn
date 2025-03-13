@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://cf2geh7n1tgis"]
+
+[ext_resource type="Script" path="res://Scenes/entities/Projectiles/Enemy/enemy_bullet.gd" id="1_3o6ut"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_28pie"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3o6ut"]
+material = SubResource("StandardMaterial3D_28pie")
+size = Vector3(0.2, 0.2, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kxmi6"]
+size = Vector3(0.2, 0.2, 0.4)
+
+[node name="EnemyBullet" type="Area3D"]
+collision_layer = 32
+collision_mask = 7
+script = ExtResource("1_3o6ut")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_3o6ut")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_kxmi6")
+
+[node name="Cleanup" type="Timer" parent="."]
+wait_time = 6.0
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Cleanup" to="." method="_on_cleanup_timeout"]

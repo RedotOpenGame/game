@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=17 format=3 uid="uid://clpvr1kbs1f52"]
 
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ccpx5"]
 [ext_resource type="PackedScene" uid="uid://bevcp75fxaeuc" path="res://Scenes/meshes/dungeon_entrance.tscn" id="2_bbigu"]
 [ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="3_1ww8i"]
 [ext_resource type="PackedScene" uid="uid://bjiqjoitv764c" path="res://Scenes/meshes/survival_mode_enter.tscn" id="3_s368d"]
+[ext_resource type="PackedScene" uid="uid://bya6wormsuwtj" path="res://Scenes/entities/Enemies/shooting_enemy.tscn" id="5_4qj6l"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
 sky_top_color = Color(0.363219, 0.53037, 1, 1)
@@ -149,3 +150,6 @@ transform = Transform3D(-0.119374, 0, -0.992849, 0, 1, 0, 0.992849, 0, -0.119374
 [node name="TestEnemy" parent="." instance=ExtResource("3_1ww8i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.71138, 1.45254, -16.0271)
 max_health = 100.0
+
+[node name="ShootingEnemy" parent="." instance=ExtResource("5_4qj6l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.40558, 1.4545, -12.2736)

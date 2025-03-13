@@ -18,6 +18,7 @@ const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down 
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
 var max_health:float = 100.0
 var health:float = max_health
+var can_be_hit:bool = true
 
 var curr_scrap:int = 0
 var max_scrap:int = 3
@@ -106,9 +107,11 @@ func teleport_allies_with_me() -> void:
 	for i in followers:
 		i.global_position = global_position
 
-func get_scrap(amount) -> void:
+func get_scrap(amount) -> int:
+	var old_scrap = curr_scrap
 	curr_scrap = min(max_scrap, curr_scrap + amount)
 	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
+	return curr_scrap - old_scrap
 
 func remove_scrap() -> int:
 	var old_amount:int = curr_scrap
@@ -130,10 +133,17 @@ func ally_died(body) -> void:
 		incrementer += 1
 
 func damage_func(amount:float) -> void:
-	health -= amount
+	if can_be_hit:
+		can_be_hit = false
+		$MercyFrame.start()
+		health -= amount
+		health_label.text = str("Health: ", health, "/", max_health)
+		if health <= 0:
+			death()
+
+func heal_func(amount:float) -> void:
+	health = min(health + amount, max_health)
 	health_label.text = str("Health: ", health, "/", max_health)
-	if health <= 0:
-		death()
 
 func death():
 	print("You are dead. Now what?")
@@ -151,3 +161,7 @@ func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 
 func _on_hostile_seeker_body_exited(body: Node3D) -> void:
 	nearby_hostiles.erase(body)
+
+
+func _on_mercy_frame_timeout() -> void:
+	can_be_hit = true

@@ -6,12 +6,12 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_d5vep"]
 size = Vector3(1, 1, 0.5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cakys"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c66dd"]
 transparency = 1
 albedo_color = Color(1, 1, 1, 0.235294)
 
 [sub_resource type="BoxMesh" id="BoxMesh_25h6o"]
-material = SubResource("StandardMaterial3D_cakys")
+material = SubResource("StandardMaterial3D_c66dd")
 size = Vector3(1, 1, 0.5)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c66dd"]

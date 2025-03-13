@@ -60,7 +60,8 @@ func _process(delta):
 		look_at(curr_hostile.global_position)
 		var preffered_position = curr_hostile.global_position
 		var direction = (preffered_position - global_position).normalized()
-		velocity = direction * movement_speed
+		velocity.x = direction.x * movement_speed
+		velocity.z = direction.z * movement_speed
 		#print(global_position.distance_to(preffered_position))
 	#var target_position := _leader.global_transform.origin \
 		#+ (_leader.global_transform.basis.z * (r + 1) * row_spacing \
@@ -73,6 +74,10 @@ func _process(delta):
 	#)
 
 	move_and_slide()
+
+func heal_func(amount:float) -> void:
+	health = min(health + amount, max_health)
+	health_label.text = str("Health: ", health, "/", max_health)
 
 
 func change_logic() -> void:
