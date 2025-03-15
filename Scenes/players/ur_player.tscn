@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://cg08fwspki4w3"]
+
+[ext_resource type="Script" path="res://Scenes/players/ur_player.gd" id="1_ldq8u"]
+[ext_resource type="PackedScene" uid="uid://beappmd6nitm3" path="res://assets/placeholder meshes/steyr_aug.glb" id="2_mfi4o"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eetui"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pvekl"]
+
+[node name="URPlayer" type="CharacterBody3D" groups=["Ally", "Important", "Player"]]
+collision_mask = 45
+script = ExtResource("1_ldq8u")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_eetui")
+
+[node name="Mesh" type="Node3D" parent="."]
+
+[node name="steyr_aug" parent="Mesh" instance=ExtResource("2_mfi4o")]
+transform = Transform3D(0.0343502, 0, 0, 0, 0.0343502, 0, 0, 0, 0.0343502, 0.658069, 0, -1.19176)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mesh"]
+mesh = SubResource("CapsuleMesh_pvekl")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.26409, 3.16726)
+
+[node name="MercyFrame" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="HealthLabel" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Health: CURR/MAX"
+
+[node name="GunBarrel" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.666985, 0.00748169, -1.6374)
+
+[node name="Firerate" type="Timer" parent="."]
+wait_time = 0.17
+one_shot = true
+
+[connection signal="timeout" from="MercyFrame" to="." method="_on_mercy_frame_timeout"]
+[connection signal="timeout" from="Firerate" to="." method="_on_firerate_timeout"]

@@ -4,7 +4,7 @@ extends Area3D
 var direction:Vector3 
 
 func _process(delta: float) -> void:
-	position += speed * direction * delta
+	position += speed * direction
 
 
 func _on_cleanup_timeout() -> void:
@@ -13,5 +13,5 @@ func _on_cleanup_timeout() -> void:
 
 func _on_body_entered(body: Node3D) -> void:
 	if "damage_func" in body:
-		body.damage_func(5)
-	#queue_free()
+		body.damage_func(8)
+	queue_free()

@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cf2geh7n1tgis"]
+[gd_scene load_steps=5 format=3 uid="uid://clqlnhxwr6bm6"]
 
-[ext_resource type="Script" path="res://Scenes/entities/Projectiles/Enemy/enemy_bullet.gd" id="1_3o6ut"]
+[ext_resource type="Script" path="res://Scenes/entities/Projectiles/Enemy/enemy_bullet.gd" id="1_1y8cx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_28pie"]
-albedo_color = Color(1, 0, 0, 1)
+albedo_color = Color(1, 1, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3o6ut"]
 material = SubResource("StandardMaterial3D_28pie")
@@ -12,11 +12,11 @@ size = Vector3(0.2, 0.2, 0.4)
 [sub_resource type="BoxShape3D" id="BoxShape3D_kxmi6"]
 size = Vector3(0.2, 0.2, 0.4)
 
-[node name="EnemyBullet" type="Area3D"]
-collision_layer = 32
-collision_mask = 7
-script = ExtResource("1_3o6ut")
-speed = 20.0
+[node name="PlayerBullet" type="Area3D"]
+collision_layer = 16
+collision_mask = 12
+script = ExtResource("1_1y8cx")
+speed = 50.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_3o6ut")
