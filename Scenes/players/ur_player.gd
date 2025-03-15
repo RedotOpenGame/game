@@ -178,6 +178,7 @@ func heal_func(amount:float) -> void:
 
 func death():
 	print("You are dead. Now what?")
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	get_tree().call_deferred("change_scene_to_file", "res://Scenes/overworld.tscn")
 
 #func _on_area_3d_body_entered(body: Node3D) -> void:
