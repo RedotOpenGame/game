@@ -30,6 +30,7 @@ Player="player node. Self-explainatory. For easier time retrieving him."
 Ally="get all allies into this group."
 Hostile="meant to track all hostiles for easier time retrieving."
 Important="Meant for the AI to mark something as important. They will try and interact with it with higher priority"
+AllyContainer="Meant to contain ally units under it."
 
 [input]
 

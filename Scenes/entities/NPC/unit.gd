@@ -132,7 +132,8 @@ func throw() -> void:
 	print("throwing")
 
 func death() -> void:
-	_leader.ally_died(self)
+	if is_instance_valid(_leader):
+		_leader.ally_died(self)
 	queue_free()
 
 

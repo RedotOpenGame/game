@@ -14,7 +14,7 @@ extends CharacterBody3D
 @onready var springArm = $CameraControl/Yaw/Pitch/SpringArm3D
 @onready var character = $characterMesh
 @export var SPEED = 6.5
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 9.5
 const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down camera movement(which doesn't let you look upwards)
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
 var max_health:float = 100.0
@@ -83,7 +83,7 @@ func _process(_delta: float) -> void:
 			if(Input.is_action_just_pressed("left_click")):
 				instance.position = throw_location.global_position
 				instance.throw_target = cursor_pos_on_plane
-				get_tree().root.add_child(instance)
+				add_sibling(instance)
 		anim.play("attack")
 
 
