@@ -5,6 +5,7 @@ extends CharacterBody3D
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var health_label: Label = $CanvasLayer/Health
 
+@onready var throw_location: Node3D = $characterMesh/ThrowLocation
 
 @onready var camera = $CameraControl/Yaw/Pitch/SpringArm3D/Camera3D
 @onready var cam_yaw = $CameraControl/Yaw
@@ -27,6 +28,8 @@ var interact_target:Node3D
 var followers:Array = [] 
 var follower_amount:int = 0
 var ignore_first_input:bool = true
+
+var unit = preload("res://Scenes/entities/NPC/unit.tscn")
 
 var nearby_hostiles:Array = []
 
@@ -76,7 +79,13 @@ func _process(_delta: float) -> void:
 		var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
 		if cursor_pos_on_plane:
 			character.look_at(cursor_pos_on_plane)
+			var instance = unit.instantiate()
+			if(Input.is_action_just_pressed("left_click")):
+				instance.position = throw_location.global_position
+				instance.throw_target = cursor_pos_on_plane
+				get_tree().root.add_child(instance)
 		anim.play("attack")
+
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.

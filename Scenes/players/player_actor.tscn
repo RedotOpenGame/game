@@ -123,6 +123,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.174)
 visible = false
 mesh = SubResource("BoxMesh_gv87a")
 
+[node name="ThrowLocation" type="Node3D" parent="characterMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cstqs")
 
