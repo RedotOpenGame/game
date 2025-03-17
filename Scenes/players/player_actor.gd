@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var hostile_seeker: Area3D = $HostileSeeker
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var health_label: Label = $CanvasLayer/Health
+enum unit_types{COMBAT,BUILDER,AGRI}
 
 @onready var throw_location: Node3D = $characterMesh/ThrowLocation
 
@@ -13,6 +14,7 @@ extends CharacterBody3D
 @onready var camera_control: Node3D = $CameraControl
 @onready var springArm = $CameraControl/Yaw/Pitch/SpringArm3D
 @onready var character = $characterMesh
+@onready var selected_unit_type = -1
 @export var SPEED = 6.5
 const JUMP_VELOCITY = 9.5
 const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down camera movement(which doesn't let you look upwards)
@@ -67,6 +69,15 @@ func _input(event: InputEvent) -> void:
 		if throwable:
 			throwable.throw()
 		#followers.pick_random().death()
+	#Temporarily implimentation: select unit type
+	if Input.is_key_pressed(KEY_1):
+		selected_unit_type = -1
+	if Input.is_key_pressed(KEY_2):
+		selected_unit_type = unit_types.COMBAT
+	if Input.is_key_pressed(KEY_3):
+		selected_unit_type = unit_types.BUILDER
+	if Input.is_key_pressed(KEY_4):
+		selected_unit_type = unit_types.AGRI
 		
 
 func _process(_delta: float) -> void:
@@ -80,10 +91,12 @@ func _process(_delta: float) -> void:
 		if cursor_pos_on_plane:
 			character.look_at(cursor_pos_on_plane)
 			var instance = unit.instantiate()
-			if(Input.is_action_just_pressed("left_click")):
+			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1):
 				instance.position = throw_location.global_position
 				instance.throw_target = cursor_pos_on_plane
+				instance.unit_type = selected_unit_type
 				add_sibling(instance)
+				instance.get_node("characterMesh").rotation.y = character.rotation.y
 		anim.play("attack")
 
 

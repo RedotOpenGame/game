@@ -29,19 +29,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22067, 0)
 billboard = 1
 text = "Health:CURR/MAX"
 
-[node name="DamageArea" type="Area3D" parent="."]
-collision_layer = 16
-collision_mask = 8
-
-[node name="AttackCollision" type="CollisionShape3D" parent="DamageArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)
-shape = SubResource("BoxShape3D_gexq0")
-
-[node name="HitscanPreview" type="MeshInstance3D" parent="DamageArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.84)
-mesh = SubResource("BoxMesh_gwabn")
-
 [node name="Attackrate" type="Timer" parent="."]
+one_shot = true
+
+[node name="ThrowTime" type="Timer" parent="."]
 one_shot = true
 
 [node name="characterMesh" type="Node3D" parent="."]
@@ -49,5 +40,19 @@ one_shot = true
 [node name="AllyBot2" parent="characterMesh" instance=ExtResource("2_dlquv")]
 transform = Transform3D(-0.199008, 0, -1.73978e-08, 0, 0.199008, 0, 1.73978e-08, 0, -0.199008, 0, -0.454289, 0)
 
+[node name="DamageArea" type="Area3D" parent="characterMesh"]
+collision_layer = 16
+collision_mask = 8
+
+[node name="AttackCollision" type="CollisionShape3D" parent="characterMesh/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)
+shape = SubResource("BoxShape3D_gexq0")
+
+[node name="HitscanPreview" type="MeshInstance3D" parent="characterMesh/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.84)
+mesh = SubResource("BoxMesh_gwabn")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_6wbai")
+
+[connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]
