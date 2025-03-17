@@ -57,11 +57,11 @@ albedo_color = Color(0, 0.231373, 0.14902, 1)
 material = SubResource("StandardMaterial3D_hf0oe")
 size = Vector3(140, 0.5, 140)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4qj6l"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rmeny"]
 albedo_color = Color(0.165656, 0.165656, 0.165656, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_v4ybm"]
-material = SubResource("StandardMaterial3D_4qj6l")
+material = SubResource("StandardMaterial3D_rmeny")
 top_radius = 7.0
 bottom_radius = 7.0
 height = 30.0
@@ -147,6 +147,7 @@ transform = Transform3D(0.937045, 0, 0.34921, 0, 1, 0, -0.34921, 0, 0.937045, 0,
 
 [node name="DungeonEntrance2" parent="Objects" instance=ExtResource("2_bbigu")]
 transform = Transform3D(0.446261, 0, 0.894904, 0, 1, 0, -0.894904, 0, 0.446261, -9.64771, 0, -5.81005)
+path_to_scene = "res://Scenes/Levels/level_one.tscn"
 label_text = "First level here!"
 
 [node name="SurvivalModeEnter" parent="Objects" instance=ExtResource("3_s368d")]

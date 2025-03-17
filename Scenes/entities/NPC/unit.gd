@@ -32,10 +32,10 @@ var curr_hostile:Node3D #find closest hostile.
 func _ready():
 	# Get player from 'Player' group once at start
 	health_label.text = str("Health: ", health, "/", max_health)
-	#_leader = get_tree().get_first_node_in_group("Player")
-	#if !_leader:
-		##push_error("No player found in 'Player' group")
-		#return
+	_leader = get_tree().get_first_node_in_group("Player")
+	if !_leader:
+		#push_error("No player found in 'Player' group")
+		return
 	#_leader.signal_follow(self)
 	var displacement = throw_target - global_position
 	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
@@ -50,8 +50,8 @@ func _ready():
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.BUILDER]
 			ThrowTime.start()
 		unit_types.AGRI:
-			mesh.set_visible(false)
-			collision.disabled = true
+			#mesh.set_visible(false)
+			#collision.disabled = true
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.AGRI]
 			ThrowTime.start()
 	
@@ -89,7 +89,7 @@ func _physics_process(delta):
 			velocity.z = direction.z * movement_speed
 		logic.THROWN:
 			match(unit_type):
-				unit_types.BUILDER:	
+				unit_types.BUILDER:
 					var forwards = -mesh.transform.basis.z.normalized()
 					velocity.x = forwards.x * throw_move_speed[unit_types.BUILDER]
 					velocity.z = forwards.z * throw_move_speed[unit_types.BUILDER]
@@ -100,7 +100,7 @@ func _physics_process(delta):
 			if is_on_floor() and ThrowTime.is_stopped():
 				velocity.x = 0
 				velocity.z = 0
-		
+	change_logic()
 
 		#print(global_position.distance_to(preffered_position))
 	#var target_position := _leader.global_transform.origin \
@@ -115,6 +115,12 @@ func _physics_process(delta):
 	if not is_on_floor() and !(unit_type == unit_types.AGRI and curr_logic == logic.THROWN):
 		velocity += get_gravity() * delta
 	move_and_slide()
+
+func change_logic() -> void:
+	if _leader.nearby_hostiles != []:
+		curr_logic = logic.ATTACK_ENEMY
+	else:
+		curr_logic = logic.FOLLOW_LEADER
 
 func _process(delta: float):
 	if(velocity.x != 0 && velocity.z != 0):
