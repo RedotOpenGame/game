@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cwcdbslfwiubp"]
+[gd_scene load_steps=26 format=3 uid="uid://cwcdbslfwiubp"]
 
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_jqmhs"]
 [ext_resource type="Script" path="res://Scenes/Levels/level_one.gd" id="1_u3rbo"]
@@ -58,6 +58,29 @@ size = Vector3(6, 1, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u3h2l"]
 size = Vector3(6, 1, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rjhlg"]
+size = Vector3(7, 7, 7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_po0bw"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(0, 1, 1, 0.121569)
+
+[sub_resource type="BoxMesh" id="BoxMesh_r3v4y"]
+material = SubResource("StandardMaterial3D_po0bw")
+size = Vector3(7, 7, 7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eqind"]
+albedo_color = Color(0.69069, 0.424595, 7.70092e-07, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u3h2l"]
+material = SubResource("StandardMaterial3D_eqind")
+size = Vector3(21, 1, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_po0bw"]
+size = Vector3(21, 1, 7)
 
 [node name="Level_One" type="Node3D"]
 script = ExtResource("1_u3rbo")
@@ -198,6 +221,24 @@ mesh = SubResource("BoxMesh_70edh")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/bridge3"]
 shape = SubResource("BoxShape3D_eqind")
 
+[node name="bridge4" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 119.394, 53.8077, -15.1964)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/bridge4"]
+mesh = SubResource("BoxMesh_70edh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/bridge4"]
+shape = SubResource("BoxShape3D_eqind")
+
+[node name="bridge5" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 171.944, 53.8077, -15.1964)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/bridge5"]
+mesh = SubResource("BoxMesh_70edh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/bridge5"]
+shape = SubResource("BoxShape3D_eqind")
+
 [node name="SquarePillar" type="StaticBody3D" parent="Objects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.0932, 39.3137, -19.379)
 collision_layer = 4
@@ -275,6 +316,35 @@ mesh = SubResource("BoxMesh_dxwen")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.1445, 9.77771, 0.432873)
 shape = SubResource("BoxShape3D_u3h2l")
 
+[node name="Label3D" type="Label3D" parent="Objects"]
+transform = Transform3D(0.97518, 0.221412, 0, -0.221412, 0.97518, 0, 0, 0, 1, 132.298, 60.3478, -13.2775)
+billboard = 1
+text = "Seems like the bridge is destroyed.
+Perhaps if you threw 2 Constructors at me..."
+font_size = 150
+
+[node name="ConstructorArea" type="Area3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 131.749, 56.3956, -13.9111)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/ConstructorArea"]
+shape = SubResource("BoxShape3D_rjhlg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/ConstructorArea"]
+mesh = SubResource("BoxMesh_r3v4y")
+
+[node name="BridgeFix" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 145.529, 53.7606, -14.7792)
+collision_layer = 4
+collision_mask = 59
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/BridgeFix"]
+mesh = SubResource("BoxMesh_u3h2l")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/BridgeFix"]
+shape = SubResource("BoxShape3D_po0bw")
+
 [node name="PlayerActor" parent="." instance=ExtResource("1_jqmhs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 101.232, 31.0824, -9.69067)
 
@@ -297,4 +367,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78.7424, 26.6935, -23.2326)
 [node name="DungeonExit" parent="." instance=ExtResource("4_eqind")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.3185, 25.1187, 92.3727)
 
+[node name="DungeonExit2" parent="." instance=ExtResource("4_eqind")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 186.401, 54.4605, -15.9351)
+
 [connection signal="body_entered" from="Objects/Abyss" to="." method="_on_abyss_body_entered"]
+[connection signal="body_entered" from="Objects/ConstructorArea" to="." method="_on_constructor_area_body_entered"]
+[connection signal="body_exited" from="Objects/ConstructorArea" to="." method="_on_constructor_area_body_exited"]
