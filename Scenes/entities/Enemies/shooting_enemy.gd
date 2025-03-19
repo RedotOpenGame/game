@@ -11,10 +11,12 @@ var bullet_scene:PackedScene = preload("res://Scenes/entities/Projectiles/Enemy/
 var nearby_hostiles:Array = []
 var curr_target:Node3D
 var can_fire:bool = true
+var spawned_point:Vector3 #the point I will return to.
 @export var max_health:float = 40
 @onready var health:float = max_health
 
 func _ready():
+	spawned_point = global_position
 	# Get player from 'Player' group once at start
 	health_label.text = str("Health: ", health, "/", max_health)
 
@@ -43,7 +45,15 @@ func _process(delta: float) -> void:
 				get_tree().root.add_child(scene)
 				can_fire = false
 				attackrate.start()
-				
+	else:
+		if global_position.distance_to(spawned_point) < movement_speed / 32:
+			global_position = spawned_point
+			velocity = Vector3(0, 0, 0)
+		else:
+			look_at(Vector3(spawned_point.x, global_position.y, spawned_point.z))
+			var direction = (spawned_point - global_position).normalized()
+			velocity.x = direction.x * movement_speed
+			velocity.z = direction.z * movement_speed
 	for i in get_tree().get_nodes_in_group("Important"):
 		if i.is_in_group("Ally"):
 			if i not in nearby_hostiles:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=16 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -89,6 +89,9 @@ _data = {
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_o1g43"]
 radius = 11.0
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qow3q"]
+radius = 1.6
+
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
 collision_mask = 45
 script = ExtResource("1_cstqs")
@@ -155,6 +158,28 @@ grow_vertical = 0
 text = "Health:CURR/MAX"
 label_settings = SubResource("LabelSettings_qow3q")
 
+[node name="Labels" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 1.0
+offset_top = 466.0
+offset_right = 188.0
+offset_bottom = 570.0
+
+[node name="IsCollectingUnits" type="Label" parent="CanvasLayer/Labels"]
+layout_mode = 2
+text = "Is collecting units: BOOL"
+
+[node name="CombatantAmount" type="Label" parent="CanvasLayer/Labels"]
+layout_mode = 2
+text = "Combatant units: CURR"
+
+[node name="ConstructorAmount" type="Label" parent="CanvasLayer/Labels"]
+layout_mode = 2
+text = "Constructor units: CURR"
+
+[node name="CollectorsAmount" type="Label" parent="CanvasLayer/Labels"]
+layout_mode = 2
+text = "Collector units: CURR"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_vmj44")
@@ -177,7 +202,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.778984, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraControl/Yaw/Pitch"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.778984, 0)
-collision_mask = 215
+collision_mask = 213
 spring_length = 15.0
 margin = 0.5
 
@@ -188,7 +213,16 @@ fov = 45.0
 wait_time = 0.2
 one_shot = true
 
+[node name="CollectUnits" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollectUnits"]
+shape = SubResource("CylinderShape3D_qow3q")
+disabled = true
+
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
 [connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
 [connection signal="timeout" from="MercyFrame" to="." method="_on_mercy_frame_timeout"]
+[connection signal="body_entered" from="CollectUnits" to="." method="_on_collect_units_body_entered"]

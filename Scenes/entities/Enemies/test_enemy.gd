@@ -9,10 +9,12 @@ extends CharacterBody3D
 
 var nearby_hostiles:Array = []
 var curr_target:Node3D
+var spawned_point:Vector3 #the point I will return to.
 @export var max_health:float = 40
 @onready var health:float = max_health
 
 func _ready():
+	spawned_point = global_position
 	# Get player from 'Player' group once at start
 	health_label.text = str("Health: ", health, "/", max_health)
 
@@ -22,11 +24,21 @@ func _process(delta: float) -> void:
 	if nearby_hostiles != []:
 		curr_target = find_closest_target()
 	if is_instance_valid(curr_target):
-		look_at(curr_target.global_position)
+		look_at(Vector3(curr_target.global_position.x, global_position.y, curr_target.global_position.z))
 		var preffered_position = curr_target.global_position
 		var direction = (preffered_position - global_position).normalized()
 		velocity.x = direction.x * movement_speed
 		velocity.z = direction.z * movement_speed
+	else:
+
+		if global_position.distance_to(spawned_point) < movement_speed / 32:
+			global_position = spawned_point
+			velocity = Vector3(0, 0, 0)
+		else:
+			look_at(Vector3(spawned_point.x, global_position.y, spawned_point.z))
+			var direction = (spawned_point - global_position).normalized()
+			velocity.x = direction.x * movement_speed
+			velocity.z = direction.z * movement_speed
 	for i in get_tree().get_nodes_in_group("Important"):
 		if i.is_in_group("Ally"):
 			if i not in nearby_hostiles:

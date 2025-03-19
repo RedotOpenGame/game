@@ -6,8 +6,18 @@ extends CharacterBody3D
 @onready var health_label: Label = $CanvasLayer/Health
 enum unit_types{COMBAT,BUILDER,AGRI}
 
+var combatant_amount:int = 2
+var builder_amount:int = 2
+var agriculture_amount:int = 2
+
 @onready var throw_location: Node3D = $characterMesh/ThrowLocation
 
+@onready var combatant_amount_label: Label = $CanvasLayer/Labels/CombatantAmount
+@onready var constructor_amount_label: Label = $CanvasLayer/Labels/ConstructorAmount
+@onready var collectors_amount_label: Label = $CanvasLayer/Labels/CollectorsAmount
+
+@onready var unit_collection_collision: CollisionShape3D = $CollectUnits/CollisionShape3D
+@onready var is_collecting_units: Label = $CanvasLayer/Labels/IsCollectingUnits
 @onready var camera = $CameraControl/Yaw/Pitch/SpringArm3D/Camera3D
 @onready var cam_yaw = $CameraControl/Yaw
 @onready var cam_pitch = $CameraControl/Yaw/Pitch
@@ -37,6 +47,10 @@ var nearby_hostiles:Array = []
 
 func _ready() -> void:
 	health_label.text = str("Health: ", health, "/", max_health)
+	combatant_amount_label.text = str("Combatant units: ", combatant_amount)
+	constructor_amount_label.text = str("Constructor units: ", builder_amount)
+	collectors_amount_label.text = str("Collector units: ", agriculture_amount)
+	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("right_click"):
@@ -65,9 +79,9 @@ func _input(event: InputEvent) -> void:
 		springArm.spring_length = 15
 	
 	if Input.is_action_just_pressed("f"):
-		var throwable = followers.front()
-		if throwable:
-			throwable.throw()
+		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
+		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
+
 		#followers.pick_random().death()
 	#Temporarily implimentation: select unit type
 	if Input.is_key_pressed(KEY_1):
@@ -92,6 +106,26 @@ func _process(_delta: float) -> void:
 			character.look_at(cursor_pos_on_plane)
 			var instance = unit.instantiate()
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1):
+				match selected_unit_type:
+					unit_types.COMBAT:
+						if combatant_amount > 0:
+							combatant_amount -= 1
+							combatant_amount_label.text = str("Combatant units: ", combatant_amount)
+						else:
+							return
+					unit_types.BUILDER:
+						if builder_amount > 0:
+							builder_amount -= 1
+							constructor_amount_label.text = str("Constructor units: ", builder_amount)
+						else:
+							return
+					unit_types.AGRI:
+						if agriculture_amount > 0:
+							agriculture_amount -= 1
+							collectors_amount_label.text = str("Collector units: ", agriculture_amount)
+						else:
+							return
+				instance._leader = self
 				instance.position = throw_location.global_position
 				instance.throw_target = cursor_pos_on_plane
 				instance.unit_type = selected_unit_type
@@ -187,3 +221,21 @@ func _on_hostile_seeker_body_exited(body: Node3D) -> void:
 
 func _on_mercy_frame_timeout() -> void:
 	can_be_hit = true
+
+
+func _on_collect_units_body_entered(body: Node3D) -> void:
+	
+	
+	match body.unit_type:
+		0:
+			combatant_amount += 1
+			combatant_amount_label.text = str("Combatant units: ", combatant_amount)
+			body.queue_free()
+		1:
+			builder_amount += 1
+			constructor_amount_label.text = str("Constructor units: ", builder_amount)
+			body.queue_free()
+		2:
+			agriculture_amount += 1
+			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
+			body.queue_free()

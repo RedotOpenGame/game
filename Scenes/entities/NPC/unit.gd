@@ -17,6 +17,7 @@ var curr_logic = logic.THROWN
 @onready var mesh = $characterMesh
 @onready var collision = $CollisionShape3D
 
+var _leader:Node3D
 
 #@export var row_spacing: float = 1.5
 #@export var column_spacing: float = 1.5
@@ -26,7 +27,6 @@ var unit_index: int = 0  # Assign unique index to each unit
 var max_health:float = 40
 var health:float = max_health
 
-var _leader: Node3D
 var curr_hostile:Node3D #find closest hostile.
 
 func _ready():
@@ -100,6 +100,16 @@ func _physics_process(delta):
 			if is_on_floor() and ThrowTime.is_stopped():
 				velocity.x = 0
 				velocity.z = 0
+		logic.FOLLOW_LEADER:
+
+			var preffered_position = _leader.global_position
+			var direction = (preffered_position - global_position).normalized()
+			
+			if global_position.distance_to(preffered_position) < movement_speed / 32:
+				global_position = preffered_position
+				velocity = Vector3(0, 0, 0)
+			else:
+				velocity = direction * movement_speed
 	change_logic()
 
 		#print(global_position.distance_to(preffered_position))
