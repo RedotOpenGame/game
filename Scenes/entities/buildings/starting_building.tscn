@@ -91,9 +91,15 @@ custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 text = "Make constructor unit: 3 scrap"
 
+[node name="BuildTurret" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "BuildTurret: 5 scrap
+"
+
 [connection signal="body_entered" from="interactionArea" to="." method="_on_interaction_area_body_entered"]
 [connection signal="body_exited" from="interactionArea" to="." method="_on_interaction_area_body_exited"]
 [connection signal="pressed" from="UI/Remove" to="." method="_on_remove_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/MakeCombatant" to="." method="_on_make_combatant_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/MakeCollector" to="." method="_on_make_collector_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/MakeConstructor" to="." method="_on_make_constructor_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildTurret" to="." method="_on_build_turret_pressed"]

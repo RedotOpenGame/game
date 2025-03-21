@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=20 format=3 uid="uid://clpvr1kbs1f52"]
 
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ccpx5"]
 [ext_resource type="PackedScene" uid="uid://bevcp75fxaeuc" path="res://Scenes/meshes/dungeon_entrance.tscn" id="2_bbigu"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bjiqjoitv764c" path="res://Scenes/meshes/survival_mode_enter.tscn" id="3_s368d"]
 [ext_resource type="PackedScene" uid="uid://bya6wormsuwtj" path="res://Scenes/entities/Enemies/shooting_enemy.tscn" id="5_4qj6l"]
 [ext_resource type="PackedScene" uid="uid://4jy1chl6g5j8" path="res://Scenes/meshes/ur_portal.tscn" id="6_rmeny"]
+[ext_resource type="PackedScene" uid="uid://c6mfi0s8avy8j" path="res://Scenes/entities/buildings/defence_turret.tscn" id="7_2ngsa"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="7_hf0oe"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
@@ -170,6 +171,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.40558, 1.4545, -12.2736)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4144, 16.8077)
 
 [node name="Allies" type="Node3D" parent="." groups=["AllyContainer"]]
+
+[node name="DefenceTurret" parent="Allies" instance=ExtResource("7_2ngsa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5725, 1.20791, 0)
 
 [node name="ResourcePile" parent="." instance=ExtResource("7_hf0oe")]
 transform = Transform3D(1.99821, -0.0832449, 0.0150156, 0.0845883, 1.96648, -0.354711, 0, 0.355028, 1.96824, 14.4702, 0.0462289, 5.91616)

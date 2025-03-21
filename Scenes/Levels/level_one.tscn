@@ -370,6 +370,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.3185, 25.1187, 92.3727)
 [node name="DungeonExit2" parent="." instance=ExtResource("4_eqind")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 186.401, 54.4605, -15.9351)
 
+[node name="Allies" type="Node3D" parent="." groups=["AllyContainer"]]
+
 [connection signal="body_entered" from="Objects/Abyss" to="." method="_on_abyss_body_entered"]
 [connection signal="body_entered" from="Objects/ConstructorArea" to="." method="_on_constructor_area_body_entered"]
 [connection signal="body_exited" from="Objects/ConstructorArea" to="." method="_on_constructor_area_body_exited"]

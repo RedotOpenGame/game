@@ -258,3 +258,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.26542, 1.62836, -31.7638)
 
 [node name="TestBoss" parent="Enemies" instance=ExtResource("6_4mjsf")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.62416, -128.03)
+
+[node name="Allies" type="Node3D" parent="." groups=["AllyContainer"]]

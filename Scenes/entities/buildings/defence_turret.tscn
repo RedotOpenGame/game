@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://c6mfi0s8avy8j"]
+
+[ext_resource type="Script" path="res://Scenes/entities/buildings/defence_turret.gd" id="1_y8188"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_uqt04"]
+top_radius = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b8x12"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y8188"]
+material = SubResource("StandardMaterial3D_b8x12")
+size = Vector3(0.2, 0.2, 1.5)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_b8x12"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_c5ndq"]
+radius = 11.0
+
+[node name="DefenceTurret" type="CharacterBody3D" groups=["Ally"]]
+script = ExtResource("1_y8188")
+max_health = 80.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_uqt04")
+
+[node name="Barrel" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.832585, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Barrel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.75)
+mesh = SubResource("BoxMesh_y8188")
+skeleton = NodePath("../..")
+
+[node name="Marker3D" type="Marker3D" parent="Barrel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.44445)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_b8x12")
+
+[node name="HostileSeeker" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HostileSeeker"]
+shape = SubResource("CylinderShape3D_c5ndq")
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22067, 0)
+billboard = 1
+text = "Health:CURR/MAX"
+
+[node name="Firerate" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
+[connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
+[connection signal="timeout" from="Firerate" to="." method="_on_firerate_timeout"]

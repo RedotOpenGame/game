@@ -138,5 +138,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22682, 2.72236, -40.909)
 [node name="ResourceSpawnpoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 19.4475)
 
+[node name="Allies" type="Node3D" parent="." groups=["AllyContainer"]]
+
 [connection signal="pressed" from="CanvasLayer/NewWaveNow" to="." method="_on_new_wave_now_pressed"]
 [connection signal="timeout" from="Intermission" to="." method="_on_intermission_timeout"]

@@ -76,3 +76,4 @@ func _on_intermission_timeout() -> void:
 
 func _on_new_wave_now_pressed() -> void:
 	new_wave()
+	intermission.start()

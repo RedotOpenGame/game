@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=17 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -24,6 +24,9 @@ font_size = 26
 
 [sub_resource type="LabelSettings" id="LabelSettings_qow3q"]
 font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_gv87a"]
+font_size = 19
 
 [sub_resource type="Animation" id="Animation_6m61b"]
 length = 0.001
@@ -189,6 +192,21 @@ offset_bottom = 75.0
 text = "Press 2, 3 or 4 for unit throwing
 Press Z to choose setting up a workshop
 Press Left click for attacking"
+
+[node name="BuildHelp" type="Label" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -124.0
+offset_top = -62.0
+offset_right = 115.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press X to place blueprint."
+label_settings = SubResource("LabelSettings_gv87a")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

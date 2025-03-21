@@ -2,6 +2,10 @@ extends CharacterBody3D
 
 var starting_building:PackedScene = preload("res://Scenes/entities/buildings/starting_building.tscn")
 var starting_building_placed:bool = false
+var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
+@onready var build_help: Label = $CanvasLayer/BuildHelp
+
+
 @onready var building_marker: Marker3D = $characterMesh/BuildingMarker
 
 @onready var hostile_seeker: Area3D = $HostileSeeker
@@ -55,6 +59,7 @@ func _ready() -> void:
 	constructor_amount_label.text = str("Constructor units: ", builder_amount)
 	collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
+	build_help.visible = false
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("right_click"):
@@ -91,6 +96,12 @@ func _input(event: InputEvent) -> void:
 		scene.position = building_marker.global_position
 		scene.rotation = character.global_rotation
 		add_sibling(scene)
+	if Input.is_action_just_pressed("x"):
+		if building_marker.get_child_count() != 0:
+			var node = building_marker.get_child(0)
+			node.process_mode = Node.PROCESS_MODE_ALWAYS
+			node.reparent(get_tree().get_first_node_in_group("AllyContainer"))
+			build_help.visible = false
 		#followers.pick_random().death()
 	#Temporarily implimentation: select unit type
 	if Input.is_key_pressed(KEY_1):
@@ -206,6 +217,16 @@ func damage_func(amount:float) -> void:
 		if health <= 0:
 			death()
 
+func get_blueprint(scene:PackedScene, build_name:String, constructor_req:int, build_cost:int) -> void:
+	var blueprint = building_blueprint.instantiate()
+	blueprint.planned_bulding = scene
+	blueprint.process_mode = Node.PROCESS_MODE_DISABLED
+	blueprint.unit_req = constructor_req
+	blueprint.build_cost = build_cost
+	blueprint.build_name = build_name
+	building_marker.add_child(blueprint)
+	build_help.visible = true
+
 func heal_func(amount:float) -> void:
 	health = min(health + amount, max_health)
 	health_label.text = str("Health: ", health, "/", max_health)
@@ -242,7 +263,6 @@ func get_unit(amount, type) -> void:
 		2:
 			agriculture_amount += amount
 			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
-
 
 func _on_collect_units_body_entered(body: Node3D) -> void:
 	match body.unit_type:

@@ -2,11 +2,15 @@ extends CharacterBody3D
 
 @onready var ui: CanvasLayer = $UI
 @onready var scrap_counter: Label3D = $ScrapCounter
+var defence_turret:PackedScene = preload("res://Scenes/entities/buildings/defence_turret.tscn")
 
 var track_body:CharacterBody3D #meant to track player mostly
 
 func _ready() -> void:
 	ui.visible = false
+	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
+
+func _process(delta: float) -> void:
 	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
 func interaction() -> void:
@@ -46,10 +50,14 @@ func _on_make_combatant_pressed() -> void:
 
 func _on_make_collector_pressed() -> void:
 	if check_balance(3):
-		track_body.get_unit(1, 1)
+		track_body.get_unit(1, 2)
 
 
 func _on_make_constructor_pressed() -> void:
 	if check_balance(3):
-		track_body.get_unit(1, 2)
+		track_body.get_unit(1, 1)
 	
+
+
+func _on_build_turret_pressed() -> void:
+	track_body.get_blueprint(defence_turret, "Defence turret", 3, 5)
