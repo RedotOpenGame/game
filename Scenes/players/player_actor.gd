@@ -1,5 +1,8 @@
 extends CharacterBody3D
 
+var starting_building:PackedScene = preload("res://Scenes/entities/buildings/starting_building.tscn")
+var starting_building_placed:bool = false
+@onready var building_marker: Marker3D = $characterMesh/BuildingMarker
 
 @onready var hostile_seeker: Area3D = $HostileSeeker
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -46,6 +49,7 @@ var unit = preload("res://Scenes/entities/NPC/unit.tscn")
 var nearby_hostiles:Array = []
 
 func _ready() -> void:
+	Gameplay.scrap = 0
 	health_label.text = str("Health: ", health, "/", max_health)
 	combatant_amount_label.text = str("Combatant units: ", combatant_amount)
 	constructor_amount_label.text = str("Constructor units: ", builder_amount)
@@ -81,7 +85,12 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("f"):
 		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
 		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
-
+	if Input.is_action_just_pressed("z") and !starting_building_placed:
+		starting_building_placed = true
+		var scene = starting_building.instantiate()
+		scene.position = building_marker.global_position
+		scene.rotation = character.global_rotation
+		add_sibling(scene)
 		#followers.pick_random().death()
 	#Temporarily implimentation: select unit type
 	if Input.is_key_pressed(KEY_1):
@@ -222,10 +231,20 @@ func _on_hostile_seeker_body_exited(body: Node3D) -> void:
 func _on_mercy_frame_timeout() -> void:
 	can_be_hit = true
 
+func get_unit(amount, type) -> void:
+	match type:
+		0: #combatants
+			combatant_amount += amount
+			combatant_amount_label.text = str("Combatant units: ", combatant_amount)
+		1:
+			builder_amount += amount
+			constructor_amount_label.text = str("Constructor units: ", builder_amount)
+		2:
+			agriculture_amount += amount
+			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
+
 
 func _on_collect_units_body_entered(body: Node3D) -> void:
-	
-	
 	match body.unit_type:
 		0:
 			combatant_amount += 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=19 format=3 uid="uid://clpvr1kbs1f52"]
 
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ccpx5"]
 [ext_resource type="PackedScene" uid="uid://bevcp75fxaeuc" path="res://Scenes/meshes/dungeon_entrance.tscn" id="2_bbigu"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bjiqjoitv764c" path="res://Scenes/meshes/survival_mode_enter.tscn" id="3_s368d"]
 [ext_resource type="PackedScene" uid="uid://bya6wormsuwtj" path="res://Scenes/entities/Enemies/shooting_enemy.tscn" id="5_4qj6l"]
 [ext_resource type="PackedScene" uid="uid://4jy1chl6g5j8" path="res://Scenes/meshes/ur_portal.tscn" id="6_rmeny"]
+[ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="7_hf0oe"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
 sky_top_color = Color(0.363219, 0.53037, 1, 1)
@@ -153,6 +154,11 @@ label_text = "First level here!"
 [node name="SurvivalModeEnter" parent="Objects" instance=ExtResource("3_s368d")]
 transform = Transform3D(-0.119374, 0, -0.992849, 0, 1, 0, 0.992849, 0, -0.119374, 14.8514, 0, 0)
 
+[node name="DungeonEntrance3" parent="Objects" instance=ExtResource("2_bbigu")]
+transform = Transform3D(-0.0555079, 0, 0.998458, 0, 1, 0, -0.998458, 0, -0.0555079, -11.5047, 0, 0.964785)
+path_to_scene = "res://Scenes/Levels/level_two.tscn"
+label_text = "Level 2 moment"
+
 [node name="TestEnemy" parent="." instance=ExtResource("3_1ww8i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.71138, 1.45254, -16.0271)
 max_health = 100.0
@@ -164,3 +170,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.40558, 1.4545, -12.2736)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4144, 16.8077)
 
 [node name="Allies" type="Node3D" parent="." groups=["AllyContainer"]]
+
+[node name="ResourcePile" parent="." instance=ExtResource("7_hf0oe")]
+transform = Transform3D(1.99821, -0.0832449, 0.0150156, 0.0845883, 1.96648, -0.354711, 0, 0.355028, 1.96824, 14.4702, 0.0462289, 5.91616)
+scrap = 9999

@@ -46,8 +46,8 @@ func _process(delta: float) -> void:
 				can_fire = false
 				attackrate.start()
 	else:
-		if global_position.distance_to(spawned_point) < movement_speed / 32:
-			global_position = spawned_point
+		if global_position.distance_to(Vector3(spawned_point.x, global_position.y, spawned_point.z)) < movement_speed / 32:
+			global_position = Vector3(spawned_point.x, global_position.y, spawned_point.z)
 			velocity = Vector3(0, 0, 0)
 		else:
 			look_at(Vector3(spawned_point.x, global_position.y, spawned_point.z))
@@ -62,7 +62,7 @@ func _process(delta: float) -> void:
 
 
 
-func find_closest_target() -> Node3D:
+func find_closest_target():
 	var returnage #whatever will be returned, idfk
 	var closest:float = INF
 	for i in nearby_hostiles:
@@ -71,7 +71,7 @@ func find_closest_target() -> Node3D:
 			closest = i.global_position.distance_to(global_position)
 	if returnage:
 		return returnage
-	return self
+	return null
 
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Ally"):
