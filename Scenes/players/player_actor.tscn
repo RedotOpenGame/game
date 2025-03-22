@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=19 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -93,7 +93,18 @@ _data = {
 radius = 11.0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qow3q"]
+height = 1.5
 radius = 1.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3n67"]
+transparency = 1
+albedo_color = Color(0, 1, 1, 0.447059)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mj16b"]
+material = SubResource("StandardMaterial3D_t3n67")
+top_radius = 1.6
+bottom_radius = 1.6
+height = 1.5
 
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
 collision_mask = 45
@@ -242,15 +253,27 @@ wait_time = 0.2
 one_shot = true
 
 [node name="CollectUnits" type="Area3D" parent="."]
-collision_layer = 16
-collision_mask = 2
+collision_layer = 2
+collision_mask = 47
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CollectUnits"]
 shape = SubResource("CylinderShape3D_qow3q")
-disabled = true
+
+[node name="CallUnits" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 47
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CallUnits"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.258808, 0)
+shape = SubResource("CylinderShape3D_qow3q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CallUnits"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.258808, 0)
+mesh = SubResource("CylinderMesh_mj16b")
 
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
 [connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
 [connection signal="timeout" from="MercyFrame" to="." method="_on_mercy_frame_timeout"]
 [connection signal="body_entered" from="CollectUnits" to="." method="_on_collect_units_body_entered"]
+[connection signal="body_entered" from="CallUnits" to="." method="_on_call_units_body_entered"]

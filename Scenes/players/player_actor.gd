@@ -13,9 +13,9 @@ var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/bl
 @onready var health_label: Label = $CanvasLayer/Health
 enum unit_types{COMBAT,BUILDER,AGRI}
 
-var combatant_amount:int = 2
-var builder_amount:int = 2
-var agriculture_amount:int = 2
+var combatant_amount:int = 10
+var builder_amount:int = 10
+var agriculture_amount:int = 10
 
 @onready var throw_location: Node3D = $characterMesh/ThrowLocation
 
@@ -25,6 +25,7 @@ var agriculture_amount:int = 2
 
 @onready var unit_collection_collision: CollisionShape3D = $CollectUnits/CollisionShape3D
 @onready var is_collecting_units: Label = $CanvasLayer/Labels/IsCollectingUnits
+@onready var unit_call_collision: Area3D = $CallUnits
 @onready var camera = $CameraControl/Yaw/Pitch/SpringArm3D/Camera3D
 @onready var cam_yaw = $CameraControl/Yaw
 @onready var cam_pitch = $CameraControl/Yaw/Pitch
@@ -125,7 +126,7 @@ func _process(_delta: float) -> void:
 		if cursor_pos_on_plane:
 			character.look_at(cursor_pos_on_plane)
 			var instance = unit.instantiate()
-			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1):
+			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
 				match selected_unit_type:
 					unit_types.COMBAT:
 						if combatant_amount > 0:
@@ -152,7 +153,19 @@ func _process(_delta: float) -> void:
 				add_sibling(instance)
 				instance.get_node("characterMesh").rotation.y = character.rotation.y
 		anim.play("attack")
-
+	if(Input.is_action_pressed("e")):
+		var target_plane_mouse = Plane(Vector3(0, 1, 0), position.y)
+		var mouse_pos = get_viewport().get_mouse_position()
+		var ray_length = 1000
+		var from = camera.project_ray_origin(mouse_pos)
+		var to = from + camera.project_ray_normal(mouse_pos) * ray_length
+		var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
+		if cursor_pos_on_plane:
+			unit_call_collision.global_position = cursor_pos_on_plane
+			if(!unit_call_collision.visible):
+				unit_call_collision.set_visible(true)
+	else:
+		unit_call_collision.set_visible(false)
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -265,16 +278,22 @@ func get_unit(amount, type) -> void:
 			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 
 func _on_collect_units_body_entered(body: Node3D) -> void:
-	match body.unit_type:
-		0:
-			combatant_amount += 1
-			combatant_amount_label.text = str("Combatant units: ", combatant_amount)
-			body.queue_free()
-		1:
-			builder_amount += 1
-			constructor_amount_label.text = str("Constructor units: ", builder_amount)
-			body.queue_free()
-		2:
-			agriculture_amount += 1
-			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
-			body.queue_free()
+	if(body.is_in_group("Unit") and (body.curr_logic == 4 or body.curr_logic == 2)):
+		match body.unit_type:
+			0:
+				combatant_amount += 1
+				combatant_amount_label.text = str("Combatant units: ", combatant_amount)
+				body.queue_free()
+			1:
+				builder_amount += 1
+				constructor_amount_label.text = str("Constructor units: ", builder_amount)
+				body.queue_free()
+			2:
+				agriculture_amount += 1
+				collectors_amount_label.text = str("Collector units: ", agriculture_amount)
+				body.queue_free()
+
+
+func _on_call_units_body_entered(body: Node3D) -> void:
+	if(body.is_in_group("Unit") and Input.is_action_pressed("e")):
+		body.curr_logic = 4

@@ -16,7 +16,7 @@ var curr_logic = logic.THROWN
 @export var throw_speed: float
 @onready var mesh = $characterMesh
 @onready var collision = $CollisionShape3D
-
+@onready var player
 var _leader:Node3D
 
 #@export var row_spacing: float = 1.5
@@ -31,8 +31,10 @@ var curr_hostile:Node3D #find closest hostile.
 
 func _ready():
 	# Get player from 'Player' group once at start
+	player = get_tree().get_first_node_in_group("Player")
+	
 	health_label.text = str("Health: ", health, "/", max_health)
-	#_leader = get_tree().get_first_node_in_group("Player")
+	#_leader = 
 	#if !_leader:
 		##push_error("No player found in 'Player' group")
 		#return
@@ -41,7 +43,6 @@ func _ready():
 	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
 	match (unit_type):
 		unit_types.COMBAT:
-			curr_logic = logic.IDLE
 			var vx = horizontal_displacement.x / 1
 			var vz = horizontal_displacement.z / 1
 			var vy = (displacement.y / 1) + (0.5 * ProjectSettings.get("physics/3d/default_gravity") * 1)
@@ -89,6 +90,9 @@ func _physics_process(delta):
 			velocity.z = direction.z * movement_speed
 		logic.THROWN:
 			match(unit_type):
+				unit_types.COMBAT:
+					if(is_on_floor()):
+						curr_logic = logic.IDLE
 				unit_types.BUILDER:	
 					var forwards = -mesh.transform.basis.z.normalized()
 					velocity.x = forwards.x * throw_move_speed[unit_types.BUILDER]
@@ -100,6 +104,11 @@ func _physics_process(delta):
 			if is_on_floor() and ThrowTime.is_stopped():
 				velocity.x = 0
 				velocity.z = 0
+		logic.RETURN:
+			var preffered_position = player.global_position
+			var direction = (preffered_position - global_position).normalized()
+			velocity.x = direction.x * movement_speed
+			velocity.z = direction.z * movement_speed
 		#logic.FOLLOW_LEADER:
 			#var preffered_position = _leader.global_position
 			#var direction = (preffered_position - global_position).normalized()
@@ -126,7 +135,7 @@ func _physics_process(delta):
 		velocity += get_gravity() * delta
 	move_and_slide()
 
-func _process(delta: float):
+func _process(_delta: float):
 	if(velocity.x != 0 && velocity.z != 0):
 		mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
 
