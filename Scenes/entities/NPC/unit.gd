@@ -29,13 +29,13 @@ var health:float = max_health
 
 var curr_hostile:Node3D #find closest hostile.
 
-func _ready() -> void:
+func _ready():
 	# Get player from 'Player' group once at start
 	health_label.text = str("Health: ", health, "/", max_health)
-	_leader = get_tree().get_first_node_in_group("Player")
-	if !_leader:
-		#push_error("No player found in 'Player' group")
-		return
+	#_leader = get_tree().get_first_node_in_group("Player")
+	#if !_leader:
+		##push_error("No player found in 'Player' group")
+		#return
 	#_leader.signal_follow(self)
 	var displacement = throw_target - global_position
 	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
@@ -50,27 +50,46 @@ func _ready() -> void:
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.BUILDER]
 			ThrowTime.start()
 		unit_types.AGRI:
-			#mesh.set_visible(false)
-			#collision.disabled = true
+			mesh.set_visible(false)
+			collision.disabled = true
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.AGRI]
 			ThrowTime.start()
 	
 	
 
-func _physics_process(delta) -> void:
+func _physics_process(delta):
 		
+	# Calculate row and column position in formation
+	#change_logic()
+		# This is some logic for the follower functionality if we want to add it back in later
+		#if curr_logic == logic.FOLLOW_LEADER:
+		#var r := int((sqrt(8 * unit_index + 1) - 1) / 2)
+		#var c := unit_index - (r * (r + 1)) / 2
+		#
+		## Calculate horizontal offset for symmetrical placement
+		#var horizontal_offset := (c - r / 2.0) * column_spacing
+		#
+		## Calculate target position relative to leader
+		#var preffered_position = _leader.global_position + Vector3(horizontal_offset, 0, (r + 1) * row_spacing).rotated(Vector3(0, 1, 0), _leader.cam_yaw.global_rotation.y)
+		#var direction = (preffered_position - global_position).normalized()
+		#
+		#if global_position.distance_to(preffered_position) < movement_speed / 32:
+			#global_position = preffered_position
+			#velocity = Vector3(0, 0, 0)
+		#else:
+			#velocity = direction * movement_speed
+	
 	match(curr_logic):
 		logic.ATTACK_ENEMY:
 			curr_hostile = find_closest_target()
-			
+			look_at(curr_hostile.global_position)
 			var preffered_position = curr_hostile.global_position
-			look_at(preffered_position)
 			var direction = (preffered_position - global_position).normalized()
 			velocity.x = direction.x * movement_speed
 			velocity.z = direction.z * movement_speed
-		logic.THROWN: #wtf is this - Pewweper
+		logic.THROWN:
 			match(unit_type):
-				unit_types.BUILDER:
+				unit_types.BUILDER:	
 					var forwards = -mesh.transform.basis.z.normalized()
 					velocity.x = forwards.x * throw_move_speed[unit_types.BUILDER]
 					velocity.z = forwards.z * throw_move_speed[unit_types.BUILDER]
@@ -81,14 +100,17 @@ func _physics_process(delta) -> void:
 			if is_on_floor() and ThrowTime.is_stopped():
 				velocity.x = 0
 				velocity.z = 0
-		logic.FOLLOW_LEADER:
+		#logic.FOLLOW_LEADER:
+			#var preffered_position = _leader.global_position
+			#var direction = (preffered_position - global_position).normalized()
+			#
+			#if global_position.distance_to(preffered_position) < movement_speed / 32:
+				#global_position = preffered_position
+				#velocity = Vector3(0, 0, 0)
+			#else:
+				#velocity = direction * movement_speed
+	#change_logic()
 
-			var preffered_position = _leader.global_position
-			var direction = (preffered_position - global_position).normalized()
-			look_at(preffered_position)
-			velocity.x = direction.x * movement_speed
-			velocity.z = direction.z * movement_speed
-	change_logic()
 
 		#print(global_position.distance_to(preffered_position))
 	#var target_position := _leader.global_transform.origin \
@@ -104,21 +126,10 @@ func _physics_process(delta) -> void:
 		velocity += get_gravity() * delta
 	move_and_slide()
 
-func change_logic() -> void:
-	#if !is_on_floor():
-		#curr_logic = logic.THROWN
-		#return
-	if _leader.nearby_hostiles != []:
-		curr_logic = logic.ATTACK_ENEMY
-	else:
-		curr_logic = logic.FOLLOW_LEADER
+func _process(delta: float):
+	if(velocity.x != 0 && velocity.z != 0):
+		mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
 
-func _process(delta: float): pass
-	#if(velocity.x != 0 && velocity.z != 0):
-		#mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2) 
-	#bro wtf is this doing here, it makes units look in some other direction. - Pewweper
-	
-	
 func heal_func(amount:float) -> void:
 	health = min(health + amount, max_health)
 	health_label.text = str("Health: ", health, "/", max_health)
@@ -140,7 +151,7 @@ func find_closest_target() -> Node3D:
 			closest = i.global_position.distance_to(global_position)
 	if returnage:
 		return returnage
-	return _leader
+	return self
 
 
 
