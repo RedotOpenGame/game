@@ -222,13 +222,3 @@ func _on_throw_time_timeout() -> void:
 			collision.disabled = false
 			velocity.y = 4
 			
-
-
-func _on_detection_area_body_entered(body: Node3D) -> void:
-	if(body.is_in_group("Hostile") && curr_logic != logic.THROWN):
-		curr_logic = logic.ATTACK_ENEMY
-
-
-func _on_detection_area_body_exited(body: Node3D) -> void:
-	if(body.is_in_group("Hostile") && curr_logic == logic.ATTACK_ENEMY):
-		curr_logic = logic.IDLE

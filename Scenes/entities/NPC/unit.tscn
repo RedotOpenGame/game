@@ -70,5 +70,3 @@ shape = SubResource("CylinderShape3D_65c4o")
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_damage_area_body_entered"]
-[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
-[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
