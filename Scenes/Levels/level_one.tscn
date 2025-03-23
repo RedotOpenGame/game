@@ -346,7 +346,7 @@ mesh = SubResource("BoxMesh_u3h2l")
 shape = SubResource("BoxShape3D_po0bw")
 
 [node name="PlayerActor" parent="." instance=ExtResource("1_jqmhs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 101.232, 31.0824, -9.69067)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.4203, 26.0266, 87.9691)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.486198, 0.873849, 0, -0.873849, 0.486198, 0, 0, 0)

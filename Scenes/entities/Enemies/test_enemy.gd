@@ -10,10 +10,13 @@ extends CharacterBody3D
 var nearby_hostiles:Array = []
 var curr_target:Node3D
 var spawned_point:Vector3 #the point I will return to.
+@export var enemy_tier:int = 1
 @export var max_health:float = 40
 @onready var health:float = max_health
+@export var damage:float = 8
 
 func _ready():
+	$EnemyBot.set_tier(enemy_tier)
 	spawned_point = global_position
 	# Get player from 'Player' group once at start
 	health_label.text = str("Health: ", health, "/", max_health)
@@ -47,7 +50,7 @@ func _process(delta: float) -> void:
 
 func _on_damage_area_body_entered(body: Node3D) -> void:
 	if "damage_func" in body:
-		body.damage_func(8)
+		body.damage_func(damage)
 		attack_collision.set_deferred("disabled", true)
 		hitscan_preview.visible = false
 		attackrate.start()

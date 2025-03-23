@@ -67,6 +67,11 @@ collision_mask = 8
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
 shape = SubResource("CylinderShape3D_65c4o")
 
+[node name="TypeShowcase" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54876, 0)
+billboard = 1
+text = "TYPE: type"
+
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_damage_area_body_entered"]

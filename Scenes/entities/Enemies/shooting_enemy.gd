@@ -14,6 +14,7 @@ var can_fire:bool = true
 var spawned_point:Vector3 #the point I will return to.
 @export var max_health:float = 40
 @onready var health:float = max_health
+@export var damage:float = 5
 
 func _ready():
 	spawned_point = global_position
@@ -42,6 +43,7 @@ func _process(delta: float) -> void:
 				scene.position = gun_barrel.global_position
 				scene.direction = direction
 				scene.rotation = global_rotation
+				scene.damage = damage
 				get_tree().root.add_child(scene)
 				can_fire = false
 				attackrate.start()

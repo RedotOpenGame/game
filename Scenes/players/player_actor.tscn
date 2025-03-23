@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=21 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -16,6 +16,15 @@ albedo_color = Color(1, 1, 1, 0.14902)
 
 [sub_resource type="BoxMesh" id="BoxMesh_gv87a"]
 material = SubResource("StandardMaterial3D_qow3q")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1g43"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_o1g43"]
+material = SubResource("StandardMaterial3D_o1g43")
+bottom_radius = 0.7
+height = 0.1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cstqs"]
 
@@ -146,6 +155,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
 [node name="BuildingMarker" type="Marker3D" parent="characterMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.17859)
 
+[node name="ThrowPositionShowcase" type="MeshInstance3D" parent="characterMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
+mesh = SubResource("CylinderMesh_o1g43")
+skeleton = NodePath("../ThrowLocation")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cstqs")
 
@@ -169,17 +183,20 @@ label_settings = SubResource("LabelSettings_o1g43")
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -81.0
+offset_top = -35.0
 offset_right = 219.0
 grow_vertical = 0
 text = "Health:CURR/MAX"
 label_settings = SubResource("LabelSettings_qow3q")
 
 [node name="Labels" type="VBoxContainer" parent="CanvasLayer"]
-offset_left = 1.0
-offset_top = 466.0
-offset_right = 188.0
-offset_bottom = 570.0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -139.0
+offset_right = 187.0
+offset_bottom = -35.0
+grow_vertical = 0
 
 [node name="IsCollectingUnits" type="Label" parent="CanvasLayer/Labels"]
 layout_mode = 2
@@ -187,22 +204,32 @@ text = "Is collecting units: BOOL"
 
 [node name="CombatantAmount" type="Label" parent="CanvasLayer/Labels"]
 layout_mode = 2
-text = "Combatant units: CURR"
+text = "Combatant units: INT"
 
 [node name="ConstructorAmount" type="Label" parent="CanvasLayer/Labels"]
 layout_mode = 2
-text = "Constructor units: CURR"
+text = "Constructor units: INT"
 
 [node name="CollectorsAmount" type="Label" parent="CanvasLayer/Labels"]
 layout_mode = 2
-text = "Collector units: CURR"
+text = "Collector units: INT"
 
 [node name="Instructions" type="Label" parent="CanvasLayer"]
-offset_right = 310.0
-offset_bottom = 75.0
-text = "Press 2, 3 or 4 for unit throwing
-Press Z to choose setting up a workshop
-Press Left click for attacking"
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -95.0
+offset_top = -160.0
+offset_right = 101.0
+offset_bottom = -59.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "2, 3 or 4 - unit throwing
+Z - to call all units
+V - setting up a workshop
+Left click - attack"
 
 [node name="BuildHelp" type="Label" parent="CanvasLayer"]
 anchors_preset = 7

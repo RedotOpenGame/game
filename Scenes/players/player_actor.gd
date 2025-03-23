@@ -13,11 +13,13 @@ var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/bl
 @onready var health_label: Label = $CanvasLayer/Health
 enum unit_types{COMBAT,BUILDER,AGRI}
 
-var combatant_amount:int = 10
-var builder_amount:int = 10
-var agriculture_amount:int = 10
+@export var combatant_amount:int = 10
+@export var builder_amount:int = 10
+@export var agriculture_amount:int = 10
 
 @onready var throw_location: Node3D = $characterMesh/ThrowLocation
+@onready var throw_position_showcase: MeshInstance3D = $characterMesh/ThrowPositionShowcase
+
 
 @onready var combatant_amount_label: Label = $CanvasLayer/Labels/CombatantAmount
 @onready var constructor_amount_label: Label = $CanvasLayer/Labels/ConstructorAmount
@@ -48,19 +50,21 @@ var interact_target:Node3D
 var followers:Array = [] 
 var follower_amount:int = 0
 var ignore_first_input:bool = true
+var curr_logic:int = INF ##DOES NOT MATTER, just to remain to not cause errors.
 
 var unit = preload("res://Scenes/entities/NPC/unit.tscn")
 
 var nearby_hostiles:Array = []
 
 func _ready() -> void:
-	Gameplay.scrap = 0
+	Gameplay.scrap = 0 #reset scrap every time player spawns
 	health_label.text = str("Health: ", health, "/", max_health)
 	combatant_amount_label.text = str("Combatant units: ", combatant_amount)
 	constructor_amount_label.text = str("Constructor units: ", builder_amount)
 	collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
 	build_help.visible = false
+	throw_position_showcase.visible = false
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("right_click"):
@@ -71,27 +75,30 @@ func _input(event: InputEvent) -> void:
 		else:
 			ignore_first_input = false
 	if event is InputEventMouseButton:
-		if event.button_index == 4:
+		if event.button_index == 4: #scroll back
 			springArm.spring_length = max(springArm.spring_length - 0.2, CAMERA_SCALE_CONSTRAINTS.x)
-		if event.button_index == 5:
+		if event.button_index == 5: #scroll forward
 			springArm.spring_length = min(springArm.spring_length + 0.2, CAMERA_SCALE_CONSTRAINTS.y)
 	
-	if Input.is_action_just_released("right_click"):
+	if Input.is_action_just_released("right_click"): 
 		ignore_first_input = true
 
 	if Input.is_action_just_pressed("["):
 		cam_yaw.rotation.y -= deg_to_rad(45)
 	if Input.is_action_just_pressed("]"):
 		cam_yaw.rotation.y += deg_to_rad(45)
-	if Input.is_action_just_pressed("backslash"):
+	if Input.is_action_just_pressed("backslash"): #return camera to normal position
 		cam_pitch.rotation.x = 0
 		cam_yaw.rotation.y = 0
 		springArm.spring_length = 15
 	
-	if Input.is_action_just_pressed("f"):
+	if Input.is_action_just_pressed("f"): #turn on/off unit collection
 		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
 		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
-	if Input.is_action_just_pressed("z") and !starting_building_placed:
+	if Input.is_action_just_pressed("z"): #Calling all units
+		for i in get_tree().get_nodes_in_group("Unit"):
+			i.curr_logic = 4
+	if Input.is_action_just_pressed("v") and !starting_building_placed:
 		starting_building_placed = true
 		var scene = starting_building.instantiate()
 		scene.position = building_marker.global_position
@@ -107,26 +114,39 @@ func _input(event: InputEvent) -> void:
 	#Temporarily implimentation: select unit type
 	if Input.is_key_pressed(KEY_1):
 		selected_unit_type = -1
+		throw_position_showcase.visible = false
 	if Input.is_key_pressed(KEY_2):
 		selected_unit_type = unit_types.COMBAT
+		throw_position_showcase.visible = true
+		throw_position_showcase.mesh["material"]["emission"] = Color.RED
+		throw_position_showcase.mesh["material"]["albedo_color"] = Color.RED
 	if Input.is_key_pressed(KEY_3):
 		selected_unit_type = unit_types.BUILDER
+		throw_position_showcase.visible = true
+		throw_position_showcase.mesh["material"]["emission"] = Color.BLUE
+		throw_position_showcase.mesh["material"]["albedo_color"] = Color.BLUE
 	if Input.is_key_pressed(KEY_4):
 		selected_unit_type = unit_types.AGRI
-		
+		throw_position_showcase.visible = true
+		throw_position_showcase.mesh["material"]["emission"] = Color.GREEN
+		throw_position_showcase.mesh["material"]["albedo_color"] = Color.GREEN
 
 func _process(_delta: float) -> void:
+	var target_plane_mouse = Plane(Vector3(0, 1, 0), position.y)
+	var mouse_pos = get_viewport().get_mouse_position()
+	var ray_length = 1000
+	var from = camera.project_ray_origin(mouse_pos)
+	var to = from + camera.project_ray_normal(mouse_pos) * ray_length
+	var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
+	if cursor_pos_on_plane:
+		throw_position_showcase.global_position = cursor_pos_on_plane
 	if Input.is_action_pressed("left_click"):
-		var target_plane_mouse = Plane(Vector3(0, 1, 0), position.y)
-		var mouse_pos = get_viewport().get_mouse_position()
-		var ray_length = 1000
-		var from = camera.project_ray_origin(mouse_pos)
-		var to = from + camera.project_ray_normal(mouse_pos) * ray_length
-		var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
+
 		if cursor_pos_on_plane:
 			character.look_at(cursor_pos_on_plane)
-			var instance = unit.instantiate()
+			
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
+				var instance = unit.instantiate()
 				match selected_unit_type:
 					unit_types.COMBAT:
 						if combatant_amount > 0:
@@ -154,12 +174,6 @@ func _process(_delta: float) -> void:
 				instance.get_node("characterMesh").rotation.y = character.rotation.y
 		anim.play("attack")
 	if(Input.is_action_pressed("e")):
-		var target_plane_mouse = Plane(Vector3(0, 1, 0), position.y)
-		var mouse_pos = get_viewport().get_mouse_position()
-		var ray_length = 1000
-		var from = camera.project_ray_origin(mouse_pos)
-		var to = from + camera.project_ray_normal(mouse_pos) * ray_length
-		var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
 		if cursor_pos_on_plane:
 			unit_call_collision.global_position = cursor_pos_on_plane
 			if(!unit_call_collision.visible):

@@ -8,6 +8,8 @@ extends CharacterBody3D
 var bullet_scene = preload("res://Scenes/entities/Projectiles/Player/bullet.tscn")
 
 @export var SPEED = 6.5
+@export_range(0, 2) var max_acceleration:float = 1
+var curr_acceleration = 0
 const JUMP_VELOCITY = 4.5
 const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down camera movement(which doesn't let you look upwards)
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
@@ -112,12 +114,13 @@ func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("a", "d", "w", "s").rotated(-camera_3d.rotation.y)
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		curr_acceleration = min(curr_acceleration + delta / 3, max_acceleration)
+		velocity.x = direction.x * SPEED * curr_acceleration
+		velocity.z = direction.z * SPEED * curr_acceleration
 		#character.rotation.y = lerp_angle(character.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		curr_acceleration = max(curr_acceleration - delta / 5, 0)
+
 
 	move_and_slide()
 	if Input.is_action_just_pressed("e") and is_instance_valid(interact_target):

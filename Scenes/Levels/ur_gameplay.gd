@@ -36,9 +36,9 @@ func _on_spawner_timeout() -> void:
 		var ran_num = randf_range(1, 10)
 		if ran_num >= enemy_list[i]["weight"]:
 			if i == "Test_Boss":
-				is_boss = true
 				if !is_instance_valid(boss_on_field):
 					new_enemy = enemy_list[i]["scene"]
+					is_boss = true
 			else:
 				new_enemy = enemy_list[i]["scene"]
 			

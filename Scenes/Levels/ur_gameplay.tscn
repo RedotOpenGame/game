@@ -91,7 +91,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.15116, 1.72882, -26.7851)
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_n2ptu")
 volume_db = -10.0
-autoplay = true
 parameters/looping = true
 
 [node name="Timer" type="Label" parent="."]

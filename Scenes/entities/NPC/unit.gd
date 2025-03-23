@@ -9,6 +9,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @export var throw_move_speed = {unit_types.BUILDER: 10, unit_types.AGRI: 5}
 var curr_logic = logic.THROWN
 
+@onready var type_showcase: Label3D = $TypeShowcase
 @onready var attack_collision: CollisionShape3D = $characterMesh/DamageArea/AttackCollision
 @onready var detection_collision: Area3D = $DetectionArea
 @onready var attackrate: Timer = $Attackrate
@@ -40,6 +41,7 @@ func _ready():
 		##push_error("No player found in 'Player' group")
 		#return
 	#_leader.signal_follow(self)
+		
 	var displacement = throw_target - global_position
 	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
 	match (unit_type):
@@ -48,14 +50,17 @@ func _ready():
 			var vz = horizontal_displacement.z / 1
 			var vy = (displacement.y / 1) + (0.5 * ProjectSettings.get("physics/3d/default_gravity") * 1)
 			velocity = Vector3(vx,vy,vz)
+			type_showcase.text = "TYPE: Combatant"
 		unit_types.BUILDER:
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.BUILDER]
 			ThrowTime.start()
+			type_showcase.text = "TYPE: Constructor"
 		unit_types.AGRI:
 			mesh.set_visible(false)
 			collision.disabled = true
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.AGRI]
 			ThrowTime.start()
+			type_showcase.text = "TYPE: Collector"
 	
 	
 

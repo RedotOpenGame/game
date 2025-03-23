@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=4 uid="uid://citu714ddbl12"]
+[gd_scene load_steps=10 format=4 uid="uid://citu714ddbl12"]
 
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="1_rsne5"]
+[ext_resource type="Script" path="res://Scenes/meshes/enemy_bot.gd" id="2_oly02"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rsne5"]
 resource_name = "Metal"
@@ -164,6 +165,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_oly02")
 
 [node name="EnemyBot" instance=ExtResource("1_rsne5")]
+script = ExtResource("2_oly02")
 
 [node name="Wheel" parent="." index="0"]
 mesh = SubResource("ArrayMesh_dq4hy")

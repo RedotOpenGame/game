@@ -7,7 +7,9 @@ var bullet = preload("res://Scenes/entities/Projectiles/Player/bullet.tscn")
 @onready var firerate: Timer = $Firerate
 @onready var marker_3d: Marker3D = $Barrel/Marker3D
 
+
 @export var max_health:float = 40
+@export var damage:float = 5
 @onready var health:float = max_health
 
 var nearby_hostiles:Array = []
@@ -31,6 +33,7 @@ func shoot() -> void:
 	var scene = bullet.instantiate()
 	scene.position = marker_3d.global_position
 	scene.rotation = barrel.global_rotation
+	scene.damage = damage
 	scene.direction = direction
 	add_sibling(scene)
 
