@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dcye6oowh0c4k"]
+[gd_scene load_steps=8 format=3 uid="uid://dcye6oowh0c4k"]
 
 [ext_resource type="Script" path="res://Scenes/entities/NPC/unit.gd" id="1_6pfcw"]
 [ext_resource type="PackedScene" uid="uid://ch7sbjrry22bh" path="res://Scenes/meshes/ally_bot.tscn" id="2_dlquv"]
@@ -17,6 +17,9 @@ size = Vector3(1, 1, 0.5)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6wbai"]
 radius = 0.349256
 height = 1.12551
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_65c4o"]
+radius = 5.96181
 
 [node name="Unit" type="CharacterBody3D" groups=["Ally", "Unit"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00816488, 0, -0.00135088)
@@ -56,6 +59,16 @@ mesh = SubResource("BoxMesh_gwabn")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_6wbai")
 
+[node name="DetectionArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.644707, 0)
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("CylinderShape3D_65c4o")
+
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_damage_area_body_entered"]
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

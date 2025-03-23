@@ -10,6 +10,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 var curr_logic = logic.THROWN
 
 @onready var attack_collision: CollisionShape3D = $characterMesh/DamageArea/AttackCollision
+@onready var detection_collision: Area3D = $DetectionArea
 @onready var attackrate: Timer = $Attackrate
 @onready var ThrowTime: Timer = $ThrowTime
 @onready var hitscan_preview: MeshInstance3D = $characterMesh/DamageArea/HitscanPreview
@@ -82,12 +83,15 @@ func _physics_process(delta):
 	
 	match(curr_logic):
 		logic.ATTACK_ENEMY:
-			curr_hostile = find_closest_target()
-			look_at(curr_hostile.global_position)
-			var preffered_position = curr_hostile.global_position
-			var direction = (preffered_position - global_position).normalized()
-			velocity.x = direction.x * movement_speed
-			velocity.z = direction.z * movement_speed
+			#curr_hostile = find_closest_target()
+			if(is_instance_valid(curr_hostile)):
+				var preffered_position = curr_hostile.global_position
+				var direction = (preffered_position - global_position).normalized()
+				mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-direction.x, -direction.z), 0.2)
+				velocity.x = direction.x * movement_speed
+				velocity.z = direction.z * movement_speed
+			else:
+				curr_logic = logic.IDLE
 		logic.THROWN:
 			match(unit_type):
 				unit_types.COMBAT:
@@ -100,6 +104,7 @@ func _physics_process(delta):
 				unit_types.AGRI:
 					var forwards = -mesh.transform.basis.z.normalized()
 					velocity = forwards * throw_move_speed[unit_types.AGRI]
+			mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
 		logic.IDLE:
 			if is_on_floor() and ThrowTime.is_stopped():
 				velocity.x = 0
@@ -107,8 +112,10 @@ func _physics_process(delta):
 		logic.RETURN:
 			var preffered_position = player.global_position
 			var direction = (preffered_position - global_position).normalized()
+			mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-direction.x, -direction.z), 0.2)
 			velocity.x = direction.x * movement_speed
 			velocity.z = direction.z * movement_speed
+			
 		#logic.FOLLOW_LEADER:
 			#var preffered_position = _leader.global_position
 			#var direction = (preffered_position - global_position).normalized()
@@ -136,8 +143,20 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _process(_delta: float):
-	if(velocity.x != 0 && velocity.z != 0):
-		mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
+	#if(velocity.x != 0 && velocity.z != 0):
+		#mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
+	
+	var bodies = detection_collision.get_overlapping_bodies()
+	for body in bodies:
+		if(body.is_in_group("Hostile") && curr_logic != logic.THROWN):
+			var current_position = global_position
+			curr_logic = logic.ATTACK_ENEMY
+			if(is_instance_valid(curr_hostile)):
+				if(current_position.distance_to(body.global_position) < current_position.distance_to(curr_hostile.global_position)):
+					curr_hostile = body
+			else:
+				curr_hostile = body
+			
 
 func heal_func(amount:float) -> void:
 	health = min(health + amount, max_health)
@@ -203,3 +222,13 @@ func _on_throw_time_timeout() -> void:
 			collision.disabled = false
 			velocity.y = 4
 			
+
+
+func _on_detection_area_body_entered(body: Node3D) -> void:
+	if(body.is_in_group("Hostile") && curr_logic != logic.THROWN):
+		curr_logic = logic.ATTACK_ENEMY
+
+
+func _on_detection_area_body_exited(body: Node3D) -> void:
+	if(body.is_in_group("Hostile") && curr_logic == logic.ATTACK_ENEMY):
+		curr_logic = logic.IDLE
