@@ -12,10 +12,10 @@ func interaction() -> void:
 func _on_interaction_area_body_entered(body: Node3D) -> void:
 	if body.name == "PlayerActor":
 		track_body = body
-		body.interact_target = self
+		body.add_interactable(self)
 
 
 func _on_interaction_area_body_exited(body: Node3D) -> void:
 	if body.name == "PlayerActor":
 		track_body = null
-		body.interact_target = null
+		body.remove_interactable(self)

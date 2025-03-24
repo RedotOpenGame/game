@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbhhhrm156lot"]
+
+[ext_resource type="Script" path="res://addons/cyclops_level_builder/gui/docks/cyclops_console/keymap_editor/keymap_invoker_editor.gd" id="1_f0wux"]
+[ext_resource type="PackedScene" uid="uid://h0v0u8a6uk0q" path="res://addons/cyclops_level_builder/gui/docks/cyclops_console/keymap_editor/keymap_keypress_editor.tscn" id="2_nkodq"]
+
+[node name="keymap_invoker_editor" type="PanelContainer"]
+offset_right = 682.0
+offset_bottom = 35.0
+size_flags_horizontal = 3
+script = ExtResource("1_f0wux")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="check_enabled" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Enabled"
+
+[node name="line_action_id" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="bn_browse_action_id" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "..."
+
+[node name="keymap_keypress_editor" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_nkodq")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="bn_show_params" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+text = "Params"
+
+[node name="bn_delete" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Delete"
+text = "Delete"
+
+[node name="param_area" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="param_grid" type="GridContainer" parent="VBoxContainer/param_area"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[connection signal="text_submitted" from="VBoxContainer/HBoxContainer/line_action_id" to="." method="_on_line_action_id_text_submitted"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/bn_browse_action_id" to="." method="_on_bn_browse_action_id_pressed"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/bn_show_params" to="." method="_on_bn_show_params_toggled"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/bn_delete" to="." method="_on_bn_delete_pressed"]

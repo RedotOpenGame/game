@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://Scenes/meshes/enemy_bot.gd" id="2_oly02"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rsne5"]
+resource_local_to_scene = true
 resource_name = "Metal"
 cull_mode = 2
 albedo_color = Color(1, 0, 0, 1)
@@ -95,6 +96,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_dq4hy"]
+resource_local_to_scene = true
 resource_name = "AllyBot_Cylinder_002"
 _surfaces = [{
 "aabb": AABB(-4.09907, -2.43475, -1, 4.7713, 4.70939, 2.9621),

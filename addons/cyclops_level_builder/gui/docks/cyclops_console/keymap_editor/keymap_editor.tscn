@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://6ox14xmdrbgw"]
+
+[ext_resource type="Script" path="res://addons/cyclops_level_builder/gui/docks/cyclops_console/keymap_editor/keymap_editor.gd" id="1_4sy8y"]
+[ext_resource type="PackedScene" uid="uid://rpx15l2fbu2o" path="res://addons/cyclops_level_builder/gui/keymap/keymap_group_editor.tscn" id="2_xp5rp"]
+
+[node name="PanelContainer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4sy8y")
+
+[node name="KeymapGroupEditor" parent="." instance=ExtResource("2_xp5rp")]
+unique_name_in_owner = true
+layout_mode = 2

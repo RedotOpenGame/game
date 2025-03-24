@@ -19,10 +19,15 @@ config/icon="res://icon.svg"
 [autoload]
 
 Gameplay="*res://Globals/Gameplay.gd"
+CyclopsAutoload="*res://addons/cyclops_level_builder/cyclops_global_scene.tscn"
 
 [dotnet]
 
 project/assembly_name="3d_adventure"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/cyclops_level_builder/plugin.cfg")
 
 [global_group]
 

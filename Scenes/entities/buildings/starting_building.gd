@@ -22,14 +22,13 @@ func _on_interaction_area_body_entered(body: Node3D) -> void:
 	if body.name == "PlayerActor":
 		ui.visible = true
 		track_body = body
-		body.interact_target = self
-
+		body.add_interactable(self)
 
 func _on_interaction_area_body_exited(body: Node3D) -> void:
 	if body.name == "PlayerActor":
 		ui.visible = false
 		track_body = null
-		body.interact_target = self
+		body.remove_interactable(self)
 
 func check_balance(num:int) -> bool:
 	if Gameplay.scrap >= num:

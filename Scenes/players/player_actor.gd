@@ -46,7 +46,7 @@ var can_be_hit:bool = true
 var curr_scrap:int = 0
 var max_scrap:int = 3
 
-var interact_target:Node3D
+var interactables_in_range:Array = []
 var followers:Array = [] 
 var follower_amount:int = 0
 var ignore_first_input:bool = true
@@ -203,7 +203,13 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
-	if Input.is_action_just_pressed("e") and is_instance_valid(interact_target):
+	if Input.is_action_just_pressed("e") and interactables_in_range != []:
+		var interact_target:Node3D
+		var closest:float = INF
+		for i in interactables_in_range:
+			if global_position.distance_to(i.global_position) < closest:
+				closest = global_position.distance_to(i.global_position)
+				interact_target = i
 		interact_target.interaction()
 
 func teleport_allies_with_me() -> void:
@@ -243,6 +249,12 @@ func damage_func(amount:float) -> void:
 		health_label.text = str("Health: ", health, "/", max_health)
 		if health <= 0:
 			death()
+
+func add_interactable(node:Node3D) -> void:
+	interactables_in_range.append(node)
+
+func remove_interactable(node:Node3D) -> void:
+	interactables_in_range.erase(node)
 
 func get_blueprint(scene:PackedScene, build_name:String, constructor_req:int, build_cost:int) -> void:
 	var blueprint = building_blueprint.instantiate()
