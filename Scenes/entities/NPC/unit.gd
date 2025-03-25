@@ -19,7 +19,7 @@ var curr_logic = logic.THROWN
 @onready var mesh = $characterMesh
 @onready var collision = $CollisionShape3D
 @onready var player
-var _leader:Node3D
+var _leader:Node3D #meant for multiplayer, in order for the only owner to collect them.
 
 #@export var row_spacing: float = 1.5
 #@export var column_spacing: float = 1.5
@@ -115,7 +115,7 @@ func _physics_process(delta):
 				velocity.x = 0
 				velocity.z = 0
 		logic.RETURN:
-			var preffered_position = player.global_position
+			var preffered_position = _leader.global_position
 			var direction = (preffered_position - global_position).normalized()
 			mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-direction.x, -direction.z), 0.2)
 			velocity.x = direction.x * movement_speed

@@ -13,23 +13,23 @@ sky_energy_multiplier = 5.5
 ground_bottom_color = Color(0.560784, 0.313726, 0.188235, 1)
 ground_horizon_color = Color(0.492968, 0.151371, 0.088278, 1)
 
-[sub_resource type="Sky" id="Sky_wktxd"]
+[sub_resource type="Sky" id="Sky_b17es"]
 sky_material = SubResource("ProceduralSkyMaterial_f1ks2")
 
 [sub_resource type="Environment" id="Environment_b17es"]
 background_mode = 2
-sky = SubResource("Sky_wktxd")
+sky = SubResource("Sky_b17es")
 tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ldv0p"]
 size = Vector3(200, 1, 200)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6cym4"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26u23"]
 albedo_color = Color(0.241408, 0.13384, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_f1ks2"]
-material = SubResource("StandardMaterial3D_6cym4")
+material = SubResource("StandardMaterial3D_26u23")
 size = Vector3(200, 1, 200)
 
 [sub_resource type="LabelSettings" id="LabelSettings_wktxd"]

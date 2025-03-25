@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dcye6oowh0c4k"]
+[gd_scene load_steps=9 format=3 uid="uid://dcye6oowh0c4k"]
 
 [ext_resource type="Script" path="res://Scenes/entities/NPC/unit.gd" id="1_6pfcw"]
 [ext_resource type="PackedScene" uid="uid://ch7sbjrry22bh" path="res://Scenes/meshes/ally_bot.tscn" id="2_dlquv"]
@@ -20,6 +20,17 @@ height = 1.12551
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_65c4o"]
 radius = 5.96181
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_u4he0"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("characterMesh:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:unit_type")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
 [node name="Unit" type="CharacterBody3D" groups=["Ally", "Unit"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00816488, 0, -0.00135088)
@@ -71,6 +82,9 @@ shape = SubResource("CylinderShape3D_65c4o")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54876, 0)
 billboard = 1
 text = "TYPE: type"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_u4he0")
 
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]

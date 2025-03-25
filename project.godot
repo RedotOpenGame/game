@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 
 Gameplay="*res://Globals/Gameplay.gd"
 CyclopsAutoload="*res://addons/cyclops_level_builder/cyclops_global_scene.tscn"
+MultiplayerHelper="*res://Globals/MultiplayerHelper.gd"
 
 [dotnet]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=22 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -114,6 +114,23 @@ material = SubResource("StandardMaterial3D_t3n67")
 top_radius = 1.6
 bottom_radius = 1.6
 height = 1.5
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_o1g43"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("characterMesh:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:combatant_amount")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:builder_amount")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:agriculture_amount")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
 collision_mask = 45
@@ -297,6 +314,9 @@ shape = SubResource("CylinderShape3D_qow3q")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CallUnits"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.258808, 0)
 mesh = SubResource("CylinderMesh_mj16b")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_o1g43")
 
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]

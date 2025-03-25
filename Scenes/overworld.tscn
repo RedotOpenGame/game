@@ -145,7 +145,12 @@ mesh = SubResource("CylinderMesh_v4ybm")
 shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="DungeonEntrance" parent="Objects" instance=ExtResource("2_bbigu")]
-transform = Transform3D(0.937045, 0, 0.34921, 0, 1, 0, -0.34921, 0, 0.937045, 0, 0, -14.3544)
+transform = Transform3D(0.937045, 0, 0.34921, 0, 1, 0, -0.34921, 0, 0.937045, 0, 0, -12.8575)
+
+[node name="DungeonEntrance5" parent="Objects" instance=ExtResource("2_bbigu")]
+transform = Transform3D(0.194799, 0, -0.980844, 0, 1, 0, 0.980844, 0, 0.194799, 13.5337, 0, -4.85762)
+path_to_scene = "res://Scenes/menus/multiplayer_menu.tscn"
+label_text = "Multiplayer test"
 
 [node name="DungeonEntrance2" parent="Objects" instance=ExtResource("2_bbigu")]
 transform = Transform3D(0.446261, 0, 0.894904, 0, 1, 0, -0.894904, 0, 0.446261, -9.64771, 0, -5.81005)

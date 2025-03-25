@@ -1,0 +1,75 @@
+extends Control
+
+var player_char = preload("res://Scenes/players/player_actor.tscn")
+
+@export var Address = "127.0.0.1"
+@export var port = 212
+var peer
+
+func _ready() -> void:
+	multiplayer.peer_connected.connect(PlayerConnected)
+	multiplayer.peer_disconnected.connect(PlayerDisconnected)
+	multiplayer.connected_to_server.connect(ConnectToServer)
+	multiplayer.connection_failed.connect(ConnectionFailure)
+
+@rpc("any_peer", "call_local") #this must be line above function we need RPC for.
+func StartGame() -> void:
+	#var player = player_char.instantiate()
+	#player.position = $PlayerSpawnpoint.position
+	#$PlayerSpawnpoint.add_child(player)
+	self.hide()
+	var scene = load("res://Scenes/Levels/multiplayer_test.tscn").instantiate()
+	get_tree().root.add_child(scene)
+	
+@rpc("any_peer")
+func SendPlayerInfo(plr_name, id):
+	if !MultiplayerHelper.Players.has(id):
+		MultiplayerHelper.Players[id] = {
+			"name": plr_name,
+			"id":id,
+			"scrap": 0
+		}
+		print("player added: ", plr_name)
+	if multiplayer.is_server():
+		for i in MultiplayerHelper.Players:
+			SendPlayerInfo.rpc(MultiplayerHelper.Players[i].name, i)
+#During connection, we call that on the server and the client
+func PlayerConnected(id):
+	print("Player Connected ", id)
+#for server and clients
+func PlayerDisconnected(id):
+	print("Player Disconnected ", id)
+
+#only for clients
+func ConnectToServer():
+	print("yo")
+	SendPlayerInfo.rpc_id(1, $Stuff/Entername.text, multiplayer.get_unique_id())
+#only for clients
+func ConnectionFailure():
+	print("fuck")
+
+
+
+
+func _on_host_game_pressed() -> void:
+	peer = ENetMultiplayerPeer.new()
+	var error = peer.create_server(port, 8)
+	if error != OK:
+		print("Oops we fucked up: ", error)
+		return
+	peer.get_host().compress(ENetConnection.COMPRESS_NONE)
+	multiplayer.set_multiplayer_peer(peer)
+	print("Waiting for players...")
+	SendPlayerInfo($Stuff/Entername.text, multiplayer.get_unique_id())
+
+
+func _on_join_game_pressed() -> void:
+	peer = ENetMultiplayerPeer.new()
+	peer.create_client(Address, port)
+	peer.get_host().compress(ENetConnection.COMPRESS_NONE)
+	multiplayer.set_multiplayer_peer(peer)
+
+
+
+func _on_start_game_pressed() -> void:
+	StartGame.rpc()
