@@ -5,14 +5,14 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_2g6nf"]
 size = Vector3(5, 5, 5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_po0bw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hxwhm"]
 transparency = 1
 blend_mode = 1
 shading_mode = 0
 albedo_color = Color(0, 1, 1, 0.121569)
 
 [sub_resource type="BoxMesh" id="BoxMesh_hxwhm"]
-material = SubResource("StandardMaterial3D_po0bw")
+material = SubResource("StandardMaterial3D_hxwhm")
 size = Vector3(5, 5, 5)
 
 [node name="BlueprintBox" type="Area3D"]
