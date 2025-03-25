@@ -58,3 +58,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.76178, 0)
 
 [node name="DefenceTurret" parent="Allies" instance=ExtResource("2_idgn3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, 4.82912)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/players/player_actor.tscn")
+spawn_path = NodePath("..")

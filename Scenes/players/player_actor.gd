@@ -5,6 +5,7 @@ var starting_building_placed:bool = false
 var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
 @onready var build_help: Label = $CanvasLayer/BuildHelp
 
+@onready var multi_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
 @onready var building_marker: Marker3D = $characterMesh/BuildingMarker
 
@@ -50,14 +51,14 @@ var interactables_in_range:Array = []
 var followers:Array = [] 
 var follower_amount:int = 0
 var ignore_first_input:bool = true
-var curr_logic:int = INF ##DOES NOT MATTER, just to remain to not cause errors.
 
 var unit = preload("res://Scenes/entities/NPC/unit.tscn")
 
 var nearby_hostiles:Array = []
 
 func _ready() -> void:
-	Gameplay.scrap = 0 #reset scrap every time player spawns
+	
+	Gameplay.scrap = 0 #reset scrap every time player spawns... Oh.
 	health_label.text = str("Health: ", health, "/", max_health)
 	combatant_amount_label.text = str("Combatant units: ", combatant_amount)
 	constructor_amount_label.text = str("Constructor units: ", builder_amount)
@@ -65,6 +66,11 @@ func _ready() -> void:
 	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
 	build_help.visible = false
 	throw_position_showcase.visible = false
+	if name == "ActorPlayer":
+		pass
+	else:
+		multi_sync.set_multiplayer_authority(str(name).to_int())
+	#camera.current = true
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("right_click"):
@@ -132,6 +138,10 @@ func _input(event: InputEvent) -> void:
 		throw_position_showcase.mesh["material"]["albedo_color"] = Color.GREEN
 
 func _process(_delta: float) -> void:
+	if name == "PlayerActor":
+		pass
+	elif multi_sync.get_multiplayer_authority() != multiplayer.get_unique_id(): return
+		
 	var target_plane_mouse = Plane(Vector3(0, 1, 0), position.y)
 	var mouse_pos = get_viewport().get_mouse_position()
 	var ray_length = 1000
@@ -186,16 +196,20 @@ func unit_throw(cursor_pos_on_plane) -> void:
 				instance.get_node("characterMesh").rotation.y = character.rotation.y
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	if name == "PlayerActor":
+		pass
+	elif multi_sync.get_multiplayer_authority() != multiplayer.get_unique_id(): return
+			
+		# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	# Handle jump.
+		# Handle jump.
 	if Input.is_action_just_pressed("space") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
+		# Get the input direction and handle the movement/deceleration.
+		# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("a", "d", "w", "s").rotated(-cam_yaw.rotation.y)
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
