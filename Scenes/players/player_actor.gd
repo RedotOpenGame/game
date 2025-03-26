@@ -20,7 +20,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 
 @onready var throw_location: Node3D = $characterMesh/ThrowLocation
 @onready var throw_position_showcase: MeshInstance3D = $characterMesh/ThrowPositionShowcase
-
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 @onready var combatant_amount_label: Label = $CanvasLayer/Labels/CombatantAmount
 @onready var constructor_amount_label: Label = $CanvasLayer/Labels/ConstructorAmount
@@ -29,7 +29,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @onready var unit_collection_collision: CollisionShape3D = $CollectUnits/CollisionShape3D
 @onready var is_collecting_units: Label = $CanvasLayer/Labels/IsCollectingUnits
 @onready var unit_call_collision: Area3D = $CallUnits
-@onready var camera = $CameraControl/Yaw/Pitch/SpringArm3D/Camera3D
+@onready var camera: Camera3D = $CameraControl/Yaw/Pitch/SpringArm3D/Camera3D
 @onready var cam_yaw = $CameraControl/Yaw
 @onready var cam_pitch = $CameraControl/Yaw/Pitch
 @onready var camera_control: Node3D = $CameraControl
@@ -57,7 +57,7 @@ var unit = preload("res://Scenes/entities/NPC/unit.tscn")
 var nearby_hostiles:Array = []
 
 func _ready() -> void:
-	
+	camera.current = false
 	Gameplay.scrap = 0 #reset scrap every time player spawns... Oh.
 	health_label.text = str("Health: ", health, "/", max_health)
 	combatant_amount_label.text = str("Combatant units: ", combatant_amount)
@@ -70,9 +70,19 @@ func _ready() -> void:
 		pass
 	else:
 		multi_sync.set_multiplayer_authority(str(name).to_int())
-	#camera.current = true
+		
+	if multi_sync.get_multiplayer_authority() == multiplayer.get_unique_id():
+		camera.make_current()
+		canvas_layer.visible = true
+	else:
+		camera.current = false
+		canvas_layer.visible = false
 
 func _input(event: InputEvent) -> void:
+	if name == "PlayerActor":
+		pass
+	elif multi_sync.get_multiplayer_authority() != multiplayer.get_unique_id(): return
+	
 	if event is InputEventMouseMotion and Input.is_action_pressed("right_click"):
 		if !ignore_first_input:
 			cam_yaw.rotate_y(deg_to_rad(-event.relative.x * 0.5))
@@ -209,7 +219,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 
 		# Get the input direction and handle the movement/deceleration.
-		# As good practice, you should replace UI actions with custom gameplay actions.
+		# As bad practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("a", "d", "w", "s").rotated(-cam_yaw.rotation.y)
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:

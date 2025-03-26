@@ -36,9 +36,20 @@ func SendPlayerInfo(plr_name, id):
 #During connection, we call that on the server and the client
 func PlayerConnected(id):
 	print("Player Connected ", id)
+
 #for server and clients
 func PlayerDisconnected(id):
 	print("Player Disconnected ", id)
+	var players = get_tree().get_nodes_in_group("Player")
+	var units = get_tree().get_nodes_in_group("Unit")
+	var plr_removal
+	for player in players:
+		if player.name == str(id):
+			plr_removal = player
+	for unit in units:
+		if unit._leader == plr_removal:
+			unit.queue_free() #remove all of the disconnected player's units
+	plr_removal.queue_free() #remove the disconnected player
 
 #only for clients
 func ConnectToServer():

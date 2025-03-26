@@ -18,8 +18,8 @@ var curr_logic = logic.THROWN
 @export var throw_speed: float
 @onready var mesh = $characterMesh
 @onready var collision = $CollisionShape3D
-@onready var player
-var _leader:Node3D #meant for multiplayer, in order for the only owner to collect them.
+
+var _leader:Node3D #meant for multiplayer, in order for the only owner to collect them. Meant to be overwritten
 
 #@export var row_spacing: float = 1.5
 #@export var column_spacing: float = 1.5
@@ -31,15 +31,17 @@ var health:float = max_health
 
 var curr_hostile:Node3D #find closest hostile.
 
-func _ready():
-	# Get player from 'Player' group once at start
-	player = get_tree().get_first_node_in_group("Player")
-	
+
+func _ready() -> void:
+	prepare.rpc()
+
+@rpc("any_peer", "call_local")
+func prepare() -> void:
 	health_label.text = str("Health: ", health, "/", max_health)
 	#_leader = 
-	#if !_leader:
-		##push_error("No player found in 'Player' group")
-		#return
+	if !_leader:
+		push_error("Unit has no established leader node.")
+		return
 	#_leader.signal_follow(self)
 		
 	var displacement = throw_target - global_position
@@ -61,8 +63,7 @@ func _ready():
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.AGRI]
 			ThrowTime.start()
 			type_showcase.text = "TYPE: Collector"
-	
-	
+
 
 func _physics_process(delta):
 		
