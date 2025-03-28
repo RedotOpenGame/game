@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 @onready var health_label: Label3D = $HealthLabel
 
-enum logic{FOLLOW_LEADER, ATTACK_ENEMY, IDLE, THROWN, RETURN}
+enum logic{FOLLOW_LEADER, ATTACK_ENEMY, IDLE, THROWN, RETURN, COLLECT}
 enum unit_types{COMBAT,BUILDER,AGRI}
 @export var throw_target: Vector3
 @export var unit_type = unit_types.COMBAT
@@ -18,6 +18,8 @@ var curr_logic = logic.THROWN
 @export var throw_speed: float
 @onready var mesh = $characterMesh
 @onready var collision = $CollisionShape3D
+@onready var resources = 0
+@export var max_resources: int
 
 var _leader:Node3D #meant for multiplayer, in order for the only owner to collect them. Meant to be overwritten
 
@@ -30,11 +32,12 @@ var max_health:float = 40
 var health:float = max_health
 
 var curr_hostile:Node3D #find closest hostile.
-
+var curr_recource: Node3D
+@onready var resource_repo: Node3D
 
 func _ready() -> void:
 	prepare.rpc()
-
+	
 @rpc("any_peer", "call_local")
 func prepare() -> void:
 	health_label.text = str("Health: ", health, "/", max_health)
@@ -43,6 +46,7 @@ func prepare() -> void:
 		push_error("Unit has no established leader node.")
 		return
 	#_leader.signal_follow(self)
+	resource_repo = get_tree().current_scene.find_child("MainStructure", true, true)
 		
 	var displacement = throw_target - global_position
 	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
@@ -98,6 +102,30 @@ func _physics_process(delta):
 				velocity.z = direction.z * movement_speed
 			else:
 				curr_logic = logic.IDLE
+		logic.COLLECT:
+			if(resources == 0):
+				var recources = get_tree().get_nodes_in_group("Resource")
+				if recources.is_empty():
+					curr_logic = logic.IDLE
+				var current_position = global_position
+				for recource in recources:
+					# we really aught to just have a curr_target rather than curr_hostile/resource/etc and just run the target code - Awbluefy
+					if not is_instance_valid(curr_recource):
+						curr_recource = recource
+					elif current_position.distance_to(recource.global_position) < current_position.distance_to(curr_recource.global_position):
+						curr_recource = recource
+				if(is_instance_valid(curr_recource)):
+					var preffered_position = curr_recource.global_position
+					var direction = (preffered_position - global_position).normalized()
+					mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-direction.x, -direction.z), 0.2)
+					velocity.x = direction.x * movement_speed
+					velocity.z = direction.z * movement_speed
+			else:
+				var preffered_position = resource_repo.global_position
+				var direction = (preffered_position - global_position).normalized()
+				mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-direction.x, -direction.z), 0.2)
+				velocity.x = direction.x * movement_speed
+				velocity.z = direction.z * movement_speed
 		logic.THROWN:
 			match(unit_type):
 				unit_types.COMBAT:
@@ -162,6 +190,8 @@ func _process(_delta: float):
 					curr_hostile = body
 			else:
 				curr_hostile = body
+		if(body.is_in_group("Resource") && curr_logic != logic.THROWN && curr_logic != logic.ATTACK_ENEMY && curr_logic != logic.RETURN):
+			curr_logic = logic.COLLECT
 			
 
 func heal_func(amount:float) -> void:
@@ -212,6 +242,16 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 		attack_collision.set_deferred("disabled", true)
 		hitscan_preview.visible = false
 		attackrate.start()
+	if body.is_in_group("Resource"):
+		print("Resouce found")
+		if(body.scrap - (max_resources - resources) > 0):
+			body.scrap -= (max_resources - resources)
+			resources = max_resources
+		else:
+			resources += body.scrap
+			body.scrap = 0
+			# I know this isnt the best way to do this part -Awbluefy
+			body.queue_free()
 
 func _on_attackrate_timeout() -> void:
 	attack_collision.disabled = false

@@ -46,6 +46,8 @@ billboard = 1
 text = "Got scrap? Good. Bring it back to me."
 
 [node name="interactionArea" type="Area3D" parent="."]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="interactionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.11039, 0)

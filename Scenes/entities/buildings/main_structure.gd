@@ -34,6 +34,10 @@ func _on_interaction_area_body_entered(body: Node3D) -> void:
 		ui.visible = true
 		track_body = body
 		body.add_interactable(self)
+	if body.is_in_group("Unit"):
+		Gameplay.scrap += body.resources
+		scrap_counter.text = str("Scrap: ", Gameplay.scrap)
+		body.resources = 0
 
 
 func _on_interaction_area_body_exited(body: Node3D) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=21 format=3 uid="uid://clpvr1kbs1f52"]
 
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ccpx5"]
 [ext_resource type="PackedScene" uid="uid://bevcp75fxaeuc" path="res://Scenes/meshes/dungeon_entrance.tscn" id="2_bbigu"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://4jy1chl6g5j8" path="res://Scenes/meshes/ur_portal.tscn" id="6_rmeny"]
 [ext_resource type="PackedScene" uid="uid://c6mfi0s8avy8j" path="res://Scenes/entities/buildings/defence_turret.tscn" id="7_2ngsa"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="7_hf0oe"]
+[ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="9_auytq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
 sky_top_color = Color(0.363219, 0.53037, 1, 1)
@@ -187,4 +188,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, 4.82912)
 
 [node name="ResourcePile" parent="." instance=ExtResource("7_hf0oe")]
 transform = Transform3D(1.99821, -0.0832449, 0.0150156, 0.0845883, 1.96648, -0.354711, 0, 0.355028, 1.96824, 14.4702, 0.0462289, 5.91616)
-scrap = 9999
+scrap = 5
+
+[node name="MainStructure" parent="." instance=ExtResource("9_auytq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8943, 0.25, 13.5545)

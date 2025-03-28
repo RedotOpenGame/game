@@ -44,6 +44,7 @@ collision_layer = 2
 collision_mask = 45
 script = ExtResource("1_6pfcw")
 throw_speed = 5.0
+max_resources = 3
 
 [node name="HealthLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22067, 0)
@@ -62,8 +63,8 @@ one_shot = true
 transform = Transform3D(-0.199008, 0, -1.73978e-08, 0, 0.199008, 0, 1.73978e-08, 0, -0.199008, 0, -0.454289, 0)
 
 [node name="DamageArea" type="Area3D" parent="characterMesh"]
-collision_layer = 16
-collision_mask = 8
+collision_layer = 17
+collision_mask = 9
 
 [node name="AttackCollision" type="CollisionShape3D" parent="characterMesh/DamageArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)
@@ -78,8 +79,8 @@ shape = SubResource("CapsuleShape3D_6wbai")
 
 [node name="DetectionArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.644707, 0)
-collision_layer = 8
-collision_mask = 8
+collision_layer = 9
+collision_mask = 9
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
 shape = SubResource("CylinderShape3D_65c4o")
@@ -95,3 +96,4 @@ replication_config = SubResource("SceneReplicationConfig_u4he0")
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_damage_area_body_entered"]
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]

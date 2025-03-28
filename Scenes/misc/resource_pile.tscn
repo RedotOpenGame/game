@@ -21,7 +21,7 @@ size = Vector3(0.8, 0.5, 0.5)
 height = 1.38802
 radius = 0.774802
 
-[node name="ResourcePile" type="CharacterBody3D"]
+[node name="ResourcePile" type="CharacterBody3D" groups=["Resource"]]
 script = ExtResource("1_k3m5y")
 
 [node name="mesh" type="Node3D" parent="."]
