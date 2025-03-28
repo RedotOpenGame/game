@@ -1,7 +1,5 @@
 extends Control
 
-var player_char = preload("res://Scenes/players/player_actor.tscn")
-
 @export var Address = "127.0.0.1"
 @export var port = 212
 var peer
@@ -11,6 +9,17 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(PlayerDisconnected)
 	multiplayer.connected_to_server.connect(ConnectToServer)
 	multiplayer.connection_failed.connect(ConnectionFailure)
+
+func _input(event: InputEvent) -> void:
+	if visible:
+		if Input.is_action_just_pressed("h"):
+			print("game hosted")
+			_on_host_game_pressed()
+		if Input.is_action_just_pressed("j"):
+			print("game joined")
+			_on_join_game_pressed()
+		if Input.is_action_just_pressed("k"):
+			_on_start_game_pressed()
 
 @rpc("any_peer", "call_local") #this must be line above function we need RPC for.
 func StartGame() -> void:
@@ -50,16 +59,31 @@ func PlayerDisconnected(id):
 		if unit._leader == plr_removal:
 			unit.queue_free() #remove all of the disconnected player's units
 	plr_removal.queue_free() #remove the disconnected player
+	MultiplayerHelper.Players.erase(id)
 
 #only for clients
 func ConnectToServer():
-	print("yo")
 	SendPlayerInfo.rpc_id(1, $Stuff/Entername.text, multiplayer.get_unique_id())
 #only for clients
 func ConnectionFailure():
 	print("fuck")
 
 
+func UPnP_setup() -> void: #Doesn't work for me - Pewweper
+	var upnp = UPNP.new()
+	
+	var discover_result = upnp.discover()
+	assert(discover_result == UPNP.UPNP_RESULT_SUCCESS, \
+	"UPNP Discover failed! Fucking hell! Error %s" % discover_result)
+	
+	assert(upnp.get_gateway() and upnp.get_gateway().is_valid_gateway(), \
+	"UPNP Invalid Gateway!")
+	
+	var map_result = upnp.add_port_mapping(port)
+	assert(map_result == UPNP.UPNP_RESULT_SUCCESS, \
+	"UPNP Port mapping failure! Error %s" % map_result)
+	
+	print("Oh hey, it's working! Join Address: %s" % upnp.query_external_address())
 
 
 func _on_host_game_pressed() -> void:
@@ -71,6 +95,7 @@ func _on_host_game_pressed() -> void:
 	peer.get_host().compress(ENetConnection.COMPRESS_NONE)
 	multiplayer.set_multiplayer_peer(peer)
 	print("Waiting for players...")
+	#UPnP_setup()
 	SendPlayerInfo($Stuff/Entername.text, multiplayer.get_unique_id())
 
 

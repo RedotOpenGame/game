@@ -27,6 +27,8 @@ func _process(delta: float) -> void:
 	if nearby_hostiles != []:
 		curr_target = find_closest_target()
 	if is_instance_valid(curr_target):
+		if !curr_target.is_in_group("Ally"):
+			nearby_hostiles.erase(curr_target)
 		look_at(Vector3(curr_target.global_position.x, global_position.y, curr_target.global_position.z))
 		var preffered_position = curr_target.global_position
 		var direction = (preffered_position - global_position).normalized()
@@ -36,7 +38,7 @@ func _process(delta: float) -> void:
 
 		if global_position.distance_to(Vector3(spawned_point.x, global_position.y, spawned_point.z)) < movement_speed / 32:
 			global_position = Vector3(spawned_point.x, global_position.y, spawned_point.z)
-			velocity = Vector3(0, 0, 0)
+			velocity = Vector3(0, velocity.y, 0)
 		else:
 			look_at(Vector3(spawned_point.x, global_position.y, spawned_point.z))
 			var direction = (spawned_point - global_position).normalized()
@@ -81,9 +83,10 @@ func damage_func(amount:float) -> void:
 	health -= amount
 	health_label.text = str("Health: ", health, "/", max_health)
 	if health <= 0:
-		death()
+		death.rpc()
 		
 
+@rpc("any_peer", "call_local")
 func death() -> void:
 	queue_free()
 

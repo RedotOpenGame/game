@@ -27,6 +27,8 @@ func _process(delta: float) -> void:
 	if nearby_hostiles != []:
 		curr_target = find_closest_target()
 	if is_instance_valid(curr_target):
+		if !curr_target.is_in_group("Ally"):
+			nearby_hostiles.erase(curr_target)
 		look_at(curr_target.global_position)
 		if global_position.distance_to(curr_target.global_position) > 10:
 			var preffered_position = curr_target.global_position

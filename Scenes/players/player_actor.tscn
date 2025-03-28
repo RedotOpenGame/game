@@ -137,6 +137,30 @@ properties/5/replication_mode = 1
 properties/6/path = NodePath("CollectUnits/CollisionShape3D:disabled")
 properties/6/spawn = true
 properties/6/replication_mode = 1
+properties/7/path = NodePath("characterMesh/DamageArea/CollisionShape3D:disabled")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+properties/8/path = NodePath("characterMesh/DamageArea/MeshInstance3D:visible")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+properties/9/path = NodePath(".:selected_unit_type")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+properties/10/path = NodePath(".:SPEED")
+properties/10/spawn = true
+properties/10/replication_mode = 1
+properties/11/path = NodePath("CallUnits:position")
+properties/11/spawn = true
+properties/11/replication_mode = 1
+properties/12/path = NodePath(".:JUMP_VELOCITY")
+properties/12/spawn = true
+properties/12/replication_mode = 1
+properties/13/path = NodePath(".:collision_mask")
+properties/13/spawn = true
+properties/13/replication_mode = 1
+properties/14/path = NodePath("characterMesh/DamageArea:monitoring")
+properties/14/spawn = true
+properties/14/replication_mode = 1
 
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
 collision_mask = 45
@@ -324,9 +348,14 @@ mesh = SubResource("CylinderMesh_mj16b")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_o1g43")
 
+[node name="Respawn" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
 [connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
 [connection signal="timeout" from="MercyFrame" to="." method="_on_mercy_frame_timeout"]
 [connection signal="body_entered" from="CollectUnits" to="." method="_on_collect_units_body_entered"]
 [connection signal="body_entered" from="CallUnits" to="." method="_on_call_units_body_entered"]
+[connection signal="timeout" from="Respawn" to="." method="_on_respawn_timeout"]

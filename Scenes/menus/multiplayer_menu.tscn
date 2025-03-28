@@ -19,6 +19,14 @@ offset_right = 158.0
 offset_bottom = 60.0
 text = "Host"
 
+[node name="HotkeyHelp" type="Label" parent="Stuff/HostGame"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 39.0
+text = "Hotkey:H"
+
 [node name="JoinGame" type="Button" parent="Stuff"]
 layout_mode = 0
 offset_left = 2.0
@@ -27,6 +35,14 @@ offset_right = 159.0
 offset_bottom = 143.0
 text = "Join"
 
+[node name="HotkeyHelp" type="Label" parent="Stuff/JoinGame"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 39.0
+text = "Hotkey:J"
+
 [node name="StartGame" type="Button" parent="Stuff"]
 layout_mode = 0
 offset_left = 2.0
@@ -34,6 +50,14 @@ offset_top = 171.0
 offset_right = 155.0
 offset_bottom = 230.0
 text = "Start"
+
+[node name="HotkeyHelp" type="Label" parent="Stuff/StartGame"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 39.0
+text = "Hotkey:K"
 
 [node name="Entername" type="LineEdit" parent="Stuff"]
 layout_mode = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bya6wormsuwtj"]
+[gd_scene load_steps=10 format=3 uid="uid://bya6wormsuwtj"]
 
 [ext_resource type="Script" path="res://Scenes/entities/Enemies/shooting_enemy.gd" id="1_ibt7l"]
 [ext_resource type="PackedScene" uid="uid://citu714ddbl12" path="res://Scenes/meshes/enemy_bot.tscn" id="1_vxtha"]
@@ -6,6 +6,7 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ibt7l"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kh3so"]
+height = 6.0
 radius = 11.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ibt7l"]
@@ -21,6 +22,14 @@ albedo_color = Color(0, 0, 0, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_aed13"]
 material = SubResource("StandardMaterial3D_kh3so")
 size = Vector3(0.2, 0.4, 0.2)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ibt7l"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="ShootingEnemy" type="CharacterBody3D" groups=["Hostile"]]
 collision_layer = 8
@@ -61,6 +70,9 @@ mesh = SubResource("BoxMesh_aed13")
 
 [node name="GunBarrel" type="Marker3D" parent="Pistol?"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.775223, 0.188307, -1.65037)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ibt7l")
 
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]

@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends GeneralEntity
 
 @onready var health_label: Label3D = $HealthLabel
 
@@ -27,19 +27,13 @@ var _leader:Node3D #meant for multiplayer, in order for the only owner to collec
 #@export var column_spacing: float = 1.5
 @export var movement_speed: float = 4.0
 var unit_index: int = 0  # Assign unique index to each unit
-
-var max_health:float = 40
-var health:float = max_health
+var is_collected:bool = false #need in order for not dupe.
 
 var curr_hostile:Node3D #find closest hostile.
 var curr_recource: Node3D
 @onready var resource_repo: Node3D
 
 func _ready() -> void:
-	prepare.rpc()
-	
-@rpc("any_peer", "call_local")
-func prepare() -> void:
 	health_label.text = str("Health: ", health, "/", max_health)
 	#_leader = 
 	if !_leader:
@@ -69,6 +63,23 @@ func prepare() -> void:
 			type_showcase.text = "TYPE: Collector"
 
 
+func _process(_delta: float):
+	#if(velocity.x != 0 && velocity.z != 0):
+		#mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
+	
+	var bodies = detection_collision.get_overlapping_bodies()
+	for body in bodies:
+		if(body.is_in_group("Hostile") && curr_logic != logic.THROWN):
+			var current_position = global_position
+			curr_logic = logic.ATTACK_ENEMY
+			if(is_instance_valid(curr_hostile)):
+				if(current_position.distance_to(body.global_position) < current_position.distance_to(curr_hostile.global_position)):
+					curr_hostile = body
+			else:
+				curr_hostile = body
+		if(body.is_in_group("Resource") && curr_logic != logic.THROWN && curr_logic != logic.ATTACK_ENEMY && curr_logic != logic.RETURN):
+			curr_logic = logic.COLLECT
+#@rpc("any_peer", "call_local")
 func _physics_process(delta):
 		
 	# Calculate row and column position in formation
@@ -175,24 +186,11 @@ func _physics_process(delta):
 	if not is_on_floor() and !(unit_type == unit_types.AGRI and curr_logic == logic.THROWN):
 		velocity += get_gravity() * delta
 	move_and_slide()
-
-func _process(_delta: float):
-	#if(velocity.x != 0 && velocity.z != 0):
-		#mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
 	
-	var bodies = detection_collision.get_overlapping_bodies()
-	for body in bodies:
-		if(body.is_in_group("Hostile") && curr_logic != logic.THROWN):
-			var current_position = global_position
-			curr_logic = logic.ATTACK_ENEMY
-			if(is_instance_valid(curr_hostile)):
-				if(current_position.distance_to(body.global_position) < current_position.distance_to(curr_hostile.global_position)):
-					curr_hostile = body
-			else:
-				curr_hostile = body
-		if(body.is_in_group("Resource") && curr_logic != logic.THROWN && curr_logic != logic.ATTACK_ENEMY && curr_logic != logic.RETURN):
-			curr_logic = logic.COLLECT
+#@rpc("any_peer", "call_local")
+
 			
+
 
 func heal_func(amount:float) -> void:
 	health = min(health + amount, max_health)
@@ -230,10 +228,18 @@ func throw() -> void:
 	velocity += Vector3(20, 20, 0).rotated(Vector3(0, 1, 0), _leader.camera_control.global_rotation.y) #NOT WORKING RN
 	print("throwing")
 
-func death() -> void:
+@rpc("any_peer", "call_local")
+func death_func() -> void:
 	if is_instance_valid(_leader):
 		_leader.ally_died(self)
 	queue_free()
+
+@rpc("any_peer", "call_local")
+func collection(body) -> void:
+	if "get_unit" in body:
+		body.get_unit(1, unit_type)
+		death_func.rpc()
+
 
 
 func _on_damage_area_body_entered(body: Node3D) -> void:
@@ -251,6 +257,7 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 			resources += body.scrap
 			body.scrap = 0
 			# I know this isnt the best way to do this part -Awbluefy
+			#TODO:make pile of scrap appear if they happen to die while holding it -Pewweper
 			body.queue_free()
 
 func _on_attackrate_timeout() -> void:

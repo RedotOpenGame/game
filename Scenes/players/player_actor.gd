@@ -37,7 +37,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @onready var character = $characterMesh
 @onready var selected_unit_type = -1
 @export var SPEED = 6.5
-const JUMP_VELOCITY = 9.5
+var JUMP_VELOCITY = 9.5
 const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down camera movement(which doesn't let you look upwards)
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
 var max_health:float = 100.0
@@ -58,7 +58,7 @@ var nearby_hostiles:Array = []
 
 func _ready() -> void:
 	camera.current = false
-	Gameplay.scrap = 0 #reset scrap every time player spawns... Oh.
+	Gameplay.scrap = 0 #reset scrap every time player spawns... Oh. I don't think this should stay here, but for now, this is enough.
 	health_label.text = str("Health: ", health, "/", max_health)
 	combatant_amount_label.text = str("Combatant units: ", combatant_amount)
 	constructor_amount_label.text = str("Constructor units: ", builder_amount)
@@ -113,8 +113,7 @@ func _input(event: InputEvent) -> void:
 		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
 		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
 	if Input.is_action_just_pressed("z"): #Calling all units
-		for i in get_tree().get_nodes_in_group("Unit"):
-			i.curr_logic = 4
+		call_all_units.rpc()
 	if Input.is_action_just_pressed("v") and !starting_building_placed:
 		starting_building_placed = true
 		var scene = starting_building.instantiate()
@@ -241,6 +240,12 @@ func _physics_process(delta: float) -> void:
 				interact_target = i
 		interact_target.interaction()
 
+@rpc("any_peer", "call_local")
+func call_all_units() -> void:
+	for i in get_tree().get_nodes_in_group("Unit"):
+		if i._leader == self:
+			i.curr_logic = 4
+
 func teleport_allies_with_me() -> void:
 	for i in followers:
 		i.global_position = global_position
@@ -272,12 +277,45 @@ func ally_died(body) -> void:
 
 func damage_func(amount:float) -> void:
 	if can_be_hit:
-		can_be_hit = false
-		$MercyFrame.start()
-		health -= amount
-		health_label.text = str("Health: ", health, "/", max_health)
-		if health <= 0:
+		if health > 0:
+			can_be_hit = false
+			$MercyFrame.start()
+			health -= amount
+			health_label.text = str("Health: ", health, "/", max_health)
+		else:
 			death()
+
+func heal_func(amount:float) -> void:
+	health = min(health + amount, max_health)
+	health_label.text = str("Health: ", health, "/", max_health)
+
+@rpc("any_peer", "call_local")
+func death():
+	print("You are dead. Wait for respawn.")
+	remove_from_group("Ally")
+	SPEED = 0
+	character.visible = false
+	JUMP_VELOCITY = 0
+	collision_mask = 4
+	$Respawn.start()
+	$characterMesh/DamageArea.monitoring = false
+	can_be_hit = false
+	#get_tree().call_deferred("change_scene_to_file", "res://Scenes/overworld.tscn")
+
+func _on_respawn_timeout() -> void:
+	respawn_func.rpc()
+
+@rpc("any_peer", "call_local")
+func respawn_func() -> void:
+	add_to_group("Ally")
+	character.visible = true
+	SPEED = 6.5
+	JUMP_VELOCITY = 9.5
+	collision_mask = 45
+	$characterMesh/DamageArea.monitoring = true
+	health = max_health
+	health_label.text = str("Health: ", health, "/", max_health)
+	can_be_hit = true
 
 func add_interactable(node:Node3D) -> void:
 	interactables_in_range.append(node)
@@ -295,58 +333,52 @@ func get_blueprint(scene:PackedScene, build_name:String, constructor_req:int, bu
 	building_marker.add_child(blueprint)
 	build_help.visible = true
 
-func heal_func(amount:float) -> void:
-	health = min(health + amount, max_health)
-	health_label.text = str("Health: ", health, "/", max_health)
-
-func death():
-	print("You are dead. Now what?")
-	get_tree().call_deferred("change_scene_to_file", "res://Scenes/overworld.tscn")
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if "damage_func" in body:
 		body.damage_func(8)
 
-
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Hostile"):
 		nearby_hostiles.append(body)
 
-
 func _on_hostile_seeker_body_exited(body: Node3D) -> void:
 	nearby_hostiles.erase(body)
-
 
 func _on_mercy_frame_timeout() -> void:
 	can_be_hit = true
 
+@rpc("call_local")
 func get_unit(amount, type) -> void:
 	match type:
 		0: #combatants
+			#print("getting ", amount, " combatant")
 			combatant_amount += amount
 			combatant_amount_label.text = str("Combatant units: ", combatant_amount)
 		1:
+			#print("getting ", amount, " builder")
 			builder_amount += amount
 			constructor_amount_label.text = str("Constructor units: ", builder_amount)
 		2:
+			#print("getting ", amount, " agri")
 			agriculture_amount += amount
 			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 
 func _on_collect_units_body_entered(body: Node3D) -> void:
-	if(body.is_in_group("Unit") and (body.curr_logic == 4 or body.curr_logic == 2) and body._leader == self):
+	if(body.is_in_group("Unit") and (body.curr_logic == 4 or body.curr_logic == 2) and body._leader == self and !body.is_collected):
 		match body.unit_type:
 			0:
-				combatant_amount += 1
-				combatant_amount_label.text = str("Combatant units: ", combatant_amount)
-				body.queue_free()
+				body.collection.rpc(self)
+				#body.is_collected = true
+				#body.death_func.rpc()
 			1:
-				builder_amount += 1
-				constructor_amount_label.text = str("Constructor units: ", builder_amount)
-				body.queue_free()
+				get_unit.rpc(1, body.unit_type)
+				body.is_collected = true
+				body.death_func.rpc()
 			2:
-				agriculture_amount += 1
-				collectors_amount_label.text = str("Collector units: ", agriculture_amount)
-				body.queue_free()
+				get_unit.rpc(1, body.unit_type)
+				body.is_collected = true
+				body.death_func.rpc()
 
 
 func _on_call_units_body_entered(body: Node3D) -> void:

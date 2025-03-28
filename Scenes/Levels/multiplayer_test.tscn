@@ -1,7 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://dxndxhp5e4ohp"]
+[gd_scene load_steps=11 format=3 uid="uid://dxndxhp5e4ohp"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/multiplayer_test2.gd" id="1_u3kmp"]
 [ext_resource type="PackedScene" uid="uid://c6mfi0s8avy8j" path="res://Scenes/entities/buildings/defence_turret.tscn" id="2_idgn3"]
+[ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="3_3soea"]
+[ext_resource type="PackedScene" uid="uid://bya6wormsuwtj" path="res://Scenes/entities/Enemies/shooting_enemy.tscn" id="4_yjkig"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k1m5d"]
 size = Vector3(200, 1, 200)
@@ -62,17 +64,46 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, 4.82912)
 [node name="DefenceTurret2" parent="Allies" instance=ExtResource("2_idgn3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, -10.1668)
 
-[node name="Allies2" type="Node3D" parent="." groups=["AllyContainer"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.92914, 0, -8.77226)
+[node name="DefenceTurret3" parent="Allies" instance=ExtResource("2_idgn3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.21306, 1.20791, -3.94314)
 
-[node name="DefenceTurret" parent="Allies2" instance=ExtResource("2_idgn3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, 4.82912)
-
-[node name="DefenceTurret2" parent="Allies2" instance=ExtResource("2_idgn3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, -10.1668)
+[node name="DefenceTurret4" parent="Allies" instance=ExtResource("2_idgn3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.21306, 1.20791, -18.9391)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://Scenes/players/player_actor.tscn")
 spawn_path = NodePath("..")
 
+[node name="Enemies" type="Node3D" parent="."]
+
+[node name="TestEnemy" parent="Enemies" instance=ExtResource("3_3soea")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.7911, 1.5831, 0)
+
+[node name="TestEnemy2" parent="Enemies" instance=ExtResource("3_3soea")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.7911, 1.5831, -3.0348)
+
+[node name="ShootingEnemy" parent="Enemies" instance=ExtResource("4_yjkig")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.9318, 1.51176, 0)
+
+[node name="ShootingEnemy2" parent="Enemies" instance=ExtResource("4_yjkig")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.9318, 1.51176, -2.95833)
+
+[node name="EnemySpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/entities/Enemies/test_enemy.tscn")
+spawn_path = NodePath("../Enemies")
+
+[node name="SpawnEnemy" type="Button" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -58.0
+offset_right = 58.0
+offset_bottom = 31.0
+grow_horizontal = 2
+text = "Spawn enemy"
+
+[node name="EnemySpawnpoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.8518, 2.25117, -1.71432)
+
 [connection signal="despawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_despawned"]
+[connection signal="pressed" from="SpawnEnemy" to="." method="_on_spawn_enemy_pressed"]
