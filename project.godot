@@ -136,3 +136,7 @@ v={
 3d_physics/layer_4="Hostile"
 3d_physics/layer_5="Friendly projectile"
 3d_physics/layer_6="Hostile projectile"
+
+[physics]
+
+3d/default_gravity=13.72

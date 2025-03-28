@@ -5,7 +5,10 @@
 [node name="altefo" instance=ExtResource("1_jdtox")]
 
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/2/rotation = Quaternion(-0.0861167, 0.0230214, 0.0260209, 0.995679)
+bones/2/position = Vector3(-0.214525, 0.270475, 0.220475)
+bones/2/rotation = Quaternion(0.673475, -0.276525, -0.338525, 0.730475)
+bones/5/position = Vector3(0.075475, 0.284475, -0.379525)
+bones/5/rotation = Quaternion(3.77548, -8.01953, -10.3495, 5.11048)
 bones/6/rotation = Quaternion(-0.0647689, 0.00030537, -0.0283484, 0.997498)
 bones/11/rotation = Quaternion(-0.693892, -0.20099, 0.196598, 0.662923)
 

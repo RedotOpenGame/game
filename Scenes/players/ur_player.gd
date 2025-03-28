@@ -79,6 +79,8 @@ func _process(_delta: float) -> void:
 			scene.position = gun_barrel.global_position
 			scene.direction = direction
 			scene.rotation = global_rotation
+			scene.penetrating = true
+			scene.damage = 5
 			get_tree().root.add_child(scene)
 	else:
 		if Input.is_action_pressed("left_click") and can_fire:

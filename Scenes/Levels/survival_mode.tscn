@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://dumawgyndqbdp"]
+[gd_scene load_steps=14 format=3 uid="uid://dumawgyndqbdp"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/survival_mode.gd" id="1_f1ks2"]
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ldv0p"]
 [ext_resource type="PackedScene" uid="uid://cpru4ovaf6lfm" path="res://Scenes/entities/buildings/townhall.tscn" id="2_6cym4"]
+[ext_resource type="PackedScene" uid="uid://csng6vi7e2d4g" path="res://Scenes/entities/Enemies/altefo_boss.tscn" id="3_26u23"]
 [ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="4_b17es"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="5_26u23"]
 
@@ -54,6 +55,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.27905, 1.47333, 19.6704)
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Enemies" type="Node3D" parent="Entities"]
+
+[node name="AltefoBoss" parent="Entities/Enemies" instance=ExtResource("3_26u23")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.22866, -4.4423)
 
 [node name="Buildings" type="Node3D" parent="Entities"]
 

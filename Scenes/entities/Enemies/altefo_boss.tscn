@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://csng6vi7e2d4g"]
+
+[ext_resource type="Script" path="res://Scenes/entities/Enemies/altefo_boss.gd" id="1_05heg"]
+[ext_resource type="PackedScene" uid="uid://cbksyi705d64g" path="res://Scenes/meshes/altefo.tscn" id="2_05heg"]
+[ext_resource type="PackedScene" uid="uid://q8pd5bimfqxy" path="res://Scenes/meshes/steyr_aug.tscn" id="3_x1let"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_05heg"]
+height = 2.83805
+
+[node name="AltefoBoss" type="CharacterBody3D" groups=["Hostile"]]
+collision_layer = 8
+collision_mask = 31
+script = ExtResource("1_05heg")
+
+[node name="mesh" type="Node3D" parent="."]
+
+[node name="altefo2" parent="mesh" instance=ExtResource("2_05heg")]
+transform = Transform3D(-0.3, 0, -2.62268e-08, 0, 0.3, 0, 2.62268e-08, 0, -0.3, 0, -1.36641, 0)
+
+[node name="steyr_aug" parent="mesh" instance=ExtResource("3_x1let")]
+transform = Transform3D(0.0268317, 0, 0, 0, 0.0268317, 0, 0, 0, 0.0268317, -0.0954489, 0.351552, -1.08942)
+
+[node name="GunBarrel" type="Marker3D" parent="mesh/steyr_aug"]
+transform = Transform3D(21.5826, 0, 0, 0, 21.5826, 0, 0, 0, 21.5826, 0.332092, 0.188201, -13.0314)
+
+[node name="Firerate" type="Timer" parent="."]
+wait_time = 0.16
+one_shot = true
+
+[node name="Reload" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9763, 0)
+billboard = 1
+text = "Health:CURR/MAX"
+font_size = 40
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00143051, 0)
+shape = SubResource("CapsuleShape3D_05heg")
+
+[node name="ReloadingLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34296, 0)
+billboard = 1
+text = "Reloading: TIME_LEFT"
+
+[node name="Jump" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="Firerate" to="." method="_on_firerate_timeout"]
+[connection signal="timeout" from="Reload" to="." method="_on_reload_timeout"]
+[connection signal="timeout" from="Jump" to="." method="_on_jump_timeout"]

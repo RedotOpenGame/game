@@ -66,17 +66,18 @@ func _ready() -> void:
 	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
 	build_help.visible = false
 	throw_position_showcase.visible = false
-	if name == "ActorPlayer":
+	if str(name) == "PlayerActor":
+		camera.make_current()
 		pass
 	else:
 		multi_sync.set_multiplayer_authority(str(name).to_int())
 		
-	if multi_sync.get_multiplayer_authority() == multiplayer.get_unique_id():
-		camera.make_current()
-		canvas_layer.visible = true
-	else:
-		camera.current = false
-		canvas_layer.visible = false
+		if multi_sync.get_multiplayer_authority() == multiplayer.get_unique_id():
+			camera.make_current()
+			canvas_layer.visible = true
+		else:
+			camera.current = false
+			canvas_layer.visible = false
 
 func _input(event: InputEvent) -> void:
 	if name == "PlayerActor":

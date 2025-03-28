@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://q8pd5bimfqxy"]
+
+[ext_resource type="PackedScene" uid="uid://beappmd6nitm3" path="res://assets/placeholder meshes/steyr_aug.glb" id="1_mj8j1"]
+
+[node name="steyr_aug" instance=ExtResource("1_mj8j1")]
