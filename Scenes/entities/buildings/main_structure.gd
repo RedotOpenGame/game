@@ -15,6 +15,9 @@ func _ready() -> void:
 	ui.visible = false
 	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
+func _process(delta: float) -> void:
+	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
+
 func placed_down() -> void:
 	var scene = player_char.instantiate()
 	scene.position = marker_3d.global_position

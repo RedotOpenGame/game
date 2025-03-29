@@ -1,5 +1,7 @@
 extends GeneralEntity
 
+var resource_pile = preload("res://Scenes/misc/resource_pile.tscn")
+
 @onready var health_label: Label3D = $HealthLabel
 
 enum logic{FOLLOW_LEADER, ATTACK_ENEMY, IDLE, THROWN, RETURN, COLLECT}
@@ -35,7 +37,7 @@ var curr_recource: Node3D
 
 func _ready() -> void:
 	health_label.text = str("Health: ", health, "/", max_health)
-	#_leader = 
+
 	if !_leader:
 		push_error("Unit has no established leader node.")
 		return
@@ -64,9 +66,6 @@ func _ready() -> void:
 
 
 func _process(_delta: float):
-	#if(velocity.x != 0 && velocity.z != 0):
-		#mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
-	
 	var bodies = detection_collision.get_overlapping_bodies()
 	for body in bodies:
 		if(body.is_in_group("Hostile") && curr_logic != logic.THROWN):
@@ -79,29 +78,8 @@ func _process(_delta: float):
 				curr_hostile = body
 		if(body.is_in_group("Resource") && curr_logic != logic.THROWN && curr_logic != logic.ATTACK_ENEMY && curr_logic != logic.RETURN):
 			curr_logic = logic.COLLECT
-#@rpc("any_peer", "call_local")
+
 func _physics_process(delta):
-		
-	# Calculate row and column position in formation
-	#change_logic()
-		# This is some logic for the follower functionality if we want to add it back in later
-		#if curr_logic == logic.FOLLOW_LEADER:
-		#var r := int((sqrt(8 * unit_index + 1) - 1) / 2)
-		#var c := unit_index - (r * (r + 1)) / 2
-		#
-		## Calculate horizontal offset for symmetrical placement
-		#var horizontal_offset := (c - r / 2.0) * column_spacing
-		#
-		## Calculate target position relative to leader
-		#var preffered_position = _leader.global_position + Vector3(horizontal_offset, 0, (r + 1) * row_spacing).rotated(Vector3(0, 1, 0), _leader.cam_yaw.global_rotation.y)
-		#var direction = (preffered_position - global_position).normalized()
-		#
-		#if global_position.distance_to(preffered_position) < movement_speed / 32:
-			#global_position = preffered_position
-			#velocity = Vector3(0, 0, 0)
-		#else:
-			#velocity = direction * movement_speed
-	
 	match(curr_logic):
 		logic.ATTACK_ENEMY:
 			#curr_hostile = find_closest_target()
@@ -116,7 +94,7 @@ func _physics_process(delta):
 		logic.COLLECT:
 			if(resources == 0):
 				var recources = get_tree().get_nodes_in_group("Resource")
-				if recources.is_empty():
+				if recources.is_empty() and resources == 0:
 					curr_logic = logic.IDLE
 				var current_position = global_position
 				for recource in recources:
@@ -160,49 +138,14 @@ func _physics_process(delta):
 			mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-direction.x, -direction.z), 0.2)
 			velocity.x = direction.x * movement_speed
 			velocity.z = direction.z * movement_speed
-			
-		#logic.FOLLOW_LEADER:
-			#var preffered_position = _leader.global_position
-			#var direction = (preffered_position - global_position).normalized()
-			#
-			#if global_position.distance_to(preffered_position) < movement_speed / 32:
-				#global_position = preffered_position
-				#velocity = Vector3(0, 0, 0)
-			#else:
-				#velocity = direction * movement_speed
-	#change_logic()
-
-
-		#print(global_position.distance_to(preffered_position))
-	#var target_position := _leader.global_transform.origin \
-		#+ (_leader.global_transform.basis.z * (r + 1) * row_spacing \
-		#+ _leader.global_transform.basis.x * horizontal_offset).rotated(Vector3(0, 1, 0), _leader.camera_control.global_rotation.y)
-	#
-	## Smoothly move towards target position
-	#global_transform.origin = global_transform.origin.move_toward(
-		#target_position,
-		#movement_speed * delta
-	#)
 	if not is_on_floor() and !(unit_type == unit_types.AGRI and curr_logic == logic.THROWN):
 		velocity += get_gravity() * delta
 	move_and_slide()
 	
-#@rpc("any_peer", "call_local")
-
-			
-
 
 func heal_func(amount:float) -> void:
 	health = min(health + amount, max_health)
 	health_label.text = str("Health: ", health, "/", max_health)
-
-
-#func change_logic() -> void:
-	#if _leader.nearby_hostiles != []:
-		#curr_logic = logic.ATTACK_ENEMY
-		#return
-	#curr_logic = logic.FOLLOW_LEADER
-	
 
 func find_closest_target() -> Node3D:
 	var returnage #whatever will be returned, idfk
@@ -230,6 +173,11 @@ func throw() -> void:
 
 @rpc("any_peer", "call_local")
 func death_func() -> void:
+	if resources > 0:
+		var scene = resource_pile.instantiate()
+		scene.position = global_position - Vector3(0, 0.6, 0)
+		scene.scrap = resources
+		add_sibling(scene)
 	if is_instance_valid(_leader):
 		_leader.ally_died(self)
 	queue_free()
@@ -257,7 +205,6 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 			resources += body.scrap
 			body.scrap = 0
 			# I know this isnt the best way to do this part -Awbluefy
-			#TODO:make pile of scrap appear if they happen to die while holding it -Pewweper
 			body.queue_free()
 
 func _on_attackrate_timeout() -> void:

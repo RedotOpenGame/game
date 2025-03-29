@@ -19,9 +19,11 @@ var enemy_list:Dictionary = {
 	#"Example":preload("path/to/enemy/scene.tscn"),
 	"Test_Enemy":preload("res://Scenes/entities/Enemies/test_enemy.tscn"),
 	"Shooter":preload("res://Scenes/entities/Enemies/shooting_enemy.tscn"),
+	"Shielder":preload("res://Scenes/entities/Enemies/shield_enemy.tscn"),
 	"Test_Boss":preload("res://Scenes/entities/Enemies/test_boss.tscn"),
 	"Test_Enemy_t2":preload("res://Scenes/entities/Enemies/test_enemy_tier_two.tscn"),
 	"Shooter_t2":preload("res://Scenes/entities/Enemies/shooting_enemy_tier_two.tscn"),
+	"Altefo":preload("res://Scenes/entities/Enemies/altefo_boss.tscn"),
 }
 var wave_structure:Dictionary = {
 	1:{"Test_Enemy":1},
@@ -29,11 +31,11 @@ var wave_structure:Dictionary = {
 	3:{"Test_Enemy":4, "Shooter":3},
 	4:{"Test_Enemy":3, "Shooter":5},
 	5:{"Test_Boss":1, "Test_Enemy":4},
-	6:{"Test_Enemy_t2":3, "Shooter":4},
-	7:{"Test_Enemy_t2":6, "Test_Enemy":10},
-	8:{"Shooter_t2":5, "Test_Enemy":12},
-	9:{"Test_Enemy":4, "Shooter":4, "Shooter_t2":4, "Test_Enemy_t2":4},
-	10:{"Test_Boss":3, "Shooter_t2":9, "Test_Enemy_t2":9},
+	6:{"Test_Enemy_t2":1, "Shooter":4, "Shielder":2},
+	7:{"Test_Enemy_t2":6, "Test_Enemy":5, "Shielder":4},
+	8:{"Test_Boss":1, "Shooter_t2":5, "Test_Enemy":12, "Shielder":3},
+	9:{"Test_Boss":1, "Test_Enemy":4, "Shooter":4, "Shooter_t2":4, "Test_Enemy_t2":4, "Shielder":5},
+	10:{"Altefo":1},
 }
 
 var spawn_points:int = 0

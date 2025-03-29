@@ -33,6 +33,7 @@ func _on_body_entered(body: Node3D) -> void:
 			queue_free()
 
 func _on_body_exited(body: Node3D) -> void:
-	if body.unit_type == 1:
-		curr_unit -= 1
-		constructor_req.text = str("Constructors in the area: ", curr_unit, "/", unit_req)
+	if "unit_type" in body:
+		if body.unit_type == 1:
+			curr_unit -= 1
+			constructor_req.text = str("Constructors in the area: ", curr_unit, "/", unit_req)

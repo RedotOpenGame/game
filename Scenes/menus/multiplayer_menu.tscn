@@ -76,6 +76,29 @@ offset_right = 145.0
 offset_bottom = 274.0
 text = "Enter name here:"
 
+[node name="ServerStuff" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 679.0
+offset_top = 68.0
+offset_right = 719.0
+offset_bottom = 108.0
+
+[node name="Address" type="LineEdit" parent="ServerStuff"]
+layout_mode = 0
+offset_right = 307.0
+offset_bottom = 31.0
+placeholder_text = "127.0.0.1"
+
+[node name="Port" type="SpinBox" parent="ServerStuff"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 84.0
+offset_right = 88.5625
+offset_bottom = 115.0
+max_value = 65535.0
+
 [connection signal="pressed" from="Stuff/HostGame" to="." method="_on_host_game_pressed"]
 [connection signal="pressed" from="Stuff/JoinGame" to="." method="_on_join_game_pressed"]
 [connection signal="pressed" from="Stuff/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="text_submitted" from="ServerStuff/Address" to="." method="_on_address_text_submitted"]
+[connection signal="value_changed" from="ServerStuff/Port" to="." method="_on_port_value_changed"]

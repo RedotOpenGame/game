@@ -22,6 +22,8 @@ height = 1.38802
 radius = 0.774802
 
 [node name="ResourcePile" type="CharacterBody3D" groups=["Resource"]]
+collision_layer = 12
+collision_mask = 27
 script = ExtResource("1_k3m5y")
 
 [node name="mesh" type="Node3D" parent="."]

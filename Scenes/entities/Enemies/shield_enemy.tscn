@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://un4dhmn7qero"]
+
+[ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="1_yfegr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jksmd"]
+size = Vector3(1, 1.5, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hq3uy"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lfxie"]
+material = SubResource("StandardMaterial3D_hq3uy")
+size = Vector3(1.05, 1.5, 0.3)
+
+[node name="ShieldEnemy" instance=ExtResource("1_yfegr")]
+
+[node name="AttackCollision" parent="DamageArea" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.35008)
+
+[node name="HitscanPreview" parent="DamageArea" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.3499)
+
+[node name="Shield" type="StaticBody3D" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.02156)
+collision_layer = 4
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shield" index="0"]
+shape = SubResource("BoxShape3D_jksmd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shield" index="1"]
+mesh = SubResource("BoxMesh_lfxie")
