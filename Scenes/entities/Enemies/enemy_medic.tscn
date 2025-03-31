@@ -1,4 +1,9 @@
-extends GeneralEntity
+[gd_scene load_steps=4 format=3 uid="uid://546jv5g03qxt"]
+
+[ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="1_4766n"]
+
+[sub_resource type="GDScript" id="GDScript_4766n"]
+script/source = "extends GeneralEntity
 
 @onready var health_label: Label3D = $HealthLabel
 @onready var attack_collision: CollisionShape3D = $DamageArea/AttackCollision
@@ -17,7 +22,7 @@ func _ready():
 	$EnemyBot.set_tier(enemy_tier)
 	spawned_point = global_position
 	# Get player from 'Player' group once at start
-	health_label.text = str("Health: ", health, "/", max_health)
+	health_label.text = str(\"Health: \", health, \"/\", max_health)
 
 func _process(delta: float) -> void:
 	if !is_on_floor():
@@ -25,7 +30,7 @@ func _process(delta: float) -> void:
 	if nearby_hostiles != []:
 		curr_target = find_closest_target()
 	if is_instance_valid(curr_target):
-		if !curr_target.is_in_group("Ally"):
+		if !curr_target.is_in_group(\"Hostile\"):
 			nearby_hostiles.erase(curr_target)
 		look_at(Vector3(curr_target.global_position.x, global_position.y, curr_target.global_position.z))
 		var preffered_position = curr_target.global_position
@@ -42,16 +47,12 @@ func _process(delta: float) -> void:
 			var direction = (spawned_point - global_position).normalized()
 			velocity.x = direction.x * movement_speed
 			velocity.z = direction.z * movement_speed
-	for i in get_tree().get_nodes_in_group("Important"):
-		if i.is_in_group("Ally"):
-			if i not in nearby_hostiles:
-				nearby_hostiles.append(i)
 	move_and_slide()
 
 func _on_damage_area_body_entered(body: Node3D) -> void:
-	if "damage_func" in body:
-		body.damage_func(damage)
-		attack_collision.set_deferred("disabled", true)
+	if \"damage_func\" in body:
+		body.heal_func(damage)
+		attack_collision.set_deferred(\"disabled\", true)
 		hitscan_preview.visible = false
 		attackrate.start()
 
@@ -68,7 +69,7 @@ func find_closest_target():
 	return null
 
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
-	if body.is_in_group("Ally"):
+	if body.is_in_group(\"Hostile\") and body != self:
 		nearby_hostiles.append(body)
 
 
@@ -79,19 +80,50 @@ func _on_hostile_seeker_body_exited(body: Node3D) -> void:
 
 func damage_func(amount:float) -> void:
 	health -= amount
-	health_label.text = str("Health: ", health, "/", max_health)
+	health_label.text = str(\"Health: \", health, \"/\", max_health)
 	if health <= 0:
 		death.rpc()
 		
 
-func heal_func(amount:float) -> void:
-	health = min(health + amount, max_health)
-	health_label.text = str("Health: ", health, "/", max_health)
-
-@rpc("any_peer", "call_local")
+@rpc(\"any_peer\", \"call_local\")
 func death() -> void:
 	queue_free()
 
 func _on_attackrate_timeout() -> void:
 	attack_collision.disabled = false
 	hitscan_preview.visible = true
+"
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4766n"]
+height = 6.0
+radius = 25.0
+
+[node name="EnemyMedic" instance=ExtResource("1_4766n")]
+script = SubResource("GDScript_4766n")
+movement_speed = 7.0
+damage = 20.0
+max_health = 60.0
+
+[node name="DamageArea" parent="." index="1"]
+collision_mask = 8
+
+[node name="HostileSeeker" parent="." index="5"]
+collision_layer = 4
+collision_mask = 8
+
+[node name="CollisionShape3D" parent="HostileSeeker" index="0"]
+shape = SubResource("CylinderShape3D_4766n")
+
+[node name="Label3D" type="Label3D" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98253, 0)
+billboard = 1
+text = "I am an enemy medic!!!
+"
+
+[node name="Label3D2" type="Label3D" parent="." index="8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58992, 0)
+billboard = 1
+modulate = Color(0, 1, 0, 1)
+text = "➕
+"
+font_size = 96

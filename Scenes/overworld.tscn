@@ -174,7 +174,6 @@ label_text = "Level 3 "
 
 [node name="TestEnemy" parent="." instance=ExtResource("3_1ww8i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.71138, 1.45254, -16.0271)
-max_health = 100.0
 
 [node name="ShootingEnemy" parent="." instance=ExtResource("5_4qj6l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.40558, 1.4545, -12.2736)

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://o0qg176pagng"]
+
+[ext_resource type="PackedScene" uid="uid://un4dhmn7qero" path="res://Scenes/entities/Enemies/shield_enemy.tscn" id="1_x0yex"]
+
+[node name="ShieldEnemyTierTwo" instance=ExtResource("1_x0yex")]
+enemy_tier = 2
+max_health = 120.0
+damage = 12.0
+
+[node name="Shield" parent="." index="7"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, -1.02156)

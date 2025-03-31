@@ -26,6 +26,8 @@ var enemy_list:Dictionary = {
 	"Test_Enemy_t2":preload("res://Scenes/entities/Enemies/test_enemy_tier_two.tscn"),
 	"Shooter_t2":preload("res://Scenes/entities/Enemies/shooting_enemy_tier_two.tscn"),
 	"Altefo":preload("res://Scenes/entities/Enemies/altefo_boss.tscn"),
+	"Shielder_t2":preload("res://Scenes/entities/Enemies/shield_enemy_tier_two.tscn"),
+	"Medic":preload("res://Scenes/entities/Enemies/enemy_medic.tscn"),
 }
 var wave_structure:Dictionary = {
 	1:{"Test_Enemy":1},
@@ -38,6 +40,11 @@ var wave_structure:Dictionary = {
 	8:{"Test_Boss":1, "Shooter_t2":5, "Test_Enemy":12, "Shielder":3},
 	9:{"Test_Boss":1, "Test_Enemy":4, "Shooter":4, "Shooter_t2":4, "Test_Enemy_t2":4, "Shielder":5},
 	10:{"Altefo":1},
+	12:{"Shooter":8, "Shooter_t2":6, "Shielder":12},
+	13:{"Test_Boss":2, "Shooter_t2":5, "Test_Enemy":9, "Test_Enemy_t2":6},
+	14:{"Shielder":15, "Shielder_t2":10},
+	15:{"Test_Boss":2, "Test_Enemy":12, "Test_Enemy_t2":4, "Medic":4},
+	16:{"Shooter":8, "Shooter_t2":6, "Shielder":15, "Medic":6},
 }
 
 var spawn_points:int = 0
@@ -79,7 +86,7 @@ func new_wave() -> void:
 			$Music.play()
 	spawn_points = curr_wave * 5
 	wave_counter.text = str("Wave: ", curr_wave)
-	if curr_wave > 10:
+	if !wave_structure.has(curr_wave):
 		wave_counter.text = str("Wave: no more lmao")
 		return
 	for i in wave_structure[curr_wave]:
