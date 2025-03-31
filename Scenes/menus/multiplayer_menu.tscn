@@ -59,6 +59,22 @@ offset_right = 213.0
 offset_bottom = 39.0
 text = "Hotkey:K"
 
+[node name="StartSurvival" type="Button" parent="Stuff"]
+layout_mode = 0
+offset_left = 355.0
+offset_top = 170.0
+offset_right = 508.0
+offset_bottom = 229.0
+text = "Start survival"
+
+[node name="HotkeyHelp" type="Label" parent="Stuff/StartSurvival"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 39.0
+text = "Hotkey:K"
+
 [node name="Entername" type="LineEdit" parent="Stuff"]
 layout_mode = 0
 offset_left = 8.0
@@ -100,5 +116,6 @@ max_value = 65535.0
 [connection signal="pressed" from="Stuff/HostGame" to="." method="_on_host_game_pressed"]
 [connection signal="pressed" from="Stuff/JoinGame" to="." method="_on_join_game_pressed"]
 [connection signal="pressed" from="Stuff/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="Stuff/StartSurvival" to="." method="_on_start_survival_pressed"]
 [connection signal="text_submitted" from="ServerStuff/Address" to="." method="_on_address_text_submitted"]
 [connection signal="value_changed" from="ServerStuff/Port" to="." method="_on_port_value_changed"]

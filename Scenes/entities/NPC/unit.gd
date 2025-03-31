@@ -138,8 +138,9 @@ func _physics_process(delta):
 			mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(-direction.x, -direction.z), 0.2)
 			velocity.x = direction.x * movement_speed
 			velocity.z = direction.z * movement_speed
-	if not is_on_floor() and !(unit_type == unit_types.AGRI and curr_logic == logic.THROWN):
+	if not is_on_floor() and !(unit_type == unit_types.AGRI and curr_logic == logic.THROWN) and !collision.disabled:
 		velocity += get_gravity() * delta
+		#collision.disabled = false
 	move_and_slide()
 	
 
@@ -197,7 +198,7 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 		hitscan_preview.visible = false
 		attackrate.start()
 	if body.is_in_group("Resource"):
-		print("Resouce found")
+		#print("Resouce found")
 		if(body.scrap - (max_resources - resources) > 0):
 			body.scrap -= (max_resources - resources)
 			resources = max_resources

@@ -1,5 +1,10 @@
 extends CharacterBody3D
 
+var bus_index_music:int
+var bus_index_sound:int
+var sound_bus_name:String = "SFX"
+var music_bus_name:String = "Music"
+
 var starting_building:PackedScene = preload("res://Scenes/entities/buildings/starting_building.tscn")
 var starting_building_placed:bool = false
 var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
@@ -12,6 +17,8 @@ var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/bl
 @onready var hostile_seeker: Area3D = $HostileSeeker
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var health_label: Label = $CanvasLayer/Health
+@onready var music_volume: HSlider = $CanvasLayer/MusicVolume
+
 enum unit_types{COMBAT,BUILDER,AGRI}
 
 @export var combatant_amount:int = 10
@@ -57,6 +64,11 @@ var unit = preload("res://Scenes/entities/NPC/unit.tscn")
 var nearby_hostiles:Array = []
 
 func _ready() -> void:
+	bus_index_music = AudioServer.get_bus_index("Music")
+	bus_index_sound = AudioServer.get_bus_index(sound_bus_name)
+	var value = AudioServer.get_bus_volume_db(bus_index_music)
+	music_volume.set_value_no_signal(db_to_linear(value))
+	print(bus_index_music)
 	camera.current = false
 	Gameplay.scrap = 0 #reset scrap every time player spawns... Oh. I don't think this should stay here, but for now, this is enough.
 	health_label.text = str("Health: ", health, "/", max_health)
@@ -126,6 +138,11 @@ func _input(event: InputEvent) -> void:
 			node.process_mode = Node.PROCESS_MODE_ALWAYS
 			node.reparent(get_tree().get_first_node_in_group("AllyContainer"))
 			build_help.visible = false
+	if Input.is_action_just_pressed("m"):
+		if music_volume.value != 0:
+			music_volume.value = 0
+		else:
+			music_volume.value = 1
 		#followers.pick_random().death()
 	#Temporarily implimentation: select unit type
 	if Input.is_key_pressed(KEY_1):
@@ -384,3 +401,10 @@ func _on_collect_units_body_entered(body: Node3D) -> void:
 func _on_call_units_body_entered(body: Node3D) -> void:
 	if(body.is_in_group("Unit") and Input.is_action_pressed("e") and body._leader == self):
 		body.curr_logic = 4
+
+
+func _on_music_volume_value_changed(value: float) -> void:
+			AudioServer.set_bus_volume_db(
+			bus_index_music,
+			linear_to_db(value)
+			)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=22 format=3 uid="uid://clpvr1kbs1f52"]
 
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ccpx5"]
 [ext_resource type="PackedScene" uid="uid://bevcp75fxaeuc" path="res://Scenes/meshes/dungeon_entrance.tscn" id="2_bbigu"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://c6mfi0s8avy8j" path="res://Scenes/entities/buildings/defence_turret.tscn" id="7_2ngsa"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="7_hf0oe"]
 [ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="9_auytq"]
+[ext_resource type="AudioStream" uid="uid://danaa3i47echq" path="res://assets/Music/Robotic Wasteland.mp3" id="10_c0h7r"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
 sky_top_color = Color(0.363219, 0.53037, 1, 1)
@@ -192,3 +193,11 @@ scrap = 10
 
 [node name="MainStructure" parent="." instance=ExtResource("9_auytq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8943, 0.25, 13.5545)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_c0h7r")
+volume_db = -10.0
+pitch_scale = 0.65
+autoplay = true
+bus = &"Music"
+parameters/looping = true

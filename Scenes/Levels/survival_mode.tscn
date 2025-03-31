@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dumawgyndqbdp"]
+[gd_scene load_steps=14 format=3 uid="uid://dumawgyndqbdp"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/survival_mode.gd" id="1_f1ks2"]
-[ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ldv0p"]
 [ext_resource type="PackedScene" uid="uid://cpru4ovaf6lfm" path="res://Scenes/entities/buildings/townhall.tscn" id="2_6cym4"]
 [ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="4_b17es"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="5_26u23"]
+[ext_resource type="AudioStream" uid="uid://cvl23hurraod" path="res://assets/Music/Empty Remains.mp3" id="5_j6txm"]
+[ext_resource type="AudioStream" uid="uid://big1lsndmuhae" path="res://assets/Music/Disassembly.mp3" id="6_347ve"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1ks2"]
 sky_top_color = Color(0.437432, 0, 0.164877, 1)
@@ -47,9 +48,6 @@ environment = SubResource("Environment_b17es")
 transform = Transform3D(-0.866025, -0.482963, 0.12941, 0, 0.258819, 0.965926, -0.5, 0.836516, -0.224144, 0, 0, 0)
 light_energy = 1.2
 shadow_enabled = true
-
-[node name="PlayerActor" parent="." instance=ExtResource("1_ldv0p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.27905, 1.47333, 19.6704)
 
 [node name="Entities" type="Node3D" parent="."]
 
@@ -139,6 +137,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22682, 2.72236, -40.909)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 19.4475)
 
 [node name="Allies" type="Node3D" parent="." groups=["AllyContainer"]]
+
+[node name="PlayerSpawnpoint" type="Marker3D" parent="." groups=["SpawnLocation"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.036, 2.50637, 18.2915)
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_j6txm")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+parameters/looping = true
+
+[node name="BossMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_347ve")
+volume_db = -10.0
+bus = &"Music"
+parameters/looping = true
 
 [connection signal="pressed" from="CanvasLayer/NewWaveNow" to="." method="_on_new_wave_now_pressed"]
 [connection signal="timeout" from="Intermission" to="." method="_on_intermission_timeout"]

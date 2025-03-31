@@ -4,8 +4,8 @@ extends Control
 @onready var port_ui: SpinBox = $ServerStuff/Port
 
 
-@export var Address = "172.30.76.117"
-@export var port = 16
+@export var Address = "127.0.0.1" #172.30.76.117
+@export var port = 16 # 0-65535
 var peer
 
 func _ready() -> void:
@@ -30,12 +30,12 @@ func _input(_event: InputEvent) -> void:
 			_on_start_game_pressed()
 
 @rpc("any_peer", "call_local") #this must be line above function we need RPC for.
-func StartGame() -> void:
+func StartGame(path) -> void:
 	#var player = player_char.instantiate()
 	#player.position = $PlayerSpawnpoint.position
 	#$PlayerSpawnpoint.add_child(player)
 	self.hide()
-	var scene = load("res://Scenes/Levels/multiplayer_test.tscn").instantiate()
+	var scene = load(path).instantiate()
 	get_tree().root.add_child(scene)
 	
 @rpc("any_peer")
@@ -136,7 +136,7 @@ func _on_join_game_pressed() -> void:
 
 
 func _on_start_game_pressed() -> void:
-	StartGame.rpc()
+	StartGame.rpc("res://Scenes/Levels/multiplayer_test.tscn")
 
 
 func _on_port_value_changed(value: float) -> void:
@@ -145,3 +145,7 @@ func _on_port_value_changed(value: float) -> void:
 
 func _on_address_text_submitted(new_text: String) -> void:
 	Address = new_text
+
+
+func _on_start_survival_pressed() -> void:
+	StartGame.rpc("res://Scenes/Levels/survival_mode.tscn")

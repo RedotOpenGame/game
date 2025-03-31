@@ -1,5 +1,7 @@
 extends Node3D
 
+var player_char = preload("res://Scenes/players/player_actor.tscn")
+
 @onready var enemy_spawnpoint: Marker3D = $EnemySpawnpoint
 @onready var enemies: Node3D = $Entities/Enemies
 @onready var intermission: Timer = $Intermission
@@ -42,6 +44,16 @@ var spawn_points:int = 0
 
 func _ready() -> void:
 	intermission_bar.max_value = intermission.wait_time
+	for i in MultiplayerHelper.Players:
+		var player = player_char.instantiate()
+		player.name = str(MultiplayerHelper.Players[i].id)
+		player.position = $PlayerSpawnpoint.position + Vector3(randi_range(-5, 5), 0, randi_range(-5, 5))
+		$Players.add_child(player)
+	if MultiplayerHelper.Players == {}:
+		var player = player_char.instantiate()
+		player.position = $PlayerSpawnpoint.global_position
+		$Players.add_child(player)
+
 
 func _process(delta: float) -> void:
 	if enemies.get_child_count() == 0 and !is_in_intermission:
@@ -53,8 +65,18 @@ func _process(delta: float) -> void:
 
 
 func new_wave() -> void:
+	for i in get_tree().get_nodes_in_group("Farm"):
+		i.get_resource()
+
 	is_in_intermission = false
 	curr_wave += 1
+	if curr_wave % 5 == 0:
+		$BossMusic.play()
+		$Music.stop()
+	else:
+		$BossMusic.stop()
+		if !$Music.playing:
+			$Music.play()
 	spawn_points = curr_wave * 5
 	wave_counter.text = str("Wave: ", curr_wave)
 	if curr_wave > 10:

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cvl23hurraod"
+path="res://.godot/imported/Empty Remains.mp3-109ca517908cbdb2a897ee82a874b23e.mp3str"
+
+[deps]
+
+source_file="res://assets/Music/Empty Remains.mp3"
+dest_files=["res://.godot/imported/Empty Remains.mp3-109ca517908cbdb2a897ee82a874b23e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -3,6 +3,7 @@ extends CharacterBody3D
 @onready var ui: CanvasLayer = $UI
 @onready var scrap_counter: Label3D = $ScrapCounter
 var defence_turret:PackedScene = preload("res://Scenes/entities/buildings/defence_turret.tscn")
+var mining_rig:PackedScene = preload("res://Scenes/entities/buildings/mining_rig.tscn")
 
 var track_body:CharacterBody3D #meant to track player mostly
 
@@ -60,3 +61,7 @@ func _on_make_constructor_pressed() -> void:
 
 func _on_build_turret_pressed() -> void:
 	track_body.get_blueprint(defence_turret, "Defence turret", 3, 5)
+
+
+func _on_build_mining_rig_pressed() -> void:
+	track_body.get_blueprint(mining_rig, "Mining rig", 5, 8)

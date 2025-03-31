@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://71fws1jvbyxx"]
+
+[ext_resource type="Script" path="res://Scenes/entities/buildings/mining_rig.gd" id="1_m38p7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1s1kw"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6jxpf"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bnyao"]
+material = SubResource("StandardMaterial3D_6jxpf")
+size = Vector3(1, 2, 1)
+
+[node name="MiningRig" type="CharacterBody3D" groups=["Farm"]]
+collision_layer = 2
+collision_mask = 43
+script = ExtResource("1_m38p7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_1s1kw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_bnyao")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50992, 0)
+billboard = 1
+text = "I am a mining rig. I give 2 scrap each time new wave starts."
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93551, 0)
+text = "Health:CURR/MAX
+"
