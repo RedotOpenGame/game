@@ -30,21 +30,26 @@ var enemy_list:Dictionary = {
 	"Medic":preload("res://Scenes/entities/Enemies/enemy_medic.tscn"),
 }
 var wave_structure:Dictionary = {
-	1:{"Test_Enemy":1},
-	2:{"Test_Enemy":6},
-	3:{"Test_Enemy":4, "Shooter":3},
-	4:{"Test_Enemy":3, "Shooter":5},
-	5:{"Test_Boss":1, "Test_Enemy":4},
-	6:{"Test_Enemy_t2":1, "Shooter":4, "Shielder":2},
-	7:{"Test_Enemy_t2":6, "Test_Enemy":5, "Shielder":4},
+	1:{"Test_Enemy":1}, #just a single enemy.
+	2:{"Test_Enemy":6}, #more of them.
+	3:{"Test_Enemy":4, "Shooter":3}, #enemies have guns now.
+	4:{"Test_Enemy":3, "Shooter":5}, #nothing new.
+	5:{"Test_Boss":1, "Test_Enemy":4}, #boss enemy???
+	6:{"Test_Enemy_t2":1, "Shooter":4, "Shielder":2}, #new tier, and also shielders to ruin your life
+	7:{"Test_Enemy_t2":6, "Test_Enemy":5, "Shielder":4}, #more of them are coming, no shooters
 	8:{"Test_Boss":1, "Shooter_t2":5, "Test_Enemy":12, "Shielder":3},
-	9:{"Test_Boss":1, "Test_Enemy":4, "Shooter":4, "Shooter_t2":4, "Test_Enemy_t2":4, "Shielder":5},
-	10:{"Altefo":1},
+	9:{"Test_Boss":1, "Test_Enemy":4, "Shooter":4, "Shooter_t2":4, "Test_Enemy_t2":4, "Shielder":5}, #little bit of this, little bit of that ahh wave
+	10:{"Altefo":1}, #Altefo is attacking!
+	11:{"Test_Enemy":12, "Test_Enemy_t2":8, "Shielder":5},
 	12:{"Shooter":8, "Shooter_t2":6, "Shielder":12},
 	13:{"Test_Boss":2, "Shooter_t2":5, "Test_Enemy":9, "Test_Enemy_t2":6},
 	14:{"Shielder":15, "Shielder_t2":10},
 	15:{"Test_Boss":2, "Test_Enemy":12, "Test_Enemy_t2":4, "Medic":4},
 	16:{"Shooter":8, "Shooter_t2":6, "Shielder":15, "Medic":6},
+	17:{"Shielder_t2":10, "Shooter_t2":13, "Shooter":7},
+	18:{"Shielder_t2":10, "Shooter_t2":17, "Test_Boss":2},
+	19:{"Shielder_t2":5, "Shielder":5, "Shooter_t2":5, "Shooter":5, "Test_Enemy_t2":5, "Test_Enemy":5, "Medic":5, "Test_Boss":5}, #little bit of this, little bit of that ahh wave part 2
+	20:{"Altefo":1, "Medic":5, "Test_Boss":3, "Test_Enemy_t2":14}, #altefo is back for fucking revenge, and he brought friends
 }
 
 var spawn_points:int = 0
