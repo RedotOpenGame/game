@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends GeneralEntity
 
 @onready var health_label: Label3D = $HealthLabel
 @onready var attackrate: Timer = $Attackrate
@@ -12,8 +12,6 @@ var nearby_hostiles:Array = []
 var curr_target:Node3D
 var can_fire:bool = true
 var spawned_point:Vector3 #the point I will return to.
-@export var max_health:float = 40
-@onready var health:float = max_health
 @export var damage:float = 5
 
 func _ready():
@@ -93,7 +91,11 @@ func damage_func(amount:float) -> void:
 	if health <= 0:
 		death()
 		
-		
+
+func heal_func(amount:float) -> void:
+	health = min(health + amount, max_health)
+	health_label.text = str("Health: ", health, "/", max_health)
+
 func death() -> void:
 	queue_free()
 

@@ -9,6 +9,7 @@ var starting_building:PackedScene = preload("res://Scenes/entities/buildings/sta
 var starting_building_placed:bool = false
 var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
 @onready var build_help: Label = $CanvasLayer/BuildHelp
+@onready var modular_guns: Node3D = $characterMesh/ModularGuns
 
 @onready var multi_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
@@ -17,7 +18,8 @@ var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/bl
 @onready var hostile_seeker: Area3D = $HostileSeeker
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var health_label: Label = $CanvasLayer/Health
-@onready var music_volume: HSlider = $CanvasLayer/MusicVolume
+@onready var music_volume: HSlider = $CanvasLayer/Pausemenu/MusicVolume
+@onready var pausemenu: Control = $CanvasLayer/Pausemenu
 
 enum unit_types{COMBAT,BUILDER,AGRI}
 
@@ -78,6 +80,7 @@ func _ready() -> void:
 	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
 	build_help.visible = false
 	throw_position_showcase.visible = false
+	pausemenu.visible = Gameplay.paused
 	if str(name) == "PlayerActor":
 		camera.make_current()
 		pass
@@ -168,6 +171,13 @@ func _input(event: InputEvent) -> void:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	if Input.is_action_just_pressed("esc"):
+		Gameplay.paused = !Gameplay.paused
+		pausemenu.visible = Gameplay.paused
+		if Gameplay.paused:
+			Engine.time_scale = 0.0001
+		else:
+			Engine.time_scale = 1
 
 func _process(_delta: float) -> void:
 	if name == "PlayerActor":
@@ -180,16 +190,22 @@ func _process(_delta: float) -> void:
 	var from = camera.project_ray_origin(mouse_pos)
 	var to = from + camera.project_ray_normal(mouse_pos) * ray_length
 	var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
+	var params = PhysicsRayQueryParameters3D.new()
+	params.from = from
+	params.to = to
+	var collision = get_world_3d().direct_space_state.intersect_ray(params)
+	var target_point = collision.position if collision else to
 	if cursor_pos_on_plane:
 		throw_position_showcase.global_position = cursor_pos_on_plane
-	if Input.is_action_pressed("left_click"):
-
-		if cursor_pos_on_plane:
-			
-			character.look_at(cursor_pos_on_plane)
+	if Input.is_action_pressed("left_click") and !Gameplay.paused:
+		anim.play("attack")
+		if target_point:
+			for i in modular_guns.get_children():
+				i.shoot(target_point)
+			character.look_at(target_point)
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
 				unit_throw.rpc(cursor_pos_on_plane)
-		anim.play("attack")
+
 	if(Input.is_action_pressed("e")):
 		if cursor_pos_on_plane:
 			unit_call_collision.global_position = cursor_pos_on_plane
@@ -244,7 +260,7 @@ func _physics_process(delta: float) -> void:
 		# As bad practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("a", "d", "w", "s").rotated(-cam_yaw.rotation.y)
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
+	if direction and !Gameplay.paused:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		character.rotation.y = lerp_angle(character.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
@@ -413,3 +429,19 @@ func _on_music_volume_value_changed(value: float) -> void:
 			bus_index_music,
 			linear_to_db(value)
 			)
+
+func add_module(scene:PackedScene) -> bool:
+	var inst = scene.instantiate()
+	for i in modular_guns.get_children():
+		if inst.name == i.name:
+			return false
+	modular_guns.add_child(inst)
+	return true
+
+func _on_resune_pressed() -> void:
+	Gameplay.paused = false
+	pausemenu.visible = Gameplay.paused
+	if Gameplay.paused:
+		Engine.time_scale = 0.0001
+	else:
+		Engine.time_scale = 1

@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends GeneralEntity
 
 var bullet_scene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet.tscn")
 
@@ -16,8 +16,6 @@ var bullet_scene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet
 var Jump_power:float = 8
 var speed:float = 4
 var retreat_speed:float = 2
-var max_health:float = 1000
-var health:float = max_health
 var curr_target:Node3D
 
 const max_ammo:int = 30
@@ -87,7 +85,11 @@ func damage_func(amount:float) -> void:
 	if health <= 0:
 		death()
 		
-		
+
+func heal_func(amount:float) -> void:
+	health = min(health + amount, max_health)
+	health_label.text = str("Health: ", health, "/", max_health)
+
 func death() -> void:
 	queue_free()
 

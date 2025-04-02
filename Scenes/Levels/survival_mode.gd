@@ -10,6 +10,7 @@ var player_char = preload("res://Scenes/players/player_actor.tscn")
 @onready var resources: Node3D = $Entities/Resources
 @onready var intermission_bar: ProgressBar = $CanvasLayer/IntermissionBar
 
+const second_part_music = "res://assets/Music/Robotic Wasteland.mp3"
 
 var resource_pile_scene:PackedScene = preload("res://Scenes/misc/resource_pile.tscn")
 #resources will spawn every new wave so player could collect them and make new bots
@@ -79,9 +80,12 @@ func _process(delta: float) -> void:
 func new_wave() -> void:
 	for i in get_tree().get_nodes_in_group("Farm"):
 		i.get_resource()
-
+	
+	
 	is_in_intermission = false
 	curr_wave += 1
+	if curr_wave == 10:
+		$Music.stream = load(second_part_music)
 	if curr_wave % 5 == 0:
 		$BossMusic.play()
 		$Music.stop()

@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var scrap_counter: Label3D = $ScrapCounter
 var defence_turret:PackedScene = preload("res://Scenes/entities/buildings/defence_turret.tscn")
 var mining_rig:PackedScene = preload("res://Scenes/entities/buildings/mining_rig.tscn")
+var shoulder_gun:PackedScene = preload("res://Scenes/players/upgrades/shouldergun.tscn")
 
 var track_body:CharacterBody3D #meant to track player mostly
 
@@ -65,3 +66,10 @@ func _on_build_turret_pressed() -> void:
 
 func _on_build_mining_rig_pressed() -> void:
 	track_body.get_blueprint(mining_rig, "Mining rig", 5, 8)
+
+
+func _on_add_shoulder_gun_pressed() -> void:
+	if Gameplay.scrap >= 6:
+		var returnage = track_body.add_module(shoulder_gun)
+		if returnage:
+			Gameplay.scrap -= 6

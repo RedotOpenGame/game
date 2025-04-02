@@ -100,6 +100,10 @@ text = "BuildTurret: 5 scrap
 layout_mode = 2
 text = "Build mining rig: 8 scrap"
 
+[node name="AddShoulderGun" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Add a gun to yourself: 6 scrap"
+
 [connection signal="body_entered" from="interactionArea" to="." method="_on_interaction_area_body_entered"]
 [connection signal="body_exited" from="interactionArea" to="." method="_on_interaction_area_body_exited"]
 [connection signal="pressed" from="UI/Remove" to="." method="_on_remove_pressed"]
@@ -108,3 +112,4 @@ text = "Build mining rig: 8 scrap"
 [connection signal="pressed" from="UI/UnitMaker/MakeConstructor" to="." method="_on_make_constructor_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildTurret" to="." method="_on_build_turret_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMiningRig" to="." method="_on_build_mining_rig_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/AddShoulderGun" to="." method="_on_add_shoulder_gun_pressed"]
