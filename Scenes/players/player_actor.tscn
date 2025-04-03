@@ -1,12 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=21 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_cj8p5"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_cstqs"]
-size = Vector3(0.3, 0.3, 1.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o1g43"]
 
@@ -16,15 +11,6 @@ albedo_color = Color(1, 1, 1, 0.14902)
 
 [sub_resource type="BoxMesh" id="BoxMesh_gv87a"]
 material = SubResource("StandardMaterial3D_qow3q")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1g43"]
-emission_enabled = true
-emission = Color(1, 1, 1, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_o1g43"]
-material = SubResource("StandardMaterial3D_o1g43")
-bottom_radius = 0.7
-height = 0.1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cstqs"]
 
@@ -165,22 +151,20 @@ properties/14/path = NodePath("characterMesh/DamageArea:monitoring")
 properties/14/spawn = true
 properties/14/replication_mode = 1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1g43"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_o1g43"]
+material = SubResource("StandardMaterial3D_o1g43")
+bottom_radius = 0.7
+height = 0.1
+
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
 collision_mask = 45
 script = ExtResource("1_cstqs")
 
 [node name="characterMesh" type="Node3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="characterMesh"]
-visible = false
-mesh = SubResource("CapsuleMesh_cj8p5")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="characterMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.672932, 0, -0.43058)
-visible = false
-mesh = SubResource("BoxMesh_cstqs")
-skeleton = NodePath("../..")
 
 [node name="AllyBot" parent="characterMesh" instance=ExtResource("2_o1g43")]
 transform = Transform3D(-0.533594, 0, -4.66483e-08, 0, 0.533594, 0, 4.66483e-08, 0, -0.533594, 0.00765601, -0.785634, -0.00859171)
@@ -199,18 +183,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.174)
 visible = false
 mesh = SubResource("BoxMesh_gv87a")
 
-[node name="ThrowLocation" type="Node3D" parent="characterMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
-
 [node name="BuildingMarker" type="Marker3D" parent="characterMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.17859)
 
-[node name="ThrowPositionShowcase" type="MeshInstance3D" parent="characterMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
-mesh = SubResource("CylinderMesh_o1g43")
-skeleton = NodePath("../ThrowLocation")
-
 [node name="ModularGuns" type="Node3D" parent="characterMesh"]
+
+[node name="ThrowLocation" type="Node3D" parent="characterMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cstqs")
@@ -420,6 +399,11 @@ replication_config = SubResource("SceneReplicationConfig_o1g43")
 [node name="Respawn" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="ThrowPositionShowcase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
+mesh = SubResource("CylinderMesh_o1g43")
+skeleton = NodePath("../characterMesh/ThrowLocation")
 
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="pressed" from="CanvasLayer/Pausemenu/Resune" to="." method="_on_resune_pressed"]

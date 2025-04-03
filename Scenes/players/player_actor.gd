@@ -28,7 +28,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @export var agriculture_amount:int = 10
 
 @onready var throw_location: Node3D = $characterMesh/ThrowLocation
-@onready var throw_position_showcase: MeshInstance3D = $characterMesh/ThrowPositionShowcase
+@onready var throw_position_showcase: MeshInstance3D = $ThrowPositionShowcase
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 @onready var combatant_amount_label: Label = $CanvasLayer/Labels/CombatantAmount
@@ -70,7 +70,6 @@ func _ready() -> void:
 	bus_index_sound = AudioServer.get_bus_index(sound_bus_name)
 	var value = AudioServer.get_bus_volume_db(bus_index_music)
 	music_volume.set_value_no_signal(db_to_linear(value))
-	print(bus_index_music)
 	camera.current = false
 	Gameplay.scrap = 0 #reset scrap every time player spawns... Oh. I don't think this should stay here, but for now, this is enough.
 	health_label.text = str("Health: ", health, "/", max_health)
@@ -195,8 +194,9 @@ func _process(_delta: float) -> void:
 	params.to = to
 	var collision = get_world_3d().direct_space_state.intersect_ray(params)
 	var target_point = collision.position if collision else to
-	if cursor_pos_on_plane:
-		throw_position_showcase.global_position = cursor_pos_on_plane
+	if target_point:
+		throw_position_showcase.global_position = target_point
+		
 	if Input.is_action_pressed("left_click") and !Gameplay.paused:
 		anim.play("attack")
 		if target_point:
@@ -204,7 +204,7 @@ func _process(_delta: float) -> void:
 				i.shoot(target_point)
 			character.look_at(target_point)
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
-				unit_throw.rpc(cursor_pos_on_plane)
+				unit_throw.rpc(target_point)
 
 	if(Input.is_action_pressed("e")):
 		if cursor_pos_on_plane:
@@ -264,6 +264,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		character.rotation.y = lerp_angle(character.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
+		character.rotation.x = 0
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)

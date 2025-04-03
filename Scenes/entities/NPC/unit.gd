@@ -17,7 +17,7 @@ var curr_logic = logic.THROWN
 @onready var attackrate: Timer = $Attackrate
 @onready var ThrowTime: Timer = $ThrowTime
 @onready var hitscan_preview: MeshInstance3D = $characterMesh/DamageArea/HitscanPreview
-@export var throw_speed: float
+@export var throw_speed: float = 20
 @onready var mesh = $characterMesh
 @onready var collision = $CollisionShape3D
 @onready var resources = 0
@@ -51,7 +51,7 @@ func _ready() -> void:
 			var vx = horizontal_displacement.x / 1
 			var vz = horizontal_displacement.z / 1
 			var vy = (displacement.y / 1) + (0.5 * ProjectSettings.get("physics/3d/default_gravity") * 1)
-			velocity = Vector3(vx,vy,vz)
+			velocity = Vector3(vx,vy,vz).limit_length(throw_speed)
 			type_showcase.text = "TYPE: Combatant"
 		unit_types.BUILDER:
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.BUILDER]
@@ -59,7 +59,8 @@ func _ready() -> void:
 			type_showcase.text = "TYPE: Constructor"
 		unit_types.AGRI:
 			mesh.set_visible(false)
-			collision.disabled = true
+			#collision.disabled = true
+			collision_mask = 4
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.AGRI]
 			ThrowTime.start()
 			type_showcase.text = "TYPE: Collector"
@@ -220,6 +221,7 @@ func _on_throw_time_timeout() -> void:
 		unit_types.AGRI:
 			curr_logic = logic.IDLE
 			mesh.set_visible(true)
-			collision.disabled = false
+			#collision.disabled = false
+			collision_mask = 45
 			velocity.y = 4
 			

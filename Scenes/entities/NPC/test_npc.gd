@@ -14,10 +14,10 @@ func interaction() -> void:
 func _on_interactable_body_entered(body: Node3D) -> void:
 	if body.name == "PlayerActor":
 		label_3d.visible = true
-		body.interact_target = self
+		body.add_interactable(self)
 
 
 func _on_interactable_body_exited(body: Node3D) -> void:
 	if body.name == "PlayerActor":
 		label_3d.visible = false
-		body.interact_target = null
+		body.remove_interactable(self)

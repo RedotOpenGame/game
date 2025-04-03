@@ -49,7 +49,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00816488, 0, -0.00135088)
 collision_layer = 2
 collision_mask = 45
 script = ExtResource("1_6pfcw")
-throw_speed = 5.0
 max_resources = 3
 max_health = 40.0
 
