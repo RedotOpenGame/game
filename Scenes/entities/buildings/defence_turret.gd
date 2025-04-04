@@ -19,7 +19,7 @@ var can_fire:bool = true
 func _ready():
 	health_label.text = str("Health: ", health, "/", max_health)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	curr_target = find_closest_target()
 	if is_instance_valid(curr_target):
 		barrel.look_at(curr_target.global_position)

@@ -92,12 +92,22 @@ text = "Wave: 0"
 label_settings = SubResource("LabelSettings_wktxd")
 
 [node name="NewWaveNow" type="Button" parent="CanvasLayer"]
+visible = false
 offset_left = 1.0
 offset_top = 59.0
 offset_right = 139.0
 offset_bottom = 110.0
 text = "[DEBUG]
 NEW WAVE NOW"
+
+[node name="KillAllEnemies" type="Button" parent="CanvasLayer"]
+visible = false
+offset_left = 5.0
+offset_top = 113.0
+offset_right = 129.0
+offset_bottom = 167.0
+text = "[DEBUG]
+Kill all enemies"
 
 [node name="IntermissionBar" type="ProgressBar" parent="CanvasLayer"]
 anchors_preset = 3
@@ -259,6 +269,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 2.722, 20)
 [node name="VoteTimer" type="Timer" parent="."]
 
 [connection signal="pressed" from="CanvasLayer/NewWaveNow" to="." method="_on_new_wave_now_pressed"]
+[connection signal="pressed" from="CanvasLayer/KillAllEnemies" to="." method="_on_kill_all_enemies_pressed"]
 [connection signal="pressed" from="CanvasLayer/SelectMode/SingleEntrance" to="." method="_on_single_entrance_pressed"]
 [connection signal="pressed" from="CanvasLayer/SelectMode/MultipleEntrance2" to="." method="_on_multiple_entrance_2_pressed"]
 [connection signal="timeout" from="Intermission" to="." method="_on_intermission_timeout"]

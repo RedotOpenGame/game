@@ -15,7 +15,7 @@ func _ready() -> void:
 	ui.visible = false
 	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
 func placed_down() -> void:

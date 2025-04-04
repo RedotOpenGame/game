@@ -16,7 +16,7 @@ func _ready() -> void:
 	constructor_req.text = str("Constructors in the area: ", curr_unit, "/", unit_req)
 	scrap_cost.text = str("Scrap cost: ", Gameplay.scrap, "/", build_cost)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	scrap_cost.text = str("Scrap cost: ", Gameplay.scrap, "/", build_cost)
 
 func _on_body_entered(body: Node3D) -> void:
