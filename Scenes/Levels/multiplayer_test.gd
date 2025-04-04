@@ -90,8 +90,8 @@ func resolve_ip():
 		print("Failed to resolve domain: ", domain)
 		return ""  # Return empty if resolution fails
 
-func UPnP_setup() -> void: #Doesn't work for me - Pewweper
-	var upnp = UPNP.new()
+func UPnP_setup() -> void: #Doesn't work for me - Pewweper 
+	var upnp = UPNP.new() #Because I'm under CGNAT - Pewweper
 	
 	var discover_result = upnp.discover()
 	assert(discover_result == UPNP.UPNP_RESULT_SUCCESS, \

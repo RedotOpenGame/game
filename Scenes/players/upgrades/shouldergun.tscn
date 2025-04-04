@@ -33,7 +33,7 @@ mesh = SubResource("CylinderMesh_rk5c2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.772281, 1.28765, -0.277935)
 
 [node name="Firerate" type="Timer" parent="."]
-wait_time = 0.8
+wait_time = 0.4
 one_shot = true
 
 [connection signal="timeout" from="Firerate" to="." method="_on_firerate_timeout"]

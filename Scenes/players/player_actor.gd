@@ -173,10 +173,11 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("esc"):
 		Gameplay.paused = !Gameplay.paused
 		pausemenu.visible = Gameplay.paused
-		if Gameplay.paused:
-			Engine.time_scale = 0.0001
-		else:
-			Engine.time_scale = 1
+		if str(name) == "ActorPlayer":
+			if Gameplay.paused:
+				Engine.time_scale = 0.0001
+			else:
+				Engine.time_scale = 1
 
 func _process(_delta: float) -> void:
 	if name == "PlayerActor":
@@ -387,7 +388,7 @@ func _on_hostile_seeker_body_exited(body: Node3D) -> void:
 func _on_mercy_frame_timeout() -> void:
 	can_be_hit = true
 
-@rpc("call_local")
+
 func get_unit(amount, type) -> void:
 	match type:
 		0: #combatants
@@ -404,21 +405,27 @@ func get_unit(amount, type) -> void:
 			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 
 func _on_collect_units_body_entered(body: Node3D) -> void:
-	if(body.is_in_group("Unit") and (body.curr_logic == 4 or body.curr_logic == 2) and body._leader == self and !body.is_collected):
+	if(body.is_in_group("Unit") and (body.curr_logic == 4 or body.curr_logic == 2) and body._leader == self):
+		unit_collection.rpc(body)
+
+@rpc("call_local", "any_peer")
+func unit_collection(body) -> void:
+	if body is CharacterBody3D:
 		match body.unit_type:
 			0:
 				body.collection.rpc(self)
 				#body.is_collected = true
 				#body.death_func.rpc()
 			1:
-				get_unit.rpc(1, body.unit_type)
-				body.is_collected = true
-				body.death_func.rpc()
+				body.collection.rpc(self)
+				#get_unit.rpc(1, body.unit_type)
+				#body.is_collected = true
+				#body.death_func.rpc()
 			2:
-				get_unit.rpc(1, body.unit_type)
-				body.is_collected = true
-				body.death_func.rpc()
-
+				body.collection.rpc(self)
+				#get_unit.rpc(1, body.unit_type)
+				#body.is_collected = true
+				#body.death_func.rpc()
 
 func _on_call_units_body_entered(body: Node3D) -> void:
 	if(body.is_in_group("Unit") and Input.is_action_pressed("e") and body._leader == self):

@@ -186,8 +186,13 @@ func death_func() -> void:
 
 @rpc("any_peer", "call_local")
 func collection(body) -> void:
-	if "get_unit" in body:
+	if "get_unit" in body and !is_collected:
+		is_collected = true
 		body.get_unit(1, unit_type)
+		process_mode = Node.PROCESS_MODE_DISABLED
+		var tween = get_tree().create_tween()
+		tween.tween_property(mesh, "scale", Vector3(0.01, 0.01, 0.01), 0.5)
+		await tween.finished
 		death_func.rpc()
 
 

@@ -16,6 +16,7 @@ func shoot(target_point) -> void:
 		scene.damage = damage
 		scene.position = marker_3d.global_position
 		scene.rotation = global_rotation
+		scene.penetrating = true
 		scene.direction = direction
 		get_tree().current_scene.add_child(scene)
 

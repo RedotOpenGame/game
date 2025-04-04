@@ -3,6 +3,7 @@ extends GeneralEntity
 @onready var health_label: Label3D = $HealthLabel
 @onready var attackrate: Timer = $Attackrate
 @onready var gun_barrel: Marker3D = $"Pistol?/GunBarrel"
+@onready var damage:float = 0.0
 
 var bullet_scene:PackedScene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet.tscn")
 
@@ -39,6 +40,7 @@ func _process(delta: float) -> void:
 					var scene = bullet_scene.instantiate()
 					scene.position = gun_barrel.global_position
 					scene.direction = direction.rotated(Vector3(0, 1, 0), deg_to_rad(randf_range(-spread, spread)))
+					scene.damage = damage
 					scene.rotation = global_rotation.rotated(Vector3(0, 1, 0), deg_to_rad(spread))
 					get_tree().root.add_child(scene)
 				can_fire = false
