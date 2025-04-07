@@ -23,7 +23,7 @@ func heal_func(amount:float) -> void:
 func death():
 	queue_free()
 
-func find_closest_target(targetArea: Area3D, targetTag: String) -> GeneralEntity:
+func find_closest_target(targetArea: Area3D, targetTag: String) -> CharacterBody3D:
 	var bodies = targetArea.get_overlapping_bodies()
 	if bodies.is_empty():
 		return null
