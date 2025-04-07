@@ -42,7 +42,7 @@ func _ready() -> void:
 		push_error("Unit has no established leader node.")
 		return
 	#_leader.signal_follow(self)
-	resource_repo = get_tree().current_scene.find_child("MainStructure", true, true)
+	resource_repo = get_tree().get_first_node_in_group("ResourceRepo")
 		
 	var displacement = throw_target - global_position
 	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
@@ -184,6 +184,10 @@ func death_func() -> void:
 		_leader.ally_died(self)
 	queue_free()
 
+
+@onready var death_timer: Timer = $DeathTimer #needed for multiplayer
+
+
 @rpc("any_peer", "call_local")
 func collection(body) -> void:
 	if "get_unit" in body and !is_collected:
@@ -193,8 +197,15 @@ func collection(body) -> void:
 		var tween = get_tree().create_tween()
 		tween.tween_property(mesh, "scale", Vector3(0.01, 0.01, 0.01), 0.5)
 		await tween.finished
+		#visible = false
+		#remove_from_group("Ally")
 		death_func.rpc()
-
+		#var twee2 = get_tree().create_tween()
+		#twee2.tween_property(mesh, "scale", Vector3(1, 1, 1), 1) #totally irrelevant, just needed to stall for info update for less errors.
+		#print("last tween")
+		#await twee2.finished
+		#print("kill unit")
+		
 
 
 func _on_damage_area_body_entered(body: Node3D) -> void:

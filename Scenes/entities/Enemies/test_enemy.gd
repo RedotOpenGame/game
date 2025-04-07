@@ -4,6 +4,7 @@ extends GeneralEntity
 @onready var attack_collision: CollisionShape3D = $DamageArea/AttackCollision
 @onready var hitscan_preview: MeshInstance3D = $DamageArea/HitscanPreview
 @onready var attackrate: Timer = $Attackrate
+@onready var hostile_seeker:Area3D = $HostileSeeker
 
 @export var movement_speed: float = 4.0
 
@@ -23,7 +24,7 @@ func _process(delta: float) -> void:
 	if !is_on_floor():
 		velocity += get_gravity() * delta
 	if nearby_hostiles != []:
-		curr_target = find_closest_target()
+		curr_target = find_closest_target(hostile_seeker, "Ally")
 	if is_instance_valid(curr_target):
 		if !curr_target.is_in_group("Ally"):
 			nearby_hostiles.erase(curr_target)
@@ -56,16 +57,16 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 		attackrate.start()
 
 
-func find_closest_target():
-	var returnage #whatever will be returned, idfk
-	var closest:float = INF
-	for i in nearby_hostiles:
-		if i.global_position.distance_to(global_position) < closest:
-			returnage = i
-			closest = i.global_position.distance_to(global_position)
-	if returnage:
-		return returnage
-	return null
+#func find_closest_target():
+	#var returnage #whatever will be returned, idfk
+	#var closest:float = INF
+	#for i in nearby_hostiles:
+		#if i.global_position.distance_to(global_position) < closest:
+			#returnage = i
+			#closest = i.global_position.distance_to(global_position)
+	#if returnage:
+		#return returnage
+	#return null
 
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Ally"):

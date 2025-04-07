@@ -2,11 +2,12 @@ extends CharacterBody3D
 
 @onready var ui: CanvasLayer = $UI
 @onready var scrap_counter: Label3D = $ScrapCounter
+
 var defence_turret:PackedScene = preload("res://Scenes/entities/buildings/defence_turret.tscn")
 var mining_rig:PackedScene = preload("res://Scenes/entities/buildings/mining_rig.tscn")
 var shoulder_gun:PackedScene = preload("res://Scenes/players/upgrades/shouldergun.tscn")
 
-var track_body:CharacterBody3D #meant to track player mostly
+var owning_player:CharacterBody3D # tracking player
 
 func _ready() -> void:
 	ui.visible = false
@@ -15,22 +16,27 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
-func interaction() -> void:
-	if is_instance_valid(track_body):
-		Gameplay.scrap += track_body.remove_scrap()
+@rpc("any_peer")
+func interaction(body) -> void:
+	if is_instance_valid(body):
+		Gameplay.scrap += body.remove_scrap()
 		scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
 func _on_interaction_area_body_entered(body: Node3D) -> void:
-	if body.name == "PlayerActor":
-		ui.visible = true
-		track_body = body
+	if "add_interactable" in body and body == owning_player:
+		var peer_id = int(str(body.name))
+		ui_thing.rpc_id(peer_id, true)
 		body.add_interactable(self)
 
 func _on_interaction_area_body_exited(body: Node3D) -> void:
-	if body.name == "PlayerActor":
-		ui.visible = false
-		track_body = null
+	if "add_interactable" in body:
+		var peer_id = int(str(body.name))
+		ui_thing.rpc_id(peer_id, false)
 		body.remove_interactable(self)
+
+@rpc("any_peer", "call_local")
+func ui_thing(boolean:bool) -> void:
+	ui.visible = boolean
 
 func check_balance(num:int) -> bool:
 	if Gameplay.scrap >= num:
@@ -40,36 +46,33 @@ func check_balance(num:int) -> bool:
 	return false
 
 func _on_remove_pressed() -> void:
-	track_body.starting_building_placed = false
+	fucking_die.rpc()
+@rpc("any_peer", "call_local")
+func fucking_die() -> void:
+	owning_player.starting_building_placed = false
 	queue_free()
-
 
 func _on_make_combatant_pressed() -> void:
 	if check_balance(3):
-		track_body.get_unit(1, 0)
-
-
+		owning_player.get_unit(1, 0)
 func _on_make_collector_pressed() -> void:
 	if check_balance(3):
-		track_body.get_unit(1, 2)
-
-
+		owning_player.get_unit(1, 2)
 func _on_make_constructor_pressed() -> void:
 	if check_balance(3):
-		track_body.get_unit(1, 1)
-	
-
+		owning_player.get_unit(1, 1)
 
 func _on_build_turret_pressed() -> void:
-	track_body.get_blueprint(defence_turret, "Defence turret", 3, 5)
-
-
+	IHateThis.rpc("defence_turret", "Defence turret", 3, 5)
 func _on_build_mining_rig_pressed() -> void:
-	track_body.get_blueprint(mining_rig, "Mining rig", 5, 8)
-
-
+	IHateThis.rpc("mining_rig", "Mining rig", 5, 8)
 func _on_add_shoulder_gun_pressed() -> void:
 	if Gameplay.scrap >= 6:
-		var returnage = track_body.add_module(shoulder_gun)
-		if returnage:
-			Gameplay.scrap -= 6
+		HangTheDeveloper.rpc()
+
+@rpc("any_peer", "call_local")
+func HangTheDeveloper() -> void:
+	owning_player.add_module.rpc(shoulder_gun, 6)
+@rpc("any_peer")
+func IHateThis(scene, string, work_req, price) -> void:
+	owning_player.get_blueprint.rpc(scene, string, work_req, price)

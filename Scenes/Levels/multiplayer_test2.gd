@@ -10,6 +10,7 @@ func _ready() -> void:
 		player.name = str(MultiplayerHelper.Players[i].id)
 		player.position = $PlayerSpawnpoint.position + Vector3(randi_range(-5, 5), 0, randi_range(-5, 5))
 		$PlayerSpawnpoint.add_child(player)
+		Gameplay.scrap = 666
 
 
 func _on_multiplayer_spawner_despawned(node: Node) -> void:

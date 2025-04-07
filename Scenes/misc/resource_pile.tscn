@@ -22,12 +22,9 @@ height = 1.38802
 radius = 0.774802
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_k3m5y"]
-properties/0/path = NodePath(".:scrap")
+properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath(".:position")
-properties/1/spawn = true
-properties/1/replication_mode = 1
 
 [node name="ResourcePile" type="CharacterBody3D" groups=["Resource"]]
 collision_layer = 12

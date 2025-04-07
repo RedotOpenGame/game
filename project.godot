@@ -18,9 +18,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Gameplay="*res://Globals/Gameplay.gd"
 CyclopsAutoload="*res://addons/cyclops_level_builder/cyclops_global_scene.tscn"
 MultiplayerHelper="*res://Globals/MultiplayerHelper.gd"
+Gameplay="*res://Globals/Gameplay.tscn"
 
 [dotnet]
 
@@ -39,6 +39,8 @@ Important="Meant for the AI to mark something as important. They will try and in
 AllyContainer="Meant to contain ally units under it."
 Unit=""
 Resource=""
+ResourceRepo="Where the units are supposed to bring resources."
+PlayerWorkshop="player's workshop. Tracked to be removed when player leaves."
 
 [input]
 

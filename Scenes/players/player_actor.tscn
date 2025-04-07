@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=22 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -126,21 +126,18 @@ properties/5/replication_mode = 1
 properties/6/path = NodePath(".:selected_unit_type")
 properties/6/spawn = true
 properties/6/replication_mode = 1
-properties/7/path = NodePath(".:SPEED")
+properties/7/path = NodePath("CallUnits:position")
 properties/7/spawn = true
 properties/7/replication_mode = 1
-properties/8/path = NodePath("CallUnits:position")
+properties/8/path = NodePath(".:collision_mask")
 properties/8/spawn = true
 properties/8/replication_mode = 1
-properties/9/path = NodePath(".:JUMP_VELOCITY")
+properties/9/path = NodePath("characterMesh/DamageArea:monitoring")
 properties/9/spawn = true
 properties/9/replication_mode = 1
-properties/10/path = NodePath(".:collision_mask")
+properties/10/path = NodePath("characterMesh/BuildingMarker:position")
 properties/10/spawn = true
 properties/10/replication_mode = 1
-properties/11/path = NodePath("characterMesh/DamageArea:monitoring")
-properties/11/spawn = true
-properties/11/replication_mode = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1g43"]
 emission_enabled = true
@@ -150,6 +147,9 @@ emission = Color(1, 1, 1, 1)
 material = SubResource("StandardMaterial3D_o1g43")
 bottom_radius = 0.7
 height = 0.1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gv87a"]
+radius = 1.42888
 
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
 collision_mask = 45
@@ -396,6 +396,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
 mesh = SubResource("CylinderMesh_o1g43")
 skeleton = NodePath("../characterMesh/ThrowLocation")
 
+[node name="DoneNothing" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="InteractArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea"]
+shape = SubResource("CylinderShape3D_gv87a")
+
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="pressed" from="CanvasLayer/Pausemenu/Resune" to="." method="_on_resune_pressed"]
 [connection signal="value_changed" from="CanvasLayer/Pausemenu/MusicVolume" to="." method="_on_music_volume_value_changed"]
@@ -405,3 +414,6 @@ skeleton = NodePath("../characterMesh/ThrowLocation")
 [connection signal="body_entered" from="CollectUnits" to="." method="_on_collect_units_body_entered"]
 [connection signal="body_entered" from="CallUnits" to="." method="_on_call_units_body_entered"]
 [connection signal="timeout" from="Respawn" to="." method="_on_respawn_timeout"]
+[connection signal="timeout" from="DoneNothing" to="." method="_on_done_nothing_timeout"]
+[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]

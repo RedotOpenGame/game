@@ -25,17 +25,19 @@ func placed_down() -> void:
 	for i in get_tree().get_nodes_in_group("Ally"):
 		i._ready()
 
-
-func interaction() -> void:
-	if is_instance_valid(track_body):
-		Gameplay.scrap += track_body.remove_scrap()
+@rpc("any_peer", "call_local")
+func interaction(body) -> void:
+	if is_instance_valid(body) and !("get_object_id" in body):
+		var value = body.curr_scrap
+		body.remove_scrap.rpc()
+		Gameplay.plus_scrap.rpc(value)
+		print(value, " scrap added by: ", body.name)
 		scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
 
 func _on_interaction_area_body_entered(body: Node3D) -> void:
-	if body.name == "PlayerActor":
+	if "add_interactable" in body:
 		ui.visible = true
-		track_body = body
 		body.add_interactable(self)
 	if body.is_in_group("Unit"):
 		Gameplay.scrap += body.resources
@@ -44,9 +46,8 @@ func _on_interaction_area_body_entered(body: Node3D) -> void:
 
 
 func _on_interaction_area_body_exited(body: Node3D) -> void:
-	if body.name == "PlayerActor":
+	if "add_interactable" in body:
 		ui.visible = false
-		track_body = null
 		body.remove_interactable(self)
 
 

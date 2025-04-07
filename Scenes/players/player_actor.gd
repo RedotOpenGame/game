@@ -44,6 +44,8 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @onready var camera_control: Node3D = $CameraControl
 @onready var springArm = $CameraControl/Yaw/Pitch/SpringArm3D
 @onready var character = $characterMesh
+@onready var done_nothing: Timer = $DoneNothing
+
 @onready var selected_unit_type = -1
 @export var SPEED = 6.5
 var JUMP_VELOCITY = 9.5
@@ -60,6 +62,8 @@ var interactables_in_range:Array = []
 var followers:Array = [] 
 var follower_amount:int = 0
 var ignore_first_input:bool = true
+
+var can_turn:bool = true
 
 var unit = preload("res://Scenes/entities/NPC/unit.tscn")
 
@@ -129,16 +133,11 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("z"): #Calling all units
 		call_all_units.rpc()
 	if Input.is_action_just_pressed("v") and !starting_building_placed:
-		starting_building_placed = true
-		var scene = starting_building.instantiate()
-		scene.position = building_marker.global_position
-		scene.rotation = character.global_rotation
-		add_sibling(scene)
+		place_workshop.rpc()
 	if Input.is_action_just_pressed("x"):
 		if building_marker.get_child_count() != 0:
 			var node = building_marker.get_child(0)
-			node.process_mode = Node.PROCESS_MODE_ALWAYS
-			node.reparent(get_tree().get_first_node_in_group("AllyContainer"))
+			node.place_itself.rpc()
 			build_help.visible = false
 	if Input.is_action_just_pressed("m"):
 		if music_volume.value != 0:
@@ -202,10 +201,12 @@ func _process(_delta: float) -> void:
 		anim.play("attack")
 		if target_point:
 			for i in modular_guns.get_children():
-				i.shoot(target_point)
+				i.shoot.rpc(target_point)
 			character.look_at(target_point)
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
 				unit_throw.rpc(target_point)
+				can_turn = false
+				done_nothing.start()
 
 	if(Input.is_action_pressed("e")):
 		if cursor_pos_on_plane:
@@ -214,6 +215,15 @@ func _process(_delta: float) -> void:
 				unit_call_collision.set_visible(true)
 	else:
 		unit_call_collision.set_visible(false)
+
+@rpc("any_peer", "call_local")
+func place_workshop() -> void:
+		starting_building_placed = true
+		var scene = starting_building.instantiate()
+		scene.owning_player = self
+		scene.position = building_marker.global_position
+		scene.rotation = character.global_rotation
+		add_sibling(scene)
 
 @rpc("any_peer", "call_local")
 func unit_throw(cursor_pos_on_plane) -> void:
@@ -264,8 +274,9 @@ func _physics_process(delta: float) -> void:
 	if direction and !Gameplay.paused:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		character.rotation.y = lerp_angle(character.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
-		character.rotation.x = 0
+		if can_turn:
+			character.rotation.y = lerp_angle(character.rotation.y, atan2(-velocity.x, -velocity.z), 0.2) 
+			character.rotation.x = lerp_angle(character.rotation.x, 0, 0.2)
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
@@ -278,7 +289,7 @@ func _physics_process(delta: float) -> void:
 			if global_position.distance_to(i.global_position) < closest:
 				closest = global_position.distance_to(i.global_position)
 				interact_target = i
-		interact_target.interaction()
+		interact_target.interaction.rpc(self)
 
 @rpc("any_peer", "call_local")
 func call_all_units() -> void:
@@ -290,12 +301,14 @@ func teleport_allies_with_me() -> void:
 	for i in followers:
 		i.global_position = global_position
 
+@rpc("any_peer", "call_local")
 func get_scrap(amount) -> int:
 	var old_scrap = curr_scrap
 	curr_scrap = min(max_scrap, curr_scrap + amount)
 	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
 	return curr_scrap - old_scrap
 
+@rpc("any_peer", "call_local")
 func remove_scrap() -> int:
 	var old_amount:int = curr_scrap
 	curr_scrap = 0
@@ -363,13 +376,15 @@ func add_interactable(node:Node3D) -> void:
 func remove_interactable(node:Node3D) -> void:
 	interactables_in_range.erase(node)
 
-func get_blueprint(scene:PackedScene, build_name:String, constructor_req:int, build_cost:int) -> void:
+@rpc("any_peer", "call_local")
+func get_blueprint(scene:String, build_name:String, constructor_req:int, build_cost:int) -> void:
 	var blueprint = building_blueprint.instantiate()
 	blueprint.planned_bulding = scene
 	blueprint.process_mode = Node.PROCESS_MODE_DISABLED
 	blueprint.unit_req = constructor_req
 	blueprint.build_cost = build_cost
 	blueprint.build_name = build_name
+	blueprint.player_owner = self
 	building_marker.add_child(blueprint)
 	build_help.visible = true
 
@@ -408,7 +423,7 @@ func _on_collect_units_body_entered(body: Node3D) -> void:
 	if(body.is_in_group("Unit") and (body.curr_logic == 4 or body.curr_logic == 2) and body._leader == self):
 		unit_collection.rpc(body)
 
-@rpc("call_local", "any_peer")
+@rpc("call_local", "any_peer") #remove any peer - more errors occur; remove call local - won't work for joining player.
 func unit_collection(body) -> void:
 	if body is CharacterBody3D:
 		match body.unit_type:
@@ -438,11 +453,13 @@ func _on_music_volume_value_changed(value: float) -> void:
 			linear_to_db(value)
 			)
 
-func add_module(scene:PackedScene) -> bool:
+@rpc("any_peer", "call_local")
+func add_module(scene:PackedScene, price) -> bool:
 	var inst = scene.instantiate()
 	for i in modular_guns.get_children():
 		if inst.name == i.name:
 			return false
+	Gameplay.scrap -= price
 	modular_guns.add_child(inst)
 	return true
 
@@ -453,3 +470,15 @@ func _on_resune_pressed() -> void:
 		Engine.time_scale = 0.0001
 	else:
 		Engine.time_scale = 1
+
+
+func _on_done_nothing_timeout() -> void:
+	can_turn = true
+
+
+func _on_interact_area_body_entered(body: Node3D) -> void:
+	pass # Replace with function body.
+
+
+func _on_interact_area_body_exited(body: Node3D) -> void:
+	pass # Replace with function body.
