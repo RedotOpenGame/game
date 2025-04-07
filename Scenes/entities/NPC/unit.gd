@@ -149,7 +149,7 @@ func heal_func(amount:float) -> void:
 	health = min(health + amount, max_health)
 	health_label.text = str("Health: ", health, "/", max_health)
 
-func find_closest_target() -> Node3D:
+func find_closest_target_2() -> Node3D:
 	var returnage #whatever will be returned, idfk
 	var closest:float = INF
 	for i in _leader.nearby_hostiles:
