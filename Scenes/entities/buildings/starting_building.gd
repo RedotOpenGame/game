@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 
 @rpc("any_peer")
 func interaction(body) -> void:
-	if is_instance_valid(body):
+	if is_instance_valid(body) and !("get_object_id" in body):
 		Gameplay.scrap += body.remove_scrap()
 		scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
