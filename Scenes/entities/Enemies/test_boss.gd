@@ -4,6 +4,7 @@ extends GeneralEntity
 @onready var attackrate: Timer = $Attackrate
 @onready var gun_barrel: Marker3D = $"Pistol?/GunBarrel"
 @onready var damage:float = 0.0
+@onready var hostile_seeker = $HostileSeeker
 
 var bullet_scene:PackedScene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet.tscn")
 
@@ -22,7 +23,7 @@ func _process(delta: float) -> void:
 	if !is_on_floor():
 		velocity += get_gravity() * delta
 	if nearby_hostiles != []:
-		curr_target = find_closest_target()
+		curr_target = find_closest_target(hostile_seeker, "Ally")
 	if is_instance_valid(curr_target):
 		look_at(curr_target.global_position)
 		if global_position.distance_to(curr_target.global_position) > 15:
@@ -54,16 +55,6 @@ func _process(delta: float) -> void:
 
 
 
-func find_closest_target() -> Node3D:
-	var returnage #whatever will be returned, idfk
-	var closest:float = INF
-	for i in nearby_hostiles:
-		if i.global_position.distance_to(global_position) < closest:
-			returnage = i
-			closest = i.global_position.distance_to(global_position)
-	if returnage:
-		return returnage
-	return self
 
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Ally"):

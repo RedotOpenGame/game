@@ -12,6 +12,8 @@ var bullet_scene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet
 @onready var firerate: Timer = $Firerate
 @onready var reload: Timer = $Reload
 @onready var jump: Timer = $Jump
+@onready var hostile_seeker = $HostileSeeker
+
 
 var Jump_power:float = 8
 var speed:float = 4
@@ -33,7 +35,7 @@ func _ready():
 func _process(delta: float) -> void:
 	if !is_on_floor():
 		velocity += get_gravity() * delta
-	curr_target = find_closest_target()
+	curr_target = find_closest_target(hostile_seeker, "Ally")
 	reloading_label.text = str("Reloading: ", snapped(reload.time_left, 0.01))
 	if is_instance_valid(curr_target):
 		mesh.look_at(Vector3(curr_target.global_position.x, global_position.y, curr_target.global_position.z))
@@ -67,16 +69,6 @@ func _process(delta: float) -> void:
 
 
 
-func find_closest_target():
-	var returnage #whatever will be returned, idfk
-	var closest:float = INF
-	for i in get_tree().get_nodes_in_group("Ally"):
-		if i.global_position.distance_to(global_position) < closest:
-			returnage = i
-			closest = i.global_position.distance_to(global_position)
-	if returnage:
-		return returnage
-	return 
 
 
 func damage_func(amount:float) -> void:
