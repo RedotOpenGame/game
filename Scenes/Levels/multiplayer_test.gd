@@ -5,6 +5,7 @@ extends Control
 
 
 @export var Address = "127.0.0.1" #172.30.76.117
+#172.30.195.0
 @export var port:int = 16 # 0-65535
 var peer
 
