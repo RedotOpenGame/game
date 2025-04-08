@@ -3,20 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="1_4766n"]
 
 [sub_resource type="GDScript" id="GDScript_4766n"]
-script/source = "extends GeneralEntity
+script/source = "extends GeneralEnemy
 
-@onready var health_label: Label3D = $HealthLabel
-@onready var attack_collision: CollisionShape3D = $DamageArea/AttackCollision
-@onready var hitscan_preview: MeshInstance3D = $DamageArea/HitscanPreview
-@onready var attackrate: Timer = $Attackrate
-
-@export var movement_speed: float = 4.0
-
-var nearby_hostiles:Array = []
-var curr_target:Node3D
-var spawned_point:Vector3 #the point I will return to.
-@export var enemy_tier:int = 1
-@export var damage:float = 8
 
 func _ready():
 	$EnemyBot.set_tier(enemy_tier)
@@ -28,25 +16,20 @@ func _process(delta: float) -> void:
 	if !is_on_floor():
 		velocity += get_gravity() * delta
 	if nearby_hostiles != []:
-		curr_target = find_closest_target()
+		curr_target = find_closest_target(hostile_seeker, \"Ally\")
 	if is_instance_valid(curr_target):
 		if !curr_target.is_in_group(\"Hostile\"):
 			nearby_hostiles.erase(curr_target)
-		look_at(Vector3(curr_target.global_position.x, global_position.y, curr_target.global_position.z))
-		var preffered_position = curr_target.global_position
-		var direction = (preffered_position - global_position).normalized()
-		velocity.x = direction.x * movement_speed
-		velocity.z = direction.z * movement_speed
+		move_towards_target(curr_target.global_position,movement_speed)
+		rotate_towards_target(curr_target.global_position,mesh,0.2)
 	else:
 
 		if global_position.distance_to(Vector3(spawned_point.x, global_position.y, spawned_point.z)) < movement_speed / 32:
 			global_position = Vector3(spawned_point.x, global_position.y, spawned_point.z)
 			velocity = Vector3(0, velocity.y, 0)
 		else:
-			look_at(Vector3(spawned_point.x, global_position.y, spawned_point.z))
-			var direction = (spawned_point - global_position).normalized()
-			velocity.x = direction.x * movement_speed
-			velocity.z = direction.z * movement_speed
+			move_towards_target(spawned_point,movement_speed)
+			rotate_towards_target(spawned_point,mesh,0.2)
 	move_and_slide()
 
 func _on_damage_area_body_entered(body: Node3D) -> void:
@@ -57,16 +40,7 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 		attackrate.start()
 
 
-func find_closest_target():
-	var returnage #whatever will be returned, idfk
-	var closest:float = INF
-	for i in nearby_hostiles:
-		if i.global_position.distance_to(global_position) < closest:
-			returnage = i
-			closest = i.global_position.distance_to(global_position)
-	if returnage:
-		return returnage
-	return null
+
 
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group(\"Hostile\") and body != self:
@@ -104,23 +78,23 @@ movement_speed = 7.0
 damage = 20.0
 max_health = 60.0
 
-[node name="DamageArea" parent="." index="1"]
-collision_mask = 8
-
-[node name="HostileSeeker" parent="." index="5"]
+[node name="HostileSeeker" parent="." index="3"]
 collision_layer = 4
 collision_mask = 8
 
 [node name="CollisionShape3D" parent="HostileSeeker" index="0"]
 shape = SubResource("CylinderShape3D_4766n")
 
-[node name="Label3D" type="Label3D" parent="." index="7"]
+[node name="mesh" parent="." index="5"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, -0.85, 0)
+
+[node name="Label3D" type="Label3D" parent="." index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98253, 0)
 billboard = 1
 text = "I am an enemy medic!!!
 "
 
-[node name="Label3D2" type="Label3D" parent="." index="8"]
+[node name="Label3D2" type="Label3D" parent="." index="7"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58992, 0)
 billboard = 1
 modulate = Color(0, 1, 0, 1)

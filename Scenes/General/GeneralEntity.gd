@@ -9,8 +9,8 @@ class_name GeneralEntity
 
 @export var max_health:float = 100.0
 @onready var health:float = max_health
-var curr_scrap:int = 0
-var max_scrap:int = 3
+@onready var curr_scrap:int = 0
+@export var max_scrap:int = 3
 
 func damage_func(amount:float) -> void:
 	health -= amount
@@ -50,9 +50,10 @@ func move_towards_target(targetPos: Vector3, speed: float):
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
 	
-func rotate_towards_target(targetPos: Vector3, rotationNode, Node3D, lerpVal: float):
+func rotate_towards_target(targetPos: Vector3, rotationNode: Node3D, lerpVal: float):
 	var direction = (targetPos - global_position).normalized()
-	rotationNode.rotation.y = lerp_angle(rotationNode.rotation.y, atan2(-direction.x, -direction.z), lerpVal)
+	if(rotationNode != null):
+		rotationNode.rotation.y = lerp_angle(rotationNode.rotation.y, atan2(-direction.x, -direction.z), lerpVal)
 
 func get_scrap(amount) -> int:
 	var old_scrap = curr_scrap

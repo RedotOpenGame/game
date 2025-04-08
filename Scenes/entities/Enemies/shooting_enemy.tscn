@@ -9,6 +9,14 @@
 height = 6.0
 radius = 11.0
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ibt7l"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ibt7l"]
 albedo_color = Color(0, 0, 0, 1)
 
@@ -23,22 +31,11 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_kh3so")
 size = Vector3(0.2, 0.4, 0.2)
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ibt7l"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:rotation")
-properties/1/spawn = true
-properties/1/replication_mode = 1
-
 [node name="ShootingEnemy" type="CharacterBody3D" groups=["Hostile"]]
 collision_layer = 8
 collision_mask = 31
 script = ExtResource("1_ibt7l")
 max_health = 40.0
-
-[node name="EnemyBot" parent="." instance=ExtResource("1_vxtha")]
-transform = Transform3D(-0.44, 0, -3.8466e-08, 0, 0.44, 0, 3.8466e-08, 0, -0.44, 0, -0.85, 0)
 
 [node name="HealthLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22067, 0)
@@ -59,21 +56,26 @@ collision_mask = 3
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HostileSeeker"]
 shape = SubResource("CylinderShape3D_kh3so")
 
-[node name="Pistol?" type="Node3D" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ibt7l")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Pistol?"]
+[node name="mesh" type="Node3D" parent="."]
+
+[node name="EnemyBot" parent="mesh" instance=ExtResource("1_vxtha")]
+transform = Transform3D(-0.44, 0, -3.8466e-08, 0, 0.44, 0, 3.8466e-08, 0, -0.44, 0, -0.85, 0)
+
+[node name="Pistol?" type="Node3D" parent="mesh"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh/Pistol?"]
 transform = Transform3D(0.851022, -0.52513, 0, 0.52513, 0.851022, 0, 0, 0, 1, 0.800931, 0.185594, -1.14214)
 mesh = SubResource("BoxMesh_yg82q")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Pistol?"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh/Pistol?"]
 transform = Transform3D(0.837766, -0.546029, 0, 0.546029, 0.837766, 0, 0, 0, 1, 0.97758, -0.0827577, -0.747901)
 mesh = SubResource("BoxMesh_aed13")
 
-[node name="GunBarrel" type="Marker3D" parent="Pistol?"]
+[node name="GunBarrel" type="Marker3D" parent="mesh/Pistol?"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.775223, 0.188307, -1.65037)
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_ibt7l")
 
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]

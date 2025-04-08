@@ -1,4 +1,5 @@
 extends GeneralEntity
+class_name unit
 
 var resource_pile = preload("res://Scenes/misc/resource_pile.tscn")
 
@@ -59,7 +60,6 @@ func _ready() -> void:
 			type_showcase.text = "TYPE: Constructor"
 		unit_types.AGRI:
 			mesh.set_visible(false)
-			#collision.disabled = true
 			collision_mask = 4
 			ThrowTime.wait_time = global_position.distance_to(throw_target) / throw_move_speed[unit_types.AGRI]
 			ThrowTime.start()

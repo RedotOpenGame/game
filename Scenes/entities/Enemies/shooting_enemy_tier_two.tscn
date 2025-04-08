@@ -4,5 +4,5 @@
 
 [node name="ShootingEnemyTierTwo" instance=ExtResource("1_q8bf8")]
 movement_speed = 6.0
-max_health = 80.0
 damage = 7.5
+max_health = 80.0

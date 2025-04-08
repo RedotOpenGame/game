@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends GeneralEntity
 
 var bus_index_music:int
 var bus_index_sound:int
@@ -49,12 +49,10 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 var JUMP_VELOCITY = 9.5
 const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down camera movement(which doesn't let you look upwards)
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
-var max_health:float = 100.0
-var health:float = max_health
+
 var can_be_hit:bool = true
 
-var curr_scrap:int = 0
-var max_scrap:int = 3
+
 
 var interactables_in_range:Array = []
 var followers:Array = [] 
@@ -203,7 +201,7 @@ func _process(_delta: float) -> void:
 		if target_point:
 			for i in modular_guns.get_children():
 				i.shoot(target_point)
-			character.look_at(target_point)
+			rotate_towards_target(target_point,character,0.2)
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
 				unit_throw.rpc(target_point)
 
@@ -377,7 +375,7 @@ func get_blueprint(scene:PackedScene, build_name:String, constructor_req:int, bu
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if "damage_func" in body:
 		body.damage_func(8)
-
+# Probably dont need this pair of functions
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Hostile"):
 		nearby_hostiles.append(body)
@@ -453,3 +451,4 @@ func _on_resune_pressed() -> void:
 		Engine.time_scale = 0.0001
 	else:
 		Engine.time_scale = 1
+		

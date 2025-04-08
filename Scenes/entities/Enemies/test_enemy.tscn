@@ -3,17 +3,6 @@
 [ext_resource type="Script" path="res://Scenes/entities/Enemies/test_enemy.gd" id="1_c66dd"]
 [ext_resource type="PackedScene" uid="uid://citu714ddbl12" path="res://Scenes/meshes/enemy_bot.tscn" id="2_pb61d"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_d5vep"]
-size = Vector3(1, 1, 0.5)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c66dd"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0.235294)
-
-[sub_resource type="BoxMesh" id="BoxMesh_25h6o"]
-material = SubResource("StandardMaterial3D_c66dd")
-size = Vector3(1, 1, 0.5)
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c66dd"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_c66dd"]
@@ -31,26 +20,22 @@ properties/2/path = NodePath(".:velocity")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_d5vep"]
+size = Vector3(1, 1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c66dd"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.235294)
+
+[sub_resource type="BoxMesh" id="BoxMesh_25h6o"]
+material = SubResource("StandardMaterial3D_c66dd")
+size = Vector3(1, 1, 0.5)
+
 [node name="TestEnemy" type="CharacterBody3D" groups=["Hostile"]]
 collision_layer = 8
 collision_mask = 31
 script = ExtResource("1_c66dd")
 max_health = 40.0
-
-[node name="EnemyBot" parent="." instance=ExtResource("2_pb61d")]
-transform = Transform3D(-0.44, 0, -3.8466e-08, 0, 0.44, 0, 3.8466e-08, 0, -0.44, 0, -0.85, 0)
-
-[node name="DamageArea" type="Area3D" parent="."]
-collision_layer = 32
-collision_mask = 3
-
-[node name="AttackCollision" type="CollisionShape3D" parent="DamageArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)
-shape = SubResource("BoxShape3D_d5vep")
-
-[node name="HitscanPreview" type="MeshInstance3D" parent="DamageArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.84)
-mesh = SubResource("BoxMesh_25h6o")
 
 [node name="HealthLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22067, 0)
@@ -73,7 +58,25 @@ shape = SubResource("CylinderShape3D_c66dd")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_c66dd")
 
-[connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]
+[node name="mesh" type="Node3D" parent="."]
+
+[node name="enemy_bot" parent="mesh" instance=ExtResource("2_pb61d")]
+transform = Transform3D(-0.44, 0, -3.8466e-08, 0, 0.44, 0, 3.8466e-08, 0, -0.44, 0, -0.85, 0)
+
+[node name="DamageArea" type="Area3D" parent="mesh/enemy_bot"]
+transform = Transform3D(-2.27273, 0, -1.98688e-07, 0, 2.27273, 0, 1.98688e-07, 0, -2.27273, 0, 1.93182, 0)
+collision_layer = 32
+collision_mask = 3
+
+[node name="AttackCollision" type="CollisionShape3D" parent="mesh/enemy_bot/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)
+shape = SubResource("BoxShape3D_d5vep")
+
+[node name="HitscanPreview" type="MeshInstance3D" parent="mesh/enemy_bot/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.84)
+mesh = SubResource("BoxMesh_25h6o")
+
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
 [connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
+[connection signal="body_entered" from="mesh/enemy_bot/DamageArea" to="." method="_on_damage_area_body_entered"]

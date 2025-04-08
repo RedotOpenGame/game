@@ -14,19 +14,16 @@ size = Vector3(1.05, 1.5, 0.3)
 
 [node name="ShieldEnemy" instance=ExtResource("1_yfegr")]
 
-[node name="AttackCollision" parent="DamageArea" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.35008)
+[node name="mesh" parent="." index="5"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, -0.85, 0)
 
-[node name="HitscanPreview" parent="DamageArea" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.3499)
-
-[node name="Shield" type="StaticBody3D" parent="." index="7"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.02156)
+[node name="Shield" type="StaticBody3D" parent="mesh" index="1"]
+transform = Transform3D(2.27273, 0, 0, 0, 2.27273, 0, 0, 0, 2.27273, 0, 1.93182, -2.32173)
 collision_layer = 4
 collision_mask = 16
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Shield" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="mesh/Shield" index="0"]
 shape = SubResource("BoxShape3D_jksmd")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Shield" index="1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh/Shield" index="1"]
 mesh = SubResource("BoxMesh_lfxie")
