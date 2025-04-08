@@ -23,7 +23,7 @@ material = SubResource("StandardMaterial3D_8hsgy")
 height = 2.34085
 radius = 1.66954
 
-[node name="StartingBuilding" type="CharacterBody3D"]
+[node name="StartingBuilding" type="CharacterBody3D" groups=["PlayerWorkshop"]]
 collision_layer = 4
 collision_mask = 43
 script = ExtResource("1_dctpj")

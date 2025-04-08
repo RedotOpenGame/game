@@ -6,7 +6,7 @@ const bullet_scene = preload("res://Scenes/entities/Projectiles/Player/bullet.ts
 var damage:int = 5
 var can_fire:bool = true
 
-
+@rpc("any_peer", "call_local")
 func shoot(target_point) -> void:
 	if can_fire:
 		can_fire = false

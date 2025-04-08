@@ -26,9 +26,11 @@ mesh = SubResource("BoxMesh_bnyao")
 [node name="Label3D" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50992, 0)
 billboard = 1
-text = "I am a mining rig. I give 2 scrap each time new wave starts."
+text = "I give 2 scrap each time new wave starts.
+(Survival mode only)"
 
 [node name="HealthLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93551, 0)
+billboard = 1
 text = "Health:CURR/MAX
 "

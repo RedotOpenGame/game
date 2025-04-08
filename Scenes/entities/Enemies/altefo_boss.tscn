@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://csng6vi7e2d4g"]
+[gd_scene load_steps=6 format=3 uid="uid://csng6vi7e2d4g"]
 
 [ext_resource type="Script" path="res://Scenes/entities/Enemies/altefo_boss.gd" id="1_05heg"]
 [ext_resource type="PackedScene" uid="uid://cbksyi705d64g" path="res://Scenes/meshes/altefo.tscn" id="2_05heg"]
@@ -6,6 +6,10 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_05heg"]
 height = 2.83805
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_05heg"]
+height = 6.0
+radius = 20.0
 
 [node name="AltefoBoss" type="CharacterBody3D" groups=["Hostile"]]
 collision_layer = 8
@@ -50,6 +54,13 @@ text = "Reloading: TIME_LEFT"
 [node name="Jump" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
+
+[node name="HostileSeeker" type="Area3D" parent="."]
+collision_layer = 32
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HostileSeeker"]
+shape = SubResource("CylinderShape3D_05heg")
 
 [connection signal="timeout" from="Firerate" to="." method="_on_firerate_timeout"]
 [connection signal="timeout" from="Reload" to="." method="_on_reload_timeout"]

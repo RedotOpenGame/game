@@ -41,7 +41,7 @@ properties/5/path = NodePath(".:curr_logic")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 properties/6/path = NodePath(".:is_collected")
-properties/6/spawn = true
+properties/6/spawn = false
 properties/6/replication_mode = 1
 
 [node name="Unit" type="CharacterBody3D" groups=["Ally", "Unit"]]
@@ -98,6 +98,9 @@ text = "TYPE: type"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_u4he0")
+
+[node name="DeathTimer" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]

@@ -5,7 +5,8 @@ extends Control
 
 
 @export var Address = "127.0.0.1" #172.30.76.117
-@export var port = 16 # 0-65535
+#172.30.195.0
+@export var port:int = 16 # 0-65535
 var peer
 
 func _ready() -> void:
@@ -59,6 +60,7 @@ func PlayerDisconnected(id):
 	print("Player Disconnected ", id)
 	var players = get_tree().get_nodes_in_group("Player")
 	var units = get_tree().get_nodes_in_group("Unit")
+	var workshops = get_tree().get_nodes_in_group("PlayerWorkshop")
 	
 	var plr_removal
 	for player in players:
@@ -67,6 +69,9 @@ func PlayerDisconnected(id):
 	for unit in units:
 		if unit._leader == plr_removal:
 			unit.queue_free() #remove all of the disconnected player's units
+	for w in workshops:
+		if w.owning_player == plr_removal:
+			w.queue_free() # remove player's workshop, if there is one.
 	if plr_removal:
 		plr_removal.queue_free() #remove the disconnected player
 	MultiplayerHelper.Players.erase(id)
@@ -118,6 +123,7 @@ func _on_host_game_pressed() -> void:
 		peer.get_host().compress(ENetConnection.COMPRESS_NONE)
 	multiplayer.set_multiplayer_peer(peer)
 	print("Waiting for players...")
+	$Stuff/GameHostStatus.visible = true
 	#UPnP_setup() #not required. For now.
 	SendPlayerInfo($Stuff/Entername.text, multiplayer.get_unique_id())
 
@@ -141,10 +147,11 @@ func _on_start_game_pressed() -> void:
 
 func _on_port_value_changed(value: float) -> void:
 	port = value
-
+	print(port)
 
 func _on_address_text_submitted(new_text: String) -> void:
 	Address = new_text
+	print(Address)
 
 
 func _on_start_survival_pressed() -> void:

@@ -92,6 +92,15 @@ offset_right = 145.0
 offset_bottom = 274.0
 text = "Enter name here:"
 
+[node name="GameHostStatus" type="Label" parent="Stuff"]
+visible = false
+layout_mode = 0
+offset_left = 303.0
+offset_top = 23.0
+offset_right = 507.0
+offset_bottom = 46.0
+text = "Game hosted successfully!"
+
 [node name="ServerStuff" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 679.0
