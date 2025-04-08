@@ -1,5 +1,5 @@
 extends GeneralEntity
-class_name unit
+class_name Unit
 
 var resource_pile = preload("res://Scenes/misc/resource_pile.tscn")
 
