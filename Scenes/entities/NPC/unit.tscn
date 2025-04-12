@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://dcye6oowh0c4k"]
 
-[ext_resource type="Script" path="res://Scenes/entities/NPC/unit.gd" id="1_dhkfg"]
+[ext_resource type="Script" path="res://Scenes/entities/NPC/Unit.gd" id="1_dhkfg"]
 [ext_resource type="PackedScene" uid="uid://ch7sbjrry22bh" path="res://Scenes/meshes/ally_bot.tscn" id="2_nrft3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gexq0"]

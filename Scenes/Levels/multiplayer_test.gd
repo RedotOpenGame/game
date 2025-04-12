@@ -189,3 +189,9 @@ func _on_entername_text_submitted(new_text: String) -> void:
 	MultiplayerHelper.Nickname = new_text
 	print("New nickname submitted: ", new_text)
 	SaveSystem.save_mult_pref()
+
+
+func _on_set_random_name_pressed() -> void:
+	var names = ["Pewweper", "Awbluefy", "Quadratus", "FrankBusterLaw", "Taxe. E. Vason", "King of Rams", "3River3"]
+	entername.text = names.pick_random()
+	MultiplayerHelper.Nickname = entername.text

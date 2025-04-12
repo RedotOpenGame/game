@@ -85,6 +85,13 @@ offset_bottom = 309.0
 placeholder_text = "Pewweper"
 max_length = 50
 
+[node name="SetRandomName" type="Button" parent="Stuff/Entername"]
+layout_mode = 0
+offset_top = 45.0
+offset_right = 265.0
+offset_bottom = 89.0
+text = "Set random name"
+
 [node name="Name" type="Label" parent="Stuff"]
 layout_mode = 0
 offset_left = 11.0
@@ -179,6 +186,7 @@ text = "Go back to Overworld"
 [connection signal="pressed" from="Stuff/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="Stuff/StartSurvival" to="." method="_on_start_survival_pressed"]
 [connection signal="text_submitted" from="Stuff/Entername" to="." method="_on_entername_text_submitted"]
+[connection signal="pressed" from="Stuff/Entername/SetRandomName" to="." method="_on_set_random_name_pressed"]
 [connection signal="text_submitted" from="ServerStuff/Address" to="." method="_on_address_text_submitted"]
 [connection signal="value_changed" from="ServerStuff/Port" to="." method="_on_port_value_changed"]
 [connection signal="text_submitted" from="Chat/LineEdit" to="Chat" method="_on_line_edit_text_submitted"]

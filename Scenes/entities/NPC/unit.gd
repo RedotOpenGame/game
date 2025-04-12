@@ -20,6 +20,7 @@ var curr_logic = logic.THROWN
 @onready var hitscan_preview: MeshInstance3D = $characterMesh/DamageArea/HitscanPreview
 @export var throw_speed: float = 20
 @onready var mesh = $characterMesh
+@onready var ally_bot_2: Node3D = $characterMesh/AllyBot2
 @onready var collision = $CollisionShape3D
 @onready var player_owner: Label3D = $PlayerOwner
 @onready var resources = 0
@@ -51,6 +52,7 @@ func _ready() -> void:
 		player_owner.text = str("Owner: ", player_name)
 	var displacement = throw_target - global_position
 	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
+	ally_bot_2.set_type(unit_type)
 	match (unit_type):
 		unit_types.COMBAT:
 			var vx = horizontal_displacement.x / 1
