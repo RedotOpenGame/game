@@ -181,7 +181,7 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("esc"):
 		Gameplay.paused = !Gameplay.paused
 		pausemenu.visible = Gameplay.paused
-		if str(name) == "ActorPlayer":
+		if str(name) == "PlayerActor":
 			if Gameplay.paused:
 				Engine.time_scale = 0.0001
 			else:

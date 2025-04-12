@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://danaa3i47echq" path="res://assets/Music/Robotic Wasteland.mp3" id="10_c0h7r"]
 [ext_resource type="PackedScene" uid="uid://bya6wormsuwtj" path="res://Scenes/entities/Enemies/shooting_enemy.tscn" id="10_dd6r4"]
 [ext_resource type="PackedScene" uid="uid://un4dhmn7qero" path="res://Scenes/entities/Enemies/shield_enemy.tscn" id="11_uvbdg"]
+[ext_resource type="PackedScene" uid="uid://du814bss6gu41" path="res://Scenes/meshes/proto_city.tscn" id="12_dd6r4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
 sky_top_color = Color(0.363219, 0.53037, 1, 1)
@@ -30,33 +31,12 @@ glow_enabled = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_v4ybm"]
 size = Vector3(140, 0.5, 140)
 
-[sub_resource type="Shader" id="Shader_rmeny"]
-code = "shader_type spatial;
-
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
-
-void fragment() {
-	// Called for every pixel the material is visible on.
-	ALBEDO = vec3(0.0, 0.25, 0.0);
-	ROUGHNESS = 0.8;
-	RIM = 0.0;
-}
-
-//void light() {
-	// Called for every pixel for every light affecting the material.
-	// Uncomment to replace the default light processing function with this one.
-//}
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v4ybm"]
-render_priority = 1
-shader = SubResource("Shader_rmeny")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hf0oe"]
 next_pass = SubResource("ShaderMaterial_v4ybm")
-albedo_color = Color(0, 0.231373, 0.14902, 1)
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.360784)
 
 [sub_resource type="BoxMesh" id="BoxMesh_j1dxk"]
 material = SubResource("StandardMaterial3D_hf0oe")
@@ -93,14 +73,13 @@ collision_layer = 4
 collision_mask = 11
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.51312, 0, 0)
 shape = SubResource("BoxShape3D_v4ybm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Floor"]
 mesh = SubResource("BoxMesh_j1dxk")
 
 [node name="Building(?)" type="StaticBody3D" parent="Objects"]
-transform = Transform3D(1, 0, 0, 0, 0.962436, 0.271508, 0, -0.271508, 0.962436, -28.3619, 10.4959, 25.9627)
+transform = Transform3D(1, 0, 0, 0, 0.962436, 0.271508, 0, -0.271508, 0.962436, -28.3619, 102.646, 25.9627)
 collision_layer = 4
 collision_mask = 11
 metadata/_edit_group_ = true
@@ -112,7 +91,7 @@ mesh = SubResource("CylinderMesh_v4ybm")
 shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="Building(?)2" type="StaticBody3D" parent="Objects"]
-transform = Transform3D(0.976695, 0.206571, 0.0582745, -0.209433, 0.976635, 0.0481834, -0.0469597, -0.0592651, 0.997137, 39.6701, 10.4959, -9.74237)
+transform = Transform3D(0.976695, 0.206571, 0.0582745, -0.209433, 0.976635, 0.0481834, -0.0469597, -0.0592651, 0.997137, 39.6701, 102.646, -9.74237)
 collision_layer = 4
 collision_mask = 11
 metadata/_edit_group_ = true
@@ -124,7 +103,7 @@ mesh = SubResource("CylinderMesh_v4ybm")
 shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="Building(?)3" type="StaticBody3D" parent="Objects"]
-transform = Transform3D(0.921375, -0.374074, -0.105528, 0.388674, 0.886765, 0.250161, 0, -0.271508, 0.962436, -28.3619, 9.38261, -13.6485)
+transform = Transform3D(0.921375, -0.374074, -0.105528, 0.388674, 0.886765, 0.250161, 0, -0.271508, 0.962436, -28.3619, 101.533, -13.6485)
 collision_layer = 4
 collision_mask = 11
 metadata/_edit_group_ = true
@@ -136,7 +115,7 @@ mesh = SubResource("CylinderMesh_v4ybm")
 shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="Building(?)4" type="StaticBody3D" parent="Objects"]
-transform = Transform3D(0.946543, -0.321571, 0.0254643, 0.319142, 0.945029, 0.0711978, -0.0469597, -0.0592651, 0.997137, 39.6701, 10.4959, -49.3535)
+transform = Transform3D(0.946543, -0.321571, 0.0254643, 0.319142, 0.945029, 0.0711978, -0.0469597, -0.0592651, 0.997137, 39.6701, 102.646, -49.3535)
 collision_layer = 4
 collision_mask = 11
 metadata/_edit_group_ = true
@@ -204,3 +183,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.00659, 1.78337, -32.7361)
 
 [node name="ShieldEnemy" parent="." instance=ExtResource("11_uvbdg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.4578, 2.9983, -33.6714)
+
+[node name="ProtoCity" parent="." instance=ExtResource("12_dd6r4")]
+transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, -262.031, -227.344, 161.369)

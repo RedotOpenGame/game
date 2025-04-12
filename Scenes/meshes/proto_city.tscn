@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://du814bss6gu41"]
+
+[ext_resource type="PackedScene" uid="uid://cxuy1s75lxjus" path="res://assets/placeholder meshes/ProtoCity.glb" id="1_k8x8r"]
+
+[node name="ProtoCity" instance=ExtResource("1_k8x8r")]
