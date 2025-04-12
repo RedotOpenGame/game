@@ -17,6 +17,7 @@ var spawned_point:Vector3 #the point I will return to.
 @onready var enemy_bot: Node3D = $mesh/enemy_bot
 
 func _ready():
+	
 	enemy_bot.set_tier(enemy_tier)
 	spawned_point = global_position
 	# Get player from 'Player' group once at start

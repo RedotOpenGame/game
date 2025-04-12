@@ -1,5 +1,5 @@
 extends GeneralEntity
-class_name Unit
+#class_name Unit
 
 var resource_pile = preload("res://Scenes/misc/resource_pile.tscn")
 
@@ -21,6 +21,7 @@ var curr_logic = logic.THROWN
 @export var throw_speed: float = 20
 @onready var mesh = $characterMesh
 @onready var collision = $CollisionShape3D
+@onready var player_owner: Label3D = $PlayerOwner
 @onready var resources = 0
 @export var max_resources: int
 
@@ -31,6 +32,7 @@ var _leader:Node3D #meant for multiplayer, in order for the only owner to collec
 @export var movement_speed: float = 4.0
 var unit_index: int = 0  # Assign unique index to each unit
 var is_collected:bool = false #need in order for not dupe.
+var player_name:String = "Pewweper"
 
 var curr_hostile:Node3D #find closest hostile.
 var curr_recource: Node3D
@@ -44,7 +46,9 @@ func _ready() -> void:
 		return
 	#_leader.signal_follow(self)
 	resource_repo = get_tree().get_first_node_in_group("ResourceRepo")
-		
+	if _leader.name != "PlayerActor":
+		player_owner.visible = true
+		player_owner.text = str("Owner: ", player_name)
 	var displacement = throw_target - global_position
 	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
 	match (unit_type):

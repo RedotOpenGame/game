@@ -54,6 +54,12 @@ text = "Health:CURR/MAX"
 wait_time = 0.6
 one_shot = true
 
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65963, 0)
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50
+
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
 [connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
 [connection signal="timeout" from="Firerate" to="." method="_on_firerate_timeout"]

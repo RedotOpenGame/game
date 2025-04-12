@@ -2,16 +2,22 @@ extends CharacterBody3D
 
 @onready var ui: CanvasLayer = $UI
 @onready var scrap_counter: Label3D = $ScrapCounter
+@onready var player_owner: Label3D = $PlayerOwner
 
 var defence_turret:PackedScene = preload("res://Scenes/entities/buildings/defence_turret.tscn")
 var mining_rig:PackedScene = preload("res://Scenes/entities/buildings/mining_rig.tscn")
 var shoulder_gun:PackedScene = preload("res://Scenes/players/upgrades/shouldergun.tscn")
 
 var owning_player:CharacterBody3D # tracking player
+var player_name:String = "Pewweper"
+#var show_name:bool = false
 
 func _ready() -> void:
 	ui.visible = false
 	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
+	if owning_player.name != "PlayerActor":
+		player_owner.visible = true
+		player_owner.text = str("Placed by: ", player_name)
 
 func _process(_delta: float) -> void:
 	scrap_counter.text = str("Scrap: ", Gameplay.scrap)
@@ -63,16 +69,17 @@ func _on_make_constructor_pressed() -> void:
 		owning_player.get_unit(1, 1)
 
 func _on_build_turret_pressed() -> void:
-	IHateThis.rpc("defence_turret", "Defence turret", 3, 5)
+	IHateThis("defence_turret", "Defence turret", 3, 5)
 func _on_build_mining_rig_pressed() -> void:
-	IHateThis.rpc("mining_rig", "Mining rig", 5, 8)
+	IHateThis("mining_rig", "Mining rig", 5, 8)
 func _on_add_shoulder_gun_pressed() -> void:
 	if Gameplay.scrap >= 6:
-		HangTheDeveloper.rpc()
+		HangTheDeveloper()
 
-@rpc("any_peer", "call_local")
+
 func HangTheDeveloper() -> void:
-	owning_player.add_module.rpc(shoulder_gun, 6)
-@rpc("any_peer")
+	Gameplay.scrap -= 6
+	owning_player.add_module.rpc("shouldergun")
+
 func IHateThis(scene, string, work_req, price) -> void:
 	owning_player.get_blueprint.rpc(scene, string, work_req, price)

@@ -1,7 +1,7 @@
 extends GeneralEnemy
 
 
-@onready var gun_barrel: Marker3D = $"Pistol?/GunBarrel"
+@onready var gun_barrel: Marker3D = $"mesh/Pistol?/GunBarrel"
 
 var bullet_scene:PackedScene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet.tscn")
 

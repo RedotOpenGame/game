@@ -16,8 +16,13 @@ var nearby_hostiles:Array = []
 var curr_target:Node3D
 var can_fire:bool = true
 
+var player_name:String = "Pewweper"
+var show_name:bool = false
+
 func _ready():
 	health_label.text = str("Health: ", health, "/", max_health)
+	$PlayerOwner.visible = show_name
+	$PlayerOwner.text = str("Placed by: ", player_name)
 
 func _process(_delta: float) -> void:
 	curr_target = find_closest_target()

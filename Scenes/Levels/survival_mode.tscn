@@ -223,7 +223,6 @@ grow_vertical = 2
 text = "Votes:CURR"
 
 [node name="Intermission" type="Timer" parent="."]
-wait_time = 30.0
 one_shot = true
 
 [node name="EnemySpawnpoint" type="Marker3D" parent="."]

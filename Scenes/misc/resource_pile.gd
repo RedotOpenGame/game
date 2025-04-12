@@ -9,7 +9,7 @@ func interaction(body) -> void:
 		return
 	
 	scrap -= body.get_scrap(1)
-	print("scrap received for: ", body.name)
+	#print("scrap received for: ", body.name)
 	if scrap <= 0:
 		fucking_die.rpc()
 

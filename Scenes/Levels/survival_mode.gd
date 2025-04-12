@@ -78,7 +78,7 @@ func _process(_delta: float) -> void:
 			i.heal_func(666)
 	intermission_bar.value = intermission.time_left
 
-@rpc("call_local")
+#@rpc("call_local", )
 func new_wave() -> void:
 	for i in get_tree().get_nodes_in_group("Farm"):
 		i.get_resource()
@@ -150,11 +150,11 @@ func spawn_resource_pile() -> void:
 		resources.add_child(scene)
 
 func _on_intermission_timeout() -> void:
-	new_wave.rpc()
+	new_wave()
 
 
 func _on_new_wave_now_pressed() -> void:
-	new_wave.rpc()
+	new_wave()
 	restart_intermission.rpc()
 	$CanvasLayer/NewWaveNow.release_focus()
 

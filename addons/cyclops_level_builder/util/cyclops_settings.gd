@@ -225,4 +225,3 @@ func get_property(name:String):
 	#print("returning default ", name)
 	var def:SettingDef = definition_map[name]
 	return def.default_value
-

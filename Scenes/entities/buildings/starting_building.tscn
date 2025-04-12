@@ -104,6 +104,13 @@ text = "Build mining rig: 8 scrap"
 layout_mode = 2
 text = "Add a gun to yourself: 6 scrap"
 
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54745, 0)
+visible = false
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50
+
 [connection signal="body_entered" from="interactionArea" to="." method="_on_interaction_area_body_entered"]
 [connection signal="body_exited" from="interactionArea" to="." method="_on_interaction_area_body_exited"]
 [connection signal="pressed" from="UI/Remove" to="." method="_on_remove_pressed"]

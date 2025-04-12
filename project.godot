@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 CyclopsAutoload="*res://addons/cyclops_level_builder/cyclops_global_scene.tscn"
 MultiplayerHelper="*res://Globals/MultiplayerHelper.gd"
 Gameplay="*res://Globals/Gameplay.tscn"
+SaveSystem="*res://Globals/SaveSystem.gd"
 
 [dotnet]
 

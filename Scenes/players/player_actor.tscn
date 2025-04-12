@@ -1,7 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=23 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
+[ext_resource type="Script" path="res://Scenes/menus/chat.gd" id="3_qow3q"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o1g43"]
 
@@ -405,6 +406,41 @@ one_shot = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea"]
 shape = SubResource("CylinderShape3D_gv87a")
 
+[node name="Nickname" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00555, 0)
+billboard = 1
+text = "Pewweper"
+font_size = 50
+
+[node name="Chat" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 366.0
+offset_bottom = 198.0
+script = ExtResource("3_qow3q")
+
+[node name="LineEdit" type="LineEdit" parent="Chat"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+grow_horizontal = 2
+grow_vertical = 0
+placeholder_text = "Enter message here..."
+
+[node name="RichTextLabel" type="TextEdit" parent="Chat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "messages should appear here."
+editable = false
+
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="pressed" from="CanvasLayer/Pausemenu/Resune" to="." method="_on_resune_pressed"]
 [connection signal="value_changed" from="CanvasLayer/Pausemenu/MusicVolume" to="." method="_on_music_volume_value_changed"]
@@ -417,3 +453,4 @@ shape = SubResource("CylinderShape3D_gv87a")
 [connection signal="timeout" from="DoneNothing" to="." method="_on_done_nothing_timeout"]
 [connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
 [connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="text_submitted" from="Chat/LineEdit" to="Chat" method="_on_line_edit_text_submitted"]

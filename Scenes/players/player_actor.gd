@@ -8,6 +8,11 @@ var music_bus_name:String = "Music"
 var starting_building:PackedScene = preload("res://Scenes/entities/buildings/starting_building.tscn")
 var starting_building_placed:bool = false
 var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
+
+var module_scenes:Dictionary = {
+	"shouldergun":preload("res://Scenes/players/upgrades/shouldergun.tscn")
+}
+
 @onready var build_help: Label = $CanvasLayer/BuildHelp
 @onready var modular_guns: Node3D = $characterMesh/ModularGuns
 
@@ -44,6 +49,10 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @onready var camera_control: Node3D = $CameraControl
 @onready var springArm = $CameraControl/Yaw/Pitch/SpringArm3D
 @onready var character = $characterMesh
+@onready var nickname: Label3D = $Nickname
+@onready var chat: Control = $Chat
+
+
 @onready var selected_unit_type = -1
 @export var SPEED = 6.5
 var JUMP_VELOCITY = 9.5
@@ -75,21 +84,27 @@ func _ready() -> void:
 	constructor_amount_label.text = str("Constructor units: ", builder_amount)
 	collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
+	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
 	build_help.visible = false
 	throw_position_showcase.visible = false
 	pausemenu.visible = Gameplay.paused
+	
 	if str(name) == "PlayerActor":
 		camera.make_current()
+		nickname.visible = false
+		chat.visible = false
 		pass
 	else:
 		multi_sync.set_multiplayer_authority(str(name).to_int())
-		
+		nickname.text = MultiplayerHelper.Players[int(str(name))].name
 		if multi_sync.get_multiplayer_authority() == multiplayer.get_unique_id():
 			camera.make_current()
 			canvas_layer.visible = true
+			
 		else:
 			camera.current = false
 			canvas_layer.visible = false
+		chat.visible = multi_sync.get_multiplayer_authority() == 1
 
 func _input(event: InputEvent) -> void:
 	if name == "PlayerActor":
@@ -127,16 +142,11 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("z"): #Calling all units
 		call_all_units.rpc()
 	if Input.is_action_just_pressed("v") and !starting_building_placed:
-		starting_building_placed = true
-		var scene = starting_building.instantiate()
-		scene.position = building_marker.global_position
-		scene.rotation = character.global_rotation
-		add_sibling(scene)
+		place_workshop.rpc()
 	if Input.is_action_just_pressed("x"):
 		if building_marker.get_child_count() != 0:
 			var node = building_marker.get_child(0)
-			node.process_mode = Node.PROCESS_MODE_ALWAYS
-			node.reparent(get_tree().get_first_node_in_group("AllyContainer"))
+			node.place_itself.rpc()
 			build_help.visible = false
 	if Input.is_action_just_pressed("m"):
 		if music_volume.value != 0:
@@ -200,7 +210,7 @@ func _process(_delta: float) -> void:
 		anim.play("attack")
 		if target_point:
 			for i in modular_guns.get_children():
-				i.shoot(target_point)
+				i.shoot.rpc(target_point)
 			rotate_towards_target(target_point,character,0.2)
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
 				unit_throw.rpc(target_point)
@@ -236,11 +246,24 @@ func unit_throw(cursor_pos_on_plane) -> void:
 						else:
 							return
 				instance._leader = self
+				instance.player_name = nickname.text
 				instance.position = throw_location.global_position
 				instance.throw_target = cursor_pos_on_plane
 				instance.unit_type = selected_unit_type
 				add_sibling(instance)
 				instance.get_node("characterMesh").rotation.y = character.rotation.y
+
+@rpc("any_peer", "call_local")
+func place_workshop() -> void:
+		starting_building_placed = true
+		var scene = starting_building.instantiate()
+		scene.owning_player = self
+		scene.player_name = nickname.text
+		
+		scene.position = building_marker.global_position
+		scene.rotation = character.global_rotation
+		add_sibling(scene)
+
 
 func _physics_process(delta: float) -> void:
 	if name == "PlayerActor":
@@ -276,7 +299,7 @@ func _physics_process(delta: float) -> void:
 			if global_position.distance_to(i.global_position) < closest:
 				closest = global_position.distance_to(i.global_position)
 				interact_target = i
-		interact_target.interaction()
+		interact_target.interaction(self)
 
 @rpc("any_peer", "call_local")
 func call_all_units() -> void:
@@ -294,6 +317,7 @@ func get_scrap(amount) -> int:
 	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
 	return curr_scrap - old_scrap
 
+@rpc("any_peer", "call_local")
 func remove_scrap() -> int:
 	var old_amount:int = curr_scrap
 	curr_scrap = 0
@@ -361,8 +385,11 @@ func add_interactable(node:Node3D) -> void:
 func remove_interactable(node:Node3D) -> void:
 	interactables_in_range.erase(node)
 
-func get_blueprint(scene:PackedScene, build_name:String, constructor_req:int, build_cost:int) -> void:
+@rpc("any_peer", "call_local")
+func get_blueprint(scene:String, build_name:String, constructor_req:int, build_cost:int) -> void:
 	var blueprint = building_blueprint.instantiate()
+	blueprint.player_name = nickname.text
+	blueprint.player_owner = self
 	blueprint.planned_bulding = scene
 	blueprint.process_mode = Node.PROCESS_MODE_DISABLED
 	blueprint.unit_req = constructor_req
@@ -376,6 +403,7 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	if "damage_func" in body:
 		body.damage_func(8)
 # Probably dont need this pair of functions
+# We need this to tell players's units that player is in danger - Pewweper
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Hostile"):
 		nearby_hostiles.append(body)
@@ -436,8 +464,10 @@ func _on_music_volume_value_changed(value: float) -> void:
 			linear_to_db(value)
 			)
 
-func add_module(scene:PackedScene) -> bool:
-	var inst = scene.instantiate()
+@rpc("any_peer", "call_local")
+#fun fact: it's impossible to traverse PackedScene through an RPC call.
+func add_module(scene:String) -> bool:
+	var inst = module_scenes[scene].instantiate()
 	for i in modular_guns.get_children():
 		if inst.name == i.name:
 			return false

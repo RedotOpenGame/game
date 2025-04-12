@@ -44,5 +44,12 @@ billboard = 1
 text = "Scrap cost: CURR_SCRAP/SCRAP_COST"
 font_size = 64
 
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.07836, 0)
+visible = false
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

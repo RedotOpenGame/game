@@ -31,7 +31,7 @@ func interaction(body) -> void:
 		var value = body.curr_scrap
 		body.remove_scrap.rpc()
 		Gameplay.plus_scrap.rpc(value)
-		print(value, " scrap added by: ", body.name)
+		#print(value, " scrap added by: ", body.name)
 		scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 
 

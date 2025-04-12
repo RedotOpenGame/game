@@ -2,22 +2,38 @@ extends Control
 
 @onready var address: LineEdit = $ServerStuff/Address
 @onready var port_ui: SpinBox = $ServerStuff/Port
+@onready var entername: LineEdit = $Stuff/Entername
 
 
-@export var Address = "127.0.0.1" #172.30.76.117
+var Address:String = "127.0.0.1" #172.30.76.117
 #172.30.195.0
-@export var port:int = 16 # 0-65535
+var port:int = 16 # 0-65535
 var peer
 
 func _ready() -> void:
+	SaveSystem.load_mult_pref()
+	Address = MultiplayerHelper.IPAddress
+	port = MultiplayerHelper.Port
+	entername.text = MultiplayerHelper.Nickname
+	print(Address, " ", port)
 	multiplayer.peer_connected.connect(PlayerConnected)
 	multiplayer.peer_disconnected.connect(PlayerDisconnected)
 	multiplayer.connected_to_server.connect(ConnectToServer)
 	multiplayer.connection_failed.connect(ConnectionFailure)
 	if "--server" in OS.get_cmdline_args():
+		MultiplayerHelper.Nickname = "host"
+		entername.text = MultiplayerHelper.Nickname
 		_on_host_game_pressed()
+
+	if "--quickgame" in OS.get_cmdline_args():
+		MultiplayerHelper.Nickname = "join"
+		entername.text = MultiplayerHelper.Nickname
+		_on_join_game_pressed()
+
+	
 	address.text = Address
 	port_ui.set_value_no_signal(port)
+	
 
 func _input(_event: InputEvent) -> void:
 	if visible:
@@ -38,6 +54,7 @@ func StartGame(path) -> void:
 	self.hide()
 	var scene = load(path).instantiate()
 	get_tree().root.add_child(scene)
+	SaveSystem.save_mult_pref()
 	
 @rpc("any_peer")
 func SendPlayerInfo(plr_name, id):
@@ -138,7 +155,7 @@ func _on_join_game_pressed() -> void:
 
 	#peer.get_host().compress(ENetConnection.COMPRESS_NONE)
 	multiplayer.set_multiplayer_peer(peer)
-
+	$Stuff/GameJoinStatus.visible = true
 
 
 func _on_start_game_pressed() -> void:
@@ -148,11 +165,27 @@ func _on_start_game_pressed() -> void:
 func _on_port_value_changed(value: float) -> void:
 	port = value
 	print(port)
+	MultiplayerHelper.Port = value
 
 func _on_address_text_submitted(new_text: String) -> void:
 	Address = new_text
 	print(Address)
+	MultiplayerHelper.IPAddress = new_text
 
 
 func _on_start_survival_pressed() -> void:
 	StartGame.rpc("res://Scenes/Levels/survival_mode.tscn")
+
+
+func _on_return_to_menu_pressed() -> void:
+	if peer:
+		peer.close()
+	
+	MultiplayerHelper.Players.clear()
+	get_tree().change_scene_to_file("res://Scenes/overworld.tscn")
+
+
+func _on_entername_text_submitted(new_text: String) -> void:
+	MultiplayerHelper.Nickname = new_text
+	print("New nickname submitted: ", new_text)
+	SaveSystem.save_mult_pref()

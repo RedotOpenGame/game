@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://brok83wpxo8id"]
+[gd_scene load_steps=3 format=3 uid="uid://brok83wpxo8id"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/multiplayer_test.gd" id="1_143sx"]
+[ext_resource type="Script" path="res://Scenes/menus/chat.gd" id="2_3og6k"]
 
 [node name="MultiplayerMenu" type="Control"]
 layout_mode = 3
@@ -101,6 +102,15 @@ offset_right = 507.0
 offset_bottom = 46.0
 text = "Game hosted successfully!"
 
+[node name="GameJoinStatus" type="Label" parent="Stuff"]
+visible = false
+layout_mode = 0
+offset_left = 310.0
+offset_top = 105.0
+offset_right = 509.0
+offset_bottom = 128.0
+text = "Game joined successfully!"
+
 [node name="ServerStuff" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 679.0
@@ -122,9 +132,54 @@ offset_right = 88.5625
 offset_bottom = 115.0
 max_value = 65535.0
 
+[node name="Chat" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 635.0
+offset_top = 356.0
+offset_right = 1150.0
+offset_bottom = 647.0
+script = ExtResource("2_3og6k")
+
+[node name="LineEdit" type="LineEdit" parent="Chat"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+grow_horizontal = 2
+grow_vertical = 0
+placeholder_text = "Enter message here..."
+
+[node name="RichTextLabel" type="TextEdit" parent="Chat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "messages should appear here."
+editable = false
+
+[node name="ReturnToMenu" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 560.0
+offset_right = 226.0
+offset_bottom = 646.0
+grow_vertical = 0
+text = "Go back to Overworld"
+
 [connection signal="pressed" from="Stuff/HostGame" to="." method="_on_host_game_pressed"]
 [connection signal="pressed" from="Stuff/JoinGame" to="." method="_on_join_game_pressed"]
 [connection signal="pressed" from="Stuff/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="Stuff/StartSurvival" to="." method="_on_start_survival_pressed"]
+[connection signal="text_submitted" from="Stuff/Entername" to="." method="_on_entername_text_submitted"]
 [connection signal="text_submitted" from="ServerStuff/Address" to="." method="_on_address_text_submitted"]
 [connection signal="value_changed" from="ServerStuff/Port" to="." method="_on_port_value_changed"]
+[connection signal="text_submitted" from="Chat/LineEdit" to="Chat" method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="ReturnToMenu" to="." method="_on_return_to_menu_pressed"]

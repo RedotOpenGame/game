@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://dcye6oowh0c4k"]
 
-[ext_resource type="Script" path="res://Scenes/entities/NPC/Unit.gd" id="1_dhkfg"]
+[ext_resource type="Script" path="res://Scenes/entities/NPC/unit.gd" id="1_dhkfg"]
 [ext_resource type="PackedScene" uid="uid://ch7sbjrry22bh" path="res://Scenes/meshes/ally_bot.tscn" id="2_nrft3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gexq0"]
@@ -101,6 +101,12 @@ replication_config = SubResource("SceneReplicationConfig_u4he0")
 
 [node name="DeathTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.88943, 0)
+visible = false
+billboard = 1
+text = "Owner:Pewweper"
 
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]

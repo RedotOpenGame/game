@@ -34,3 +34,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93551, 0)
 billboard = 1
 text = "Health:CURR/MAX
 "
+
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.44674, 0)
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50
