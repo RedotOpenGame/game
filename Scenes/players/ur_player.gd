@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends GeneralEntity
 ##UR, as in, Unholy Retribution
 @onready var camera_3d: Camera3D = $Camera3D
 @onready var health_label: Label = $HealthLabel
@@ -13,12 +13,10 @@ var curr_acceleration = 0
 const JUMP_VELOCITY = 4.5
 const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down camera movement(which doesn't let you look upwards)
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
-var max_health:float = 100.0
-var health:float = max_health
+
 var can_be_hit:bool = true
 
-var curr_scrap:int = 0
-var max_scrap:int = 3
+
 
 var interact_target:Node3D
 var curr_target:Node3D #the enemy target
@@ -108,7 +106,7 @@ func _physics_process(delta: float) -> void:
 		if is_instance_valid(curr_target):
 			look_at(curr_target.global_position)
 		else:
-			curr_target = find_closest_target()
+			curr_target = find_closest_global_target("Hostile")
 	else:
 		global_rotation.x = 0
 		global_rotation.z = 0
@@ -128,16 +126,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("e") and is_instance_valid(interact_target):
 		interact_target.interaction()
 
-func find_closest_target() -> Node3D:
-	var returnage #whatever will be returned, idfk
-	var closest:float = INF
-	for i in get_tree().get_nodes_in_group("Hostile"):
-		if i.global_position.distance_to(global_position) < closest:
-			returnage = i
-			closest = i.global_position.distance_to(global_position)
-	if returnage:
-		return returnage
-	return
+
 
 #func teleport_allies_with_me() -> void:
 	#for i in followers:

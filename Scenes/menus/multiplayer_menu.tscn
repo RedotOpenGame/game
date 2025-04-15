@@ -92,6 +92,15 @@ offset_right = 265.0
 offset_bottom = 89.0
 text = "Set random name"
 
+[node name="Nicknamehelp" type="Label" parent="Stuff/Entername"]
+layout_mode = 0
+offset_top = 102.0
+offset_right = 40.0
+offset_bottom = 125.0
+text = "tip:make sure to change nickname BEFORE you join a game 
+to avoid unexpected behaviour
+I think it's a bug we should fix later. - Pewweper"
+
 [node name="Name" type="Label" parent="Stuff"]
 layout_mode = 0
 offset_left = 11.0
