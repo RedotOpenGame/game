@@ -1,5 +1,6 @@
-[gd_scene load_steps=23 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=22 format=3 uid="uid://clpvr1kbs1f52"]
 
+[ext_resource type="Script" path="res://Scenes/Levels/overworld.gd" id="1_c0h7r"]
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ccpx5"]
 [ext_resource type="PackedScene" uid="uid://bevcp75fxaeuc" path="res://Scenes/meshes/dungeon_entrance.tscn" id="2_bbigu"]
 [ext_resource type="PackedScene" uid="uid://bjiqjoitv764c" path="res://Scenes/meshes/survival_mode_enter.tscn" id="3_s368d"]
@@ -7,10 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c6mfi0s8avy8j" path="res://Scenes/entities/buildings/defence_turret.tscn" id="7_2ngsa"]
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="7_hf0oe"]
 [ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="9_auytq"]
-[ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="9_v1c68"]
 [ext_resource type="AudioStream" uid="uid://danaa3i47echq" path="res://assets/Music/Robotic Wasteland.mp3" id="10_c0h7r"]
-[ext_resource type="PackedScene" uid="uid://bya6wormsuwtj" path="res://Scenes/entities/Enemies/shooting_enemy.tscn" id="10_dd6r4"]
-[ext_resource type="PackedScene" uid="uid://un4dhmn7qero" path="res://Scenes/entities/Enemies/shield_enemy.tscn" id="11_uvbdg"]
 [ext_resource type="PackedScene" uid="uid://du814bss6gu41" path="res://Scenes/meshes/proto_city.tscn" id="12_dd6r4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
@@ -55,7 +53,11 @@ height = 30.0
 height = 30.0
 radius = 7.0
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_auytq"]
+radius = 1.90633
+
 [node name="Overworld" type="Node3D"]
+script = ExtResource("1_c0h7r")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_j1dxk")
@@ -79,7 +81,7 @@ shape = SubResource("BoxShape3D_v4ybm")
 mesh = SubResource("BoxMesh_j1dxk")
 
 [node name="Building(?)" type="StaticBody3D" parent="Objects"]
-transform = Transform3D(1, 0, 0, 0, 0.962436, 0.271508, 0, -0.271508, 0.962436, -28.3619, 102.646, 25.9627)
+transform = Transform3D(1, 0, 0, 0, 0.962436, 0.271508, 0, -0.271508, 0.962436, -28.3619, 0.480958, -28.8186)
 collision_layer = 4
 collision_mask = 11
 metadata/_edit_group_ = true
@@ -91,7 +93,7 @@ mesh = SubResource("CylinderMesh_v4ybm")
 shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="Building(?)2" type="StaticBody3D" parent="Objects"]
-transform = Transform3D(0.976695, 0.206571, 0.0582745, -0.209433, 0.976635, 0.0481834, -0.0469597, -0.0592651, 0.997137, 39.6701, 102.646, -9.74237)
+transform = Transform3D(0.976695, 0.206571, 0.0582745, -0.209433, 0.976635, 0.0481834, -0.0469597, -0.0592651, 0.997137, 39.6701, 0.480958, -20.8356)
 collision_layer = 4
 collision_mask = 11
 metadata/_edit_group_ = true
@@ -103,7 +105,7 @@ mesh = SubResource("CylinderMesh_v4ybm")
 shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="Building(?)3" type="StaticBody3D" parent="Objects"]
-transform = Transform3D(0.921375, -0.374074, -0.105528, 0.388674, 0.886765, 0.250161, 0, -0.271508, 0.962436, -28.3619, 101.533, -13.6485)
+transform = Transform3D(0.921375, -0.374074, -0.105528, 0.388674, 0.886765, 0.250161, 0, -0.271508, 0.962436, -28.3619, -0.632049, -68.4298)
 collision_layer = 4
 collision_mask = 11
 metadata/_edit_group_ = true
@@ -115,7 +117,7 @@ mesh = SubResource("CylinderMesh_v4ybm")
 shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="Building(?)4" type="StaticBody3D" parent="Objects"]
-transform = Transform3D(0.946543, -0.321571, 0.0254643, 0.319142, 0.945029, 0.0711978, -0.0469597, -0.0592651, 0.997137, 39.6701, 102.646, -49.3535)
+transform = Transform3D(0.946543, -0.321571, 0.0254643, 0.319142, 0.945029, 0.0711978, -0.0469597, -0.0592651, 0.997137, 39.6701, 0.480958, -60.4467)
 collision_layer = 4
 collision_mask = 11
 metadata/_edit_group_ = true
@@ -175,14 +177,119 @@ autoplay = true
 bus = &"Music"
 parameters/looping = true
 
-[node name="TestEnemy" parent="." instance=ExtResource("9_v1c68")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.9374, 1.49055, -29.8733)
-
-[node name="ShootingEnemy" parent="." instance=ExtResource("10_dd6r4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.00659, 1.78337, -32.7361)
-
-[node name="ShieldEnemy" parent="." instance=ExtResource("11_uvbdg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.4578, 2.9983, -33.6714)
-
 [node name="ProtoCity" parent="." instance=ExtResource("12_dd6r4")]
 transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, -262.031, -227.344, 161.369)
+
+[node name="EnemySpawnpoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.82559, -36.6121)
+
+[node name="Label3D" type="Label3D" parent="EnemySpawnpoint"]
+billboard = 1
+text = "Enemies will spawn here!!11"
+font_size = 64
+
+[node name="enemyspawner" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1454, 0, -14.3225)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="enemyspawner"]
+shape = SubResource("CylinderShape3D_auytq")
+
+[node name="Label3D" type="Label3D" parent="enemyspawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62683, 0)
+billboard = 1
+text = "Enter me if you need to spawn enemies"
+
+[node name="spawnUI" type="CanvasLayer" parent="enemyspawner"]
+
+[node name="SpawnOptions" type="VBoxContainer" parent="enemyspawner/spawnUI"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -52.0
+offset_bottom = 52.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="TestEnemy" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn TestEnemy"
+
+[node name="Shooter" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn Shooter"
+
+[node name="Shielder" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn Shielder"
+
+[node name="TestBoss" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn TestBoss"
+
+[node name="TestEnemy2" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn TestEnemy"
+
+[node name="Shooter2" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn Shooter t2"
+
+[node name="Shielder2" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn Shielder t2"
+
+[node name="Medic" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn Medic"
+
+[node name="Altefo" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Spawn Altefo"
+
+[node name="donothing" type="Button" parent="enemyspawner/spawnUI/SpawnOptions"]
+layout_mode = 2
+text = "Do nothing"
+
+[node name="HideMenu" type="Button" parent="enemyspawner/spawnUI"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -121.0
+offset_top = -251.0
+offset_right = -2.0
+offset_bottom = -220.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Hide menu"
+
+[node name="KillAllEnemies" type="Button" parent="enemyspawner/spawnUI"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -212.0
+offset_right = -1.0
+offset_bottom = -181.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Kill all enemies"
+
+[connection signal="body_entered" from="enemyspawner" to="." method="_on_enemyspawner_body_entered"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/TestEnemy" to="." method="_on_test_enemy_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/Shooter" to="." method="_on_shooter_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/Shielder" to="." method="_on_shielder_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/TestBoss" to="." method="_on_test_boss_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/TestEnemy2" to="." method="_on_test_enemy_2_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/Shooter2" to="." method="_on_shooter_2_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/Shielder2" to="." method="_on_shielder_2_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/Medic" to="." method="_on_medic_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/Altefo" to="." method="_on_altefo_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/HideMenu" to="." method="_on_hide_menu_pressed"]
+[connection signal="pressed" from="enemyspawner/spawnUI/KillAllEnemies" to="." method="_on_kill_all_enemies_pressed"]

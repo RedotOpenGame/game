@@ -8,6 +8,13 @@
 radius = 1.02975
 height = 3.56329
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k1j27"]
+albedo_color = Color(0.111197, 0.111197, 0.111197, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4oukh"]
+material = SubResource("StandardMaterial3D_k1j27")
+size = Vector3(0.8, 0.2, 0.2)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kh3so"]
 albedo_color = Color(0, 0, 0, 1)
 
@@ -22,13 +29,6 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_d1qnq")
 size = Vector3(0.2, 0.4, 0.2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k1j27"]
-albedo_color = Color(0.111197, 0.111197, 0.111197, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_4oukh"]
-material = SubResource("StandardMaterial3D_k1j27")
-size = Vector3(0.8, 0.2, 0.2)
-
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_k1j27"]
 radius = 20.0
 
@@ -39,40 +39,40 @@ script = ExtResource("1_k1j27")
 movement_speed = 3.0
 max_health = 300.0
 
-[node name="EnemyBot" parent="." instance=ExtResource("1_eo4kf")]
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42487, 0)
 shape = SubResource("CapsuleShape3D_6r674")
 
-[node name="Pistol?" type="Node3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.197865, 1.98604, -0.020523)
+[node name="mesh" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Pistol?"]
-transform = Transform3D(0.851022, -0.52513, 0, 0.52513, 0.851022, 0, 0, 0, 1, 0.800931, 0.185594, -1.14214)
-mesh = SubResource("BoxMesh_k1j27")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Pistol?"]
-transform = Transform3D(0.837766, -0.546029, 0, 0.546029, 0.837766, 0, 0, 0, 1, 0.97758, -0.0827577, -0.747901)
-mesh = SubResource("BoxMesh_n31h5")
-
-[node name="GunBarrel" type="Marker3D" parent="Pistol?"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.775223, 0.188307, -1.65037)
-
-[node name="Meshes" type="Node3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
 transform = Transform3D(0.820222, 0.572046, 0, -0.572046, 0.820222, 0, 0, 0, 1, -0.349113, 3.20859, -0.786017)
 mesh = SubResource("BoxMesh_4oukh")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Meshes"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh"]
 transform = Transform3D(-0.820152, -0.572146, -8.74228e-08, -0.572146, 0.820152, 0, 7.17e-08, 5.00186e-08, -1, 0.35083, 3.20859, -0.786017)
 mesh = SubResource("BoxMesh_4oukh")
 
-[node name="Decal" type="Decal" parent="."]
+[node name="Pistol?" type="Node3D" parent="mesh"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.197865, 1.98604, -0.020523)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh/Pistol?"]
+transform = Transform3D(0.851022, -0.52513, 0, 0.52513, 0.851022, 0, 0, 0, 1, 0.800931, 0.185594, -1.14214)
+mesh = SubResource("BoxMesh_k1j27")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh/Pistol?"]
+transform = Transform3D(0.837766, -0.546029, 0, 0.546029, 0.837766, 0, 0, 0, 1, 0.97758, -0.0827577, -0.747901)
+mesh = SubResource("BoxMesh_n31h5")
+
+[node name="GunBarrel" type="Marker3D" parent="mesh/Pistol?"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.775223, 0.188307, -1.65037)
+
+[node name="Decal" type="Decal" parent="mesh"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.21137, -1.02081)
 texture_albedo = ExtResource("2_6r674")
 texture_normal = ExtResource("2_6r674")
+
+[node name="enemy_bot" parent="mesh" instance=ExtResource("1_eo4kf")]
 
 [node name="Attackrate" type="Timer" parent="."]
 wait_time = 1.4

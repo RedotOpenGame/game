@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://citu714ddbl12" path="res://Scenes/meshes/enemy_bot.tscn" id="2_pb61d"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c66dd"]
+radius = 0.193672
+height = 1.05764
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_c66dd"]
 height = 6.0

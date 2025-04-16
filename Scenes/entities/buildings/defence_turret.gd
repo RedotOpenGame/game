@@ -1,4 +1,4 @@
-extends CharacterBody3D
+extends GeneralEntity
 
 var bullet = preload("res://Scenes/entities/Projectiles/Player/bullet.tscn")
 @onready var barrel: Node3D = $Barrel
@@ -6,11 +6,12 @@ var bullet = preload("res://Scenes/entities/Projectiles/Player/bullet.tscn")
 @onready var health_label: Label3D = $HealthLabel
 @onready var firerate: Timer = $Firerate
 @onready var marker_3d: Marker3D = $Barrel/Marker3D
+@onready var hostile_seeker: Area3D = $HostileSeeker
 
 
-@export var max_health:float = 40
+
 @export var damage:float = 5
-@onready var health:float = max_health
+
 
 var nearby_hostiles:Array = []
 var curr_target:Node3D
@@ -25,7 +26,7 @@ func _ready():
 	$PlayerOwner.text = str("Placed by: ", player_name)
 
 func _process(_delta: float) -> void:
-	curr_target = find_closest_target()
+	curr_target = find_closest_target(hostile_seeker, "Hostile")
 	if is_instance_valid(curr_target):
 		barrel.look_at(curr_target.global_position)
 		if can_fire:
@@ -64,16 +65,6 @@ func _on_hostile_seeker_body_exited(body: Node3D) -> void:
 	if curr_target == body:
 		curr_target = null
 
-func find_closest_target():
-	var returnage #whatever will be returned, idfk
-	var closest:float = INF
-	for i in nearby_hostiles:
-		if i.global_position.distance_to(global_position) < closest:
-			returnage = i
-			closest = i.global_position.distance_to(global_position)
-	if returnage:
-		return returnage
-	return null
 
 func _on_firerate_timeout() -> void:
 	can_fire = true

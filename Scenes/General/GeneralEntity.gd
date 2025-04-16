@@ -42,7 +42,27 @@ func find_closest_target(targetArea: Area3D, targetTag: String) -> CharacterBody
 			returnEntity = body
 			closest = current_position.distance_to(body.global_position)
 	return returnEntity
-	
+
+func find_closest_target_that_isnt_self(targetArea: Area3D, targetTag: String) -> CharacterBody3D:
+	var bodies = targetArea.get_overlapping_bodies()
+	if self in bodies:
+		bodies.erase(self)
+	var closest:float = INF
+
+	var current_position = global_position
+	var returnEntity = null
+	var importants = get_tree().get_nodes_in_group("Important") #like townhall for survival mode.
+	if !importants.is_empty():
+		for i in importants:
+			if i.is_in_group(targetTag) and current_position.distance_to(i.global_position) < closest:
+				returnEntity = i
+				closest = current_position.distance_to(i.global_position)
+	for body in bodies:
+		if body.is_in_group(targetTag) and current_position.distance_to(body.global_position) < closest:
+			returnEntity = body
+			closest = current_position.distance_to(body.global_position)
+	return returnEntity
+
 func find_closest_global_target(targetTag: String) -> GeneralEntity:
 	var bodies = get_tree().get_nodes_in_group(targetTag)
 	if bodies.is_empty():

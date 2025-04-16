@@ -7,7 +7,7 @@ script/source = "extends GeneralEnemy
 
 
 func _ready():
-	$EnemyBot.set_tier(enemy_tier)
+	enemy_bot.set_tier(enemy_tier)
 	spawned_point = global_position
 	# Get player from 'Player' group once at start
 	health_label.text = str(\"Health: \", health, \"/\", max_health)
@@ -15,11 +15,8 @@ func _ready():
 func _process(delta: float) -> void:
 	if !is_on_floor():
 		velocity += get_gravity() * delta
-	if nearby_hostiles != []:
-		curr_target = find_closest_target(hostile_seeker, \"Ally\")
+	curr_target = find_closest_target_that_isnt_self(hostile_seeker, \"Hostile\")
 	if is_instance_valid(curr_target):
-		if !curr_target.is_in_group(\"Hostile\"):
-			nearby_hostiles.erase(curr_target)
 		move_towards_target(curr_target.global_position,movement_speed)
 		rotate_towards_target(curr_target.global_position,mesh,0.2)
 	else:
@@ -45,6 +42,7 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group(\"Hostile\") and body != self:
 		nearby_hostiles.append(body)
+		print(\"enemy in\")
 
 
 func _on_hostile_seeker_body_exited(body: Node3D) -> void:
@@ -78,6 +76,9 @@ movement_speed = 7.0
 damage = 20.0
 max_health = 60.0
 
+[node name="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.782209, 0.0187799)
+
 [node name="HostileSeeker" parent="." index="3"]
 collision_layer = 4
 collision_mask = 8
@@ -87,6 +88,9 @@ shape = SubResource("CylinderShape3D_4766n")
 
 [node name="mesh" parent="." index="5"]
 transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, -0.85, 0)
+
+[node name="DamageArea" parent="mesh/enemy_bot" index="1"]
+collision_mask = 8
 
 [node name="Label3D" type="Label3D" parent="." index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98253, 0)
