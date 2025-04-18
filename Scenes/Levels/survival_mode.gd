@@ -35,7 +35,7 @@ var enemy_list:Dictionary = {
 	"Medic":[preload("res://Scenes/entities/Enemies/enemy_medic.tscn"), 17],
 }
 var wave_structure:Dictionary = {
-	1:{"Test_Enemy":1, "Test_Boss":1, "Shooter":1, "Medic":1}, #just a single enemy.
+	1:{"Test_Enemy":1}, #just a single enemy.
 	2:{"Test_Enemy":6}, #more of them.
 	3:{"Test_Enemy":4, "Shooter":3}, #enemies have guns now.
 	4:{"Test_Enemy":3, "Shooter":5}, #nothing new.

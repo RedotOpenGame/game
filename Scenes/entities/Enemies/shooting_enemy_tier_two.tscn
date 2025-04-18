@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bya6wormsuwtj" path="res://Scenes/entities/Enemies/shooting_enemy.tscn" id="1_q8bf8"]
 
 [node name="ShootingEnemyTierTwo" instance=ExtResource("1_q8bf8")]
+attacking_range = 11.0
 movement_speed = 6.0
 enemy_tier = 2
 damage = 7.5

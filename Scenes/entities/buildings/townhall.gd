@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-var max_health:float = 500
+var max_health:float = 1500
 var health:float = max_health
 @onready var health_label: Label3D = $HealthLabel
 var i_died:bool = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://546jv5g03qxt"]
+[gd_scene load_steps=5 format=3 uid="uid://546jv5g03qxt"]
 
 [ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="1_4766n"]
 
@@ -66,6 +66,10 @@ func _on_attackrate_timeout() -> void:
 	hitscan_preview.visible = true
 "
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4766n"]
+radius = 0.19879
+height = 0.825688
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_4766n"]
 height = 6.0
 radius = 25.0
@@ -77,7 +81,8 @@ damage = 20.0
 max_health = 60.0
 
 [node name="CollisionShape3D" parent="." index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.782209, 0.0187799)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.341195, 0.000368472)
+shape = SubResource("CapsuleShape3D_4766n")
 
 [node name="HostileSeeker" parent="." index="3"]
 collision_layer = 4
@@ -87,7 +92,7 @@ collision_mask = 8
 shape = SubResource("CylinderShape3D_4766n")
 
 [node name="mesh" parent="." index="5"]
-transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, -0.85, 0)
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, 0.395874, 0)
 
 [node name="DamageArea" parent="mesh/enemy_bot" index="1"]
 collision_mask = 8

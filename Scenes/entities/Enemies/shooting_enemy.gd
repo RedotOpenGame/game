@@ -1,6 +1,6 @@
 extends GeneralEnemy
 
-
+@export var attacking_range:float = 10
 @onready var gun_barrel: Marker3D = $"mesh/Pistol?/GunBarrel"
 
 var bullet_scene:PackedScene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet.tscn")
@@ -22,10 +22,12 @@ func _process(delta: float) -> void:
 	if nearby_hostiles != []:
 		curr_target = find_closest_target(hostile_seeker,"Ally")
 	if is_instance_valid(curr_target):
-		move_towards_target(curr_target.global_position,movement_speed)
 		rotate_towards_target(curr_target.global_position,mesh,0.2)
-		if can_fire:
-			shoot()
+		if global_position.distance_to(curr_target.global_position) > attacking_range:
+			move_towards_target(curr_target.global_position,movement_speed)
+		else:
+			if can_fire:
+				shoot()
 	else:
 
 		if global_position.distance_to(Vector3(spawned_point.x, global_position.y, spawned_point.z)) < movement_speed / 32:

@@ -12,7 +12,7 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_6jxpf")
 size = Vector3(1, 2, 1)
 
-[node name="MiningRig" type="CharacterBody3D" groups=["Farm"]]
+[node name="MiningRig" type="CharacterBody3D" groups=["Ally", "Farm"]]
 collision_layer = 2
 collision_mask = 43
 script = ExtResource("1_m38p7")
