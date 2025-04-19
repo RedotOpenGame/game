@@ -3,7 +3,7 @@ extends Control
 @onready var address: LineEdit = $ServerStuff/Address
 @onready var port_ui: SpinBox = $ServerStuff/Port
 @onready var entername: LineEdit = $Stuff/Entername
-
+@export var hotkeys_enabled:bool = false
 
 var Address:String = "127.0.0.1" #172.30.76.117
 #172.30.195.0
@@ -36,7 +36,7 @@ func _ready() -> void:
 	
 
 func _input(_event: InputEvent) -> void:
-	if visible:
+	if visible and hotkeys_enabled:
 		if Input.is_action_just_pressed("h"):
 			print("game hosted")
 			_on_host_game_pressed()

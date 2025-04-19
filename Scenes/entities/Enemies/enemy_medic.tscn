@@ -42,7 +42,6 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group(\"Hostile\") and body != self:
 		nearby_hostiles.append(body)
-		print(\"enemy in\")
 
 
 func _on_hostile_seeker_body_exited(body: Node3D) -> void:

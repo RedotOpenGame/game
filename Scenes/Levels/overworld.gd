@@ -27,7 +27,6 @@ func _on_hide_menu_pressed() -> void:
 
 func _on_test_enemy_pressed() -> void:
 	var inst = enemy_list["Test_Enemy"][0].instantiate()
-	print(inst)
 	inst.position = enemy_spawnpoint.position + Vector3(randf_range(-6, 6), 0 , randf_range(-6, 6))
 	add_child(inst)
 

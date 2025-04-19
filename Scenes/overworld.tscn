@@ -164,7 +164,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, 4.82912)
 
 [node name="ResourcePile" parent="." instance=ExtResource("7_hf0oe")]
 transform = Transform3D(1.99821, -0.0832449, 0.0150156, 0.0845883, 1.96648, -0.354711, 0, 0.355028, 1.96824, 14.4702, 0.0462289, 5.91616)
-scrap = 10
+scrap = 1
 
 [node name="MainStructure" parent="." instance=ExtResource("9_auytq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8943, 0.25, 13.5545)

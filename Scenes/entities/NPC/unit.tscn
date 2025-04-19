@@ -1,18 +1,31 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcye6oowh0c4k"]
+[gd_scene load_steps=12 format=3 uid="uid://dcye6oowh0c4k"]
 
 [ext_resource type="Script" path="res://Scenes/entities/NPC/unit.gd" id="1_dhkfg"]
 [ext_resource type="PackedScene" uid="uid://ch7sbjrry22bh" path="res://Scenes/meshes/ally_bot.tscn" id="2_nrft3"]
+[ext_resource type="Script" path="res://Scenes/entities/NPC/optimization_mode.gd" id="3_c0cis"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gexq0"]
 size = Vector3(1, 1, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y6wky"]
+resource_local_to_scene = true
 transparency = 1
 albedo_color = Color(1, 1, 1, 0.235294)
 
 [sub_resource type="BoxMesh" id="BoxMesh_gwabn"]
 material = SubResource("StandardMaterial3D_y6wky")
 size = Vector3(1, 1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_850se"]
+resource_local_to_scene = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_igkc4"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_850se")
+top_radius = 0.25
+bottom_radius = 0.25
+height = 1.0
+radial_segments = 16
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6wbai"]
 radius = 0.349256
@@ -47,10 +60,10 @@ properties/6/replication_mode = 1
 [node name="Unit" type="CharacterBody3D" groups=["Ally", "Unit"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00816488, 0, -0.00135088)
 collision_layer = 2
-collision_mask = 45
+collision_mask = 47
 script = ExtResource("1_dhkfg")
 max_resources = 3
-max_health = 40.0
+max_health = 50.0
 
 [node name="HealthLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22067, 0)
@@ -80,6 +93,11 @@ shape = SubResource("BoxShape3D_gexq0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.84)
 mesh = SubResource("BoxMesh_gwabn")
 
+[node name="OptimizationMode" type="MeshInstance3D" parent="characterMesh"]
+visible = false
+mesh = SubResource("CylinderMesh_igkc4")
+script = ExtResource("3_c0cis")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_6wbai")
 
@@ -90,11 +108,6 @@ collision_mask = 9
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
 shape = SubResource("CylinderShape3D_65c4o")
-
-[node name="TypeShowcase" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54876, 0)
-billboard = 1
-text = "TYPE: type"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_u4he0")
@@ -108,6 +121,11 @@ visible = false
 billboard = 1
 text = "Owner:Pewweper"
 
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-1, -1, -1, 2, 2, 1)
+
 [connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
 [connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_damage_area_body_entered"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]
