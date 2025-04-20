@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=23 format=3 uid="uid://clpvr1kbs1f52"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/overworld.gd" id="1_c0h7r"]
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ccpx5"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="7_hf0oe"]
 [ext_resource type="PackedScene" uid="uid://bqvdey8p0suiw" path="res://Scenes/entities/buildings/main_structure.tscn" id="9_auytq"]
 [ext_resource type="AudioStream" uid="uid://danaa3i47echq" path="res://assets/Music/Robotic Wasteland.mp3" id="10_c0h7r"]
+[ext_resource type="PackedScene" uid="uid://cxhxgssk3e4ip" path="res://Scenes/meshes/boombox.tscn" id="11_v1c68"]
 [ext_resource type="PackedScene" uid="uid://du814bss6gu41" path="res://Scenes/meshes/proto_city.tscn" id="12_dd6r4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
@@ -164,7 +165,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, 4.82912)
 
 [node name="ResourcePile" parent="." instance=ExtResource("7_hf0oe")]
 transform = Transform3D(1.99821, -0.0832449, 0.0150156, 0.0845883, 1.96648, -0.354711, 0, 0.355028, 1.96824, 14.4702, 0.0462289, 5.91616)
-scrap = 1
+scrap = 9999
 
 [node name="MainStructure" parent="." instance=ExtResource("9_auytq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8943, 0.25, 13.5545)
@@ -173,7 +174,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8943, 0.25, 13.5545)
 stream = ExtResource("10_c0h7r")
 volume_db = -10.0
 pitch_scale = 0.65
-autoplay = true
 bus = &"Music"
 parameters/looping = true
 
@@ -280,6 +280,9 @@ offset_bottom = -181.0
 grow_horizontal = 0
 grow_vertical = 2
 text = "Kill all enemies"
+
+[node name="Boombox" parent="." instance=ExtResource("11_v1c68")]
+transform = Transform3D(1.28279, 0, -1.53442, 0, 2, 0, 1.53442, 0, 1.28279, -6.65706, 1.18596, -12.7501)
 
 [connection signal="body_entered" from="enemyspawner" to="." method="_on_enemyspawner_body_entered"]
 [connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/TestEnemy" to="." method="_on_test_enemy_pressed"]

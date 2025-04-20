@@ -167,6 +167,7 @@ func _on_single_entrance_pressed() -> void:
 		game_started = true
 		multiple_entrances = false
 		select_mode.visible = false
+		submit_vote("mode1")
 	else:
 		if multiplayer.is_server():
 		# Host votes locally
@@ -181,6 +182,8 @@ func _on_multiple_entrance_2_pressed() -> void:
 		game_started = true
 		multiple_entrances = true
 		select_mode.visible = false
+		submit_vote("mode2")
+		
 	else:
 		if multiplayer.is_server():
 		# Host votes locally
@@ -263,7 +266,7 @@ func announce_winner(mode):
 		multiple_entrances = true
 
 func _on_vote_timer_timeout():
-	if multiplayer.is_server():
+	if multiplayer.is_server() and $Players.get_child_count() != 1:
 		end_vote()
 
 

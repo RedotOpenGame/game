@@ -19,6 +19,7 @@ radius = 13.0
 
 [node name="DefenceTurret" type="CharacterBody3D" groups=["Ally"]]
 script = ExtResource("1_y8188")
+dropped_scrap = 4
 max_health = 80.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

@@ -1,4 +1,4 @@
-extends GeneralEntity
+extends GeneralBuilding
 
 var bullet = preload("res://Scenes/entities/Projectiles/Player/bullet.tscn")
 @onready var barrel: Node3D = $Barrel
@@ -53,8 +53,7 @@ func heal_func(amount:float) -> void:
 	health = min(health + amount, max_health)
 	health_label.text = str("Health: ", health, "/", max_health)
 
-func death() -> void:
-	queue_free()
+
 
 func _on_hostile_seeker_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Hostile"):

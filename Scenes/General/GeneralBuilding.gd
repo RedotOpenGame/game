@@ -1,0 +1,13 @@
+extends GeneralEntity
+class_name GeneralBuilding
+
+var resource_pile = preload("res://Scenes/misc/resource_pile.tscn")
+@export var dropped_scrap:int = 0
+
+
+func death() -> void:
+	var scene = resource_pile.instantiate()
+	scene.position = global_position
+	scene.scrap = dropped_scrap
+	add_sibling(scene)
+	queue_free()

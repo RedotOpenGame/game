@@ -1,4 +1,4 @@
-extends GeneralEntity
+extends GeneralBuilding
 
 @onready var health_label: Label3D = $HealthLabel
 
