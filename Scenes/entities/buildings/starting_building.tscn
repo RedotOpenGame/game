@@ -79,17 +79,17 @@ grow_vertical = 2
 [node name="MakeCombatant" type="Button" parent="UI/UnitMaker"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-text = "Make combatant unit: 3 scrap"
+text = "Make combatant unit: 1 scrap"
 
 [node name="MakeCollector" type="Button" parent="UI/UnitMaker"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-text = "Make collector unit: 3 scrap"
+text = "Make collector unit: 1 scrap"
 
 [node name="MakeConstructor" type="Button" parent="UI/UnitMaker"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-text = "Make constructor unit: 3 scrap"
+text = "Make constructor unit: 1 scrap"
 
 [node name="BuildTurret" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
@@ -99,6 +99,9 @@ text = "BuildTurret: 5 scrap
 [node name="BuildMiningRig" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
 text = "Build mining rig: 8 scrap"
+
+[node name="BuildMortar" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
 
 [node name="AddShoulderGun" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
@@ -119,4 +122,5 @@ font_size = 50
 [connection signal="pressed" from="UI/UnitMaker/MakeConstructor" to="." method="_on_make_constructor_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildTurret" to="." method="_on_build_turret_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMiningRig" to="." method="_on_build_mining_rig_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildMortar" to="." method="_on_build_mortar_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/AddShoulderGun" to="." method="_on_add_shoulder_gun_pressed"]

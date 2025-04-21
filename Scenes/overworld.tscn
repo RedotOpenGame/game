@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://clpvr1kbs1f52"]
+[gd_scene load_steps=24 format=3 uid="uid://clpvr1kbs1f52"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/overworld.gd" id="1_c0h7r"]
 [ext_resource type="PackedScene" uid="uid://b4c05mkr5u63a" path="res://Scenes/players/player_actor.tscn" id="1_ccpx5"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://danaa3i47echq" path="res://assets/Music/Robotic Wasteland.mp3" id="10_c0h7r"]
 [ext_resource type="PackedScene" uid="uid://cxhxgssk3e4ip" path="res://Scenes/meshes/boombox.tscn" id="11_v1c68"]
 [ext_resource type="PackedScene" uid="uid://du814bss6gu41" path="res://Scenes/meshes/proto_city.tscn" id="12_dd6r4"]
+[ext_resource type="PackedScene" uid="uid://bsfg46om758p8" path="res://Scenes/entities/buildings/mortar.tscn" id="12_uvbdg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v4ybm"]
 sky_top_color = Color(0.363219, 0.53037, 1, 1)
@@ -162,6 +163,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4144, 16.8077)
 
 [node name="DefenceTurret" parent="Allies" instance=ExtResource("7_2ngsa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, 4.82912)
+damage = null
+max_scrap = null
 
 [node name="ResourcePile" parent="." instance=ExtResource("7_hf0oe")]
 transform = Transform3D(1.99821, -0.0832449, 0.0150156, 0.0845883, 1.96648, -0.354711, 0, 0.355028, 1.96824, 14.4702, 0.0462289, 5.91616)
@@ -283,6 +286,9 @@ text = "Kill all enemies"
 
 [node name="Boombox" parent="." instance=ExtResource("11_v1c68")]
 transform = Transform3D(1.28279, 0, -1.53442, 0, 2, 0, 1.53442, 0, 1.28279, -6.65706, 1.18596, -12.7501)
+
+[node name="Mortar" parent="." instance=ExtResource("12_uvbdg")]
+transform = Transform3D(2.4, 0, 0, 0, 2.4, 0, 0, 0, 2.4, 11.1774, 1.40518, -19.025)
 
 [connection signal="body_entered" from="enemyspawner" to="." method="_on_enemyspawner_body_entered"]
 [connection signal="pressed" from="enemyspawner/spawnUI/SpawnOptions/TestEnemy" to="." method="_on_test_enemy_pressed"]

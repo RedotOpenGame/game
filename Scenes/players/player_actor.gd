@@ -304,7 +304,7 @@ func _physics_process(delta: float) -> void:
 @rpc("any_peer", "call_local")
 func call_all_units() -> void:
 	for i in get_tree().get_nodes_in_group("Unit"):
-		if i._leader == self:
+		if i._leader == self and i.curr_logic == 2:
 			i.curr_logic = 4
 
 func teleport_allies_with_me() -> void:

@@ -2,8 +2,6 @@ extends GeneralBuilding
 
 @onready var health_label: Label3D = $HealthLabel
 
-var player_name:String = "Pewweper"
-var show_name:bool = false
 
 func _ready() -> void:
 	health_label.text = str("Health: ", health, "/", max_health)

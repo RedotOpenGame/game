@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhcge60pwhoom"]
+
+[ext_resource type="Script" path="res://Scenes/meshes/explosion.gd" id="1_qayqj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_moj8k"]
+transparency = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_qayqj"]
+material = SubResource("StandardMaterial3D_moj8k")
+radius = 2.5
+height = 5.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hxgku"]
+radius = 2.5
+
+[node name="explosion" type="Area3D"]
+collision_layer = 16
+collision_mask = 8
+script = ExtResource("1_qayqj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_qayqj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_hxgku")
+
+[node name="Cleanup" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Cleanup" to="." method="_on_cleanup_timeout"]

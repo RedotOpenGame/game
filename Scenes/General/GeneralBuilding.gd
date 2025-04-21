@@ -4,6 +4,8 @@ class_name GeneralBuilding
 var resource_pile = preload("res://Scenes/misc/resource_pile.tscn")
 @export var dropped_scrap:int = 0
 
+var player_name:String = "Pewweper"
+var show_name:bool = false
 
 func death() -> void:
 	var scene = resource_pile.instantiate()

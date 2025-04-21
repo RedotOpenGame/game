@@ -7,7 +7,8 @@ extends Area3D
 
 const BUILDABLES:Dictionary = {
 	"defence_turret":preload("res://Scenes/entities/buildings/defence_turret.tscn"),
-	"mining_rig":preload("res://Scenes/entities/buildings/mining_rig.tscn")
+	"mining_rig":preload("res://Scenes/entities/buildings/mining_rig.tscn"),
+	"mortar":preload("res://Scenes/entities/buildings/mortar.tscn"),
 }
 
 var planned_bulding:String

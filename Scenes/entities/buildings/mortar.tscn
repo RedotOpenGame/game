@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3 uid="uid://bsfg46om758p8"]
+
+[ext_resource type="Script" path="res://Scenes/entities/buildings/mortar.gd" id="1_lcqgv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_46mxl"]
+size = Vector3(0.8, 1, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lcqgv"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6vt2r"]
+material = SubResource("StandardMaterial3D_lcqgv")
+size = Vector3(0.6, 1, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_46mxl"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_lcqgv"]
+material = SubResource("StandardMaterial3D_46mxl")
+size = Vector3(1.3, 1, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6vt2r"]
+size = Vector3(0.8, 1, 0.8)
+
+[node name="Mortar" type="CharacterBody3D" groups=["Ally"]]
+transform = Transform3D(2.4, 0, 0, 0, 2.4, 0, 0, 0, 2.4, 0, 0, 0)
+script = ExtResource("1_lcqgv")
+dropped_scrap = 16
+max_health = 200.0
+
+[node name="mesh" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
+mesh = SubResource("BoxMesh_46mxl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0258281, 0)
+mesh = SubResource("BoxMesh_6vt2r")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh"]
+mesh = SubResource("PrismMesh_lcqgv")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PrismMesh_lcqgv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_6vt2r")
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.606557, 0)
+
+[node name="fire" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22067, 0)
+billboard = 1
+text = "Health:CURR/MAX"
+
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65963, 0)
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50
+
+[connection signal="timeout" from="fire" to="." method="_on_fire_timeout"]

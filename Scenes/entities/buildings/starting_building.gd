@@ -59,13 +59,13 @@ func fucking_die() -> void:
 	queue_free()
 
 func _on_make_combatant_pressed() -> void:
-	if check_balance(3):
+	if check_balance(1):
 		owning_player.get_unit(1, 0)
 func _on_make_collector_pressed() -> void:
-	if check_balance(3):
+	if check_balance(1):
 		owning_player.get_unit(1, 2)
 func _on_make_constructor_pressed() -> void:
-	if check_balance(3):
+	if check_balance(1):
 		owning_player.get_unit(1, 1)
 
 func _on_build_turret_pressed() -> void:
@@ -83,3 +83,7 @@ func HangTheDeveloper() -> void:
 
 func IHateThis(scene, string, work_req, price) -> void:
 	owning_player.get_blueprint.rpc(scene, string, work_req, price)
+
+
+func _on_build_mortar_pressed() -> void:
+	IHateThis("mortar", "Mortar", 7, 20)
