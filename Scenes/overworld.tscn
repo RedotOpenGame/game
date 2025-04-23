@@ -163,8 +163,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4144, 16.8077)
 
 [node name="DefenceTurret" parent="Allies" instance=ExtResource("7_2ngsa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.716077, 1.20791, 4.82912)
-damage = 5.0
-max_scrap = 3
 
 [node name="ResourcePile" parent="." instance=ExtResource("7_hf0oe")]
 transform = Transform3D(1.99821, -0.0832449, 0.0150156, 0.0845883, 1.96648, -0.354711, 0, 0.355028, 1.96824, 14.4702, 0.0462289, 5.91616)

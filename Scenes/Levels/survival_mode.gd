@@ -11,6 +11,9 @@ var player_char = preload("res://Scenes/players/player_actor.tscn")
 @onready var intermission_bar: ProgressBar = $CanvasLayer/IntermissionBar
 @onready var enemy_spawnpoints: Node3D = $EnemySpawnpoints
 @onready var enemy_spawn_timer: Timer = $EnemySpawnTimer
+@onready var music: Node = $Music
+
+@onready var chosen_track:AudioStreamPlayer = $"Music/Empty Remains" # to track the playing node
 
 
 const second_part_music = "res://assets/Music/Robotic Wasteland.mp3"
@@ -94,15 +97,18 @@ func new_wave() -> void:
 	is_in_intermission = false
 	curr_wave += 1
 	health_multiplier = 1.1 ** floor(curr_wave / 10)
-	if curr_wave == 10:
-		$Music.stream = load(second_part_music)
+	#if curr_wave == 10:
+		#$Music.stream = load(second_part_music)
 	if curr_wave % 5 == 0:
+		chosen_track.stop()
 		$BossMusic.play()
-		$Music.stop()
+		if curr_wave >= 10:
+			chosen_track = music.get_children().pick_random()
+			
 	else:
 		$BossMusic.stop()
-		if !$Music.playing:
-			$Music.play()
+		if !chosen_track.playing:
+			chosen_track.play()
 	wave_counter.text = str("Wave: ", curr_wave)
 	if !wave_structure.has(curr_wave): #If there are no pre-made waves, we will make them ourselves.
 		wave_counter.text = str("Wave: ", curr_wave)
@@ -295,6 +301,7 @@ func _on_enemy_spawn_timer_timeout() -> void:
 func _on_skip_intermission_pressed() -> void:
 	if multiplayer.is_server() and !intermission.is_stopped():
 		skip_intermission.rpc()
+		$CanvasLayer/SkipIntermission.release_focus()
 	
 
 @rpc("any_peer", "call_local")

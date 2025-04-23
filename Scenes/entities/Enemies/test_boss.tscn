@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bqfrw11fc20gv"]
+[gd_scene load_steps=15 format=3 uid="uid://bqfrw11fc20gv"]
 
 [ext_resource type="PackedScene" uid="uid://citu714ddbl12" path="res://Scenes/meshes/enemy_bot.tscn" id="1_eo4kf"]
 [ext_resource type="Script" path="res://Scenes/entities/Enemies/test_boss.gd" id="1_k1j27"]
@@ -28,6 +28,17 @@ albedo_color = Color(0, 0, 0, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_n31h5"]
 material = SubResource("StandardMaterial3D_d1qnq")
 size = Vector3(0.2, 0.4, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k1j27"]
+size = Vector3(1, 1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c66dd"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.235294)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k40ub"]
+material = SubResource("StandardMaterial3D_c66dd")
+size = Vector3(1, 1, 0.5)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_k1j27"]
 radius = 20.0
@@ -74,6 +85,22 @@ texture_albedo = ExtResource("2_6r674")
 texture_normal = ExtResource("2_6r674")
 
 [node name="enemy_bot" parent="mesh" instance=ExtResource("1_eo4kf")]
+
+[node name="DamageArea" type="Area3D" parent="mesh/enemy_bot"]
+transform = Transform3D(-2.27273, 0, -1.98688e-07, 0, 2.27273, 0, 1.98688e-07, 0, -2.27273, 0, 1.93182, 0)
+collision_layer = 32
+collision_mask = 67
+monitoring = false
+monitorable = false
+
+[node name="AttackCollision" type="CollisionShape3D" parent="mesh/enemy_bot/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)
+shape = SubResource("BoxShape3D_k1j27")
+
+[node name="HitscanPreview" type="MeshInstance3D" parent="mesh/enemy_bot/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.84)
+visible = false
+mesh = SubResource("BoxMesh_k40ub")
 
 [node name="Attackrate" type="Timer" parent="."]
 wait_time = 1.4

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dumawgyndqbdp"]
+[gd_scene load_steps=17 format=3 uid="uid://dumawgyndqbdp"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/survival_mode.gd" id="1_f1ks2"]
 [ext_resource type="PackedScene" uid="uid://cpru4ovaf6lfm" path="res://Scenes/entities/buildings/townhall.tscn" id="2_6cym4"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://co2fvqwhncn08" path="res://Scenes/misc/resource_pile.tscn" id="5_26u23"]
 [ext_resource type="AudioStream" uid="uid://cvl23hurraod" path="res://assets/Music/Empty Remains.mp3" id="5_j6txm"]
 [ext_resource type="AudioStream" uid="uid://big1lsndmuhae" path="res://assets/Music/Disassembly.mp3" id="6_347ve"]
+[ext_resource type="AudioStream" uid="uid://danaa3i47echq" path="res://assets/Music/Robotic Wasteland.mp3" id="6_fl8bq"]
+[ext_resource type="AudioStream" uid="uid://dfhd4rcuierq1" path="res://assets/Music/Survival.mp3" id="7_rxlf1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1ks2"]
 sky_top_color = Color(0.437432, 0, 0.164877, 1)
@@ -62,6 +64,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56968, 19.0687)
 
 [node name="MainStructure" parent="Entities/Buildings" instance=ExtResource("4_b17es")]
 transform = Transform3D(1.37309, 0, 0, 0, 1.37309, 0, 0, 0, 1.37309, -7.29254, 0, 12.6068)
+collision_layer = 64
+collision_mask = 1
 
 [node name="Resources" type="Node3D" parent="Entities"]
 
@@ -94,7 +98,6 @@ text = "Wave: 0"
 label_settings = SubResource("LabelSettings_wktxd")
 
 [node name="NewWaveNow" type="Button" parent="CanvasLayer"]
-visible = false
 offset_left = 1.0
 offset_top = 59.0
 offset_right = 139.0
@@ -103,7 +106,6 @@ text = "[DEBUG]
 NEW WAVE NOW"
 
 [node name="KillAllEnemies" type="Button" parent="CanvasLayer"]
-visible = false
 offset_left = 5.0
 offset_top = 113.0
 offset_right = 129.0
@@ -255,10 +257,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.036, 2.50637, 18.2915)
 
 [node name="Players" type="Node3D" parent="."]
 
-[node name="Music" type="AudioStreamPlayer" parent="."]
+[node name="Music" type="Node" parent="."]
+
+[node name="Empty Remains" type="AudioStreamPlayer" parent="Music"]
 stream = ExtResource("5_j6txm")
 volume_db = -10.0
 autoplay = true
+bus = &"Music"
+parameters/looping = true
+
+[node name="Robotic Wasteland" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("6_fl8bq")
+volume_db = -10.0
+bus = &"Music"
+parameters/looping = true
+
+[node name="Survival" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("7_rxlf1")
+volume_db = -10.0
 bus = &"Music"
 parameters/looping = true
 
