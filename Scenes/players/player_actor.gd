@@ -39,6 +39,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @onready var combatant_amount_label: Label = $CanvasLayer/Labels/CombatantAmount
 @onready var constructor_amount_label: Label = $CanvasLayer/Labels/ConstructorAmount
 @onready var collectors_amount_label: Label = $CanvasLayer/Labels/CollectorsAmount
+@onready var is_demolishing: Label = $CanvasLayer/Labels/IsDemolishing
 
 @onready var unit_collection_collision: CollisionShape3D = $CollectUnits/CollisionShape3D
 @onready var is_collecting_units: Label = $CanvasLayer/Labels/IsCollectingUnits
@@ -62,7 +63,7 @@ const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the 
 var can_be_hit:bool = true
 
 
-
+var building_demolishing_mode:bool = false
 var interactables_in_range:Array = []
 var followers:Array = [] 
 var follower_amount:int = 0
@@ -85,6 +86,7 @@ func _ready() -> void:
 	collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
 	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
+	is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
 	build_help.visible = false
 	throw_position_showcase.visible = false
 	pausemenu.visible = Gameplay.paused
@@ -139,8 +141,13 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("f"): #turn on/off unit collection
 		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
 		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
-	if Input.is_action_just_pressed("z"): #Calling all units
+	if Input.is_action_just_pressed("y"):
+		building_demolishing_mode = !building_demolishing_mode
+		is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
+	if Input.is_action_just_pressed("z"): #Calling all idle units
 		call_all_units.rpc()
+	if Input.is_action_just_pressed("z+ctrl"): #Calling ALL units
+		call_absolutely_all_units.rpc()
 	if Input.is_action_just_pressed("v") and !starting_building_placed:
 		place_workshop.rpc()
 	if Input.is_action_just_pressed("x"):
@@ -307,6 +314,12 @@ func call_all_units() -> void:
 		if i._leader == self and i.curr_logic == 2:
 			i.curr_logic = 4
 
+@rpc("any_peer", "call_local")
+func call_absolutely_all_units() -> void:
+	for i in get_tree().get_nodes_in_group("Unit"):
+		if i._leader == self:
+			i.just_follow_player_no_matter_what = true
+
 func teleport_allies_with_me() -> void:
 	for i in followers:
 		i.global_position = global_position
@@ -434,6 +447,8 @@ func _on_collect_units_body_entered(body: Node3D) -> void:
 	if(body.is_in_group("Unit") and (body.curr_logic == 4 or body.curr_logic == 2) and body._leader == self):
 		unit_collection.rpc(body)
 
+
+
 @rpc("call_local", "any_peer")
 func unit_collection(body) -> void:
 	if body is CharacterBody3D:
@@ -456,6 +471,7 @@ func unit_collection(body) -> void:
 func _on_call_units_body_entered(body: Node3D) -> void:
 	if(body.is_in_group("Unit") and Input.is_action_pressed("e") and body._leader == self):
 		body.curr_logic = 4
+
 
 
 func _on_music_volume_value_changed(value: float) -> void:
@@ -482,3 +498,12 @@ func _on_resune_pressed() -> void:
 	else:
 		Engine.time_scale = 1
 		
+
+
+func _on_demolish_building_body_entered(body: Node3D) -> void:
+	if str(name) != "PlayerActor":
+		if building_demolishing_mode and body.player_name == nickname.text:
+			body.demolish.rpc()
+	else:
+		if building_demolishing_mode:
+			body.demolish()

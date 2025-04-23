@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://sn7iym1fxs5h"]
+[gd_scene load_steps=12 format=3 uid="uid://sn7iym1fxs5h"]
 
 [ext_resource type="Script" path="res://Scenes/entities/buildings/starting_building.gd" id="1_dctpj"]
+[ext_resource type="Theme" uid="uid://bs82q6pwnfd3m" path="res://assets/themes/workshop_buttons.tres" id="2_8hsgy"]
 
 [sub_resource type="Gradient" id="Gradient_1gd33"]
 colors = PackedColorArray(0, 1, 1, 1, 1, 1, 0, 1)
@@ -22,6 +23,18 @@ material = SubResource("StandardMaterial3D_8hsgy")
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8hsgy"]
 height = 2.34085
 radius = 1.66954
+
+[sub_resource type="Animation" id="Animation_aqk8h"]
+resource_name = "ui_appear"
+
+[sub_resource type="Animation" id="Animation_ly48w"]
+resource_name = "ui_disappear"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nfbqd"]
+_data = {
+"ui_appear": SubResource("Animation_aqk8h"),
+"ui_disappear": SubResource("Animation_ly48w")
+}
 
 [node name="StartingBuilding" type="CharacterBody3D" groups=["PlayerWorkshop"]]
 collision_layer = 4
@@ -77,19 +90,25 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="MakeCombatant" type="Button" parent="UI/UnitMaker"]
+modulate = Color(1, 0.490196, 1, 1)
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-text = "Make combatant unit: 1 scrap"
-
-[node name="MakeCollector" type="Button" parent="UI/UnitMaker"]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-text = "Make collector unit: 1 scrap"
+theme = ExtResource("2_8hsgy")
+text = "Make combatant unit: 2 scrap"
 
 [node name="MakeConstructor" type="Button" parent="UI/UnitMaker"]
+modulate = Color(0, 1, 1, 1)
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-text = "Make constructor unit: 1 scrap"
+theme = ExtResource("2_8hsgy")
+text = "Make constructor unit: 2 scrap"
+
+[node name="MakeCollector" type="Button" parent="UI/UnitMaker"]
+modulate = Color(0.188235, 1, 0.192157, 1)
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme = ExtResource("2_8hsgy")
+text = "Make collector unit: 2 scrap"
 
 [node name="BuildTurret" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
@@ -102,6 +121,7 @@ text = "Build mining rig: 8 scrap"
 
 [node name="BuildMortar" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
+text = "Build Mortar: 20 scrap"
 
 [node name="AddShoulderGun" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
@@ -114,12 +134,17 @@ billboard = 1
 text = "Placed by:Pewweper"
 font_size = 50
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nfbqd")
+}
+
 [connection signal="body_entered" from="interactionArea" to="." method="_on_interaction_area_body_entered"]
 [connection signal="body_exited" from="interactionArea" to="." method="_on_interaction_area_body_exited"]
 [connection signal="pressed" from="UI/Remove" to="." method="_on_remove_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/MakeCombatant" to="." method="_on_make_combatant_pressed"]
-[connection signal="pressed" from="UI/UnitMaker/MakeCollector" to="." method="_on_make_collector_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/MakeConstructor" to="." method="_on_make_constructor_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/MakeCollector" to="." method="_on_make_collector_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildTurret" to="." method="_on_build_turret_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMiningRig" to="." method="_on_build_mining_rig_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMortar" to="." method="_on_build_mortar_pressed"]

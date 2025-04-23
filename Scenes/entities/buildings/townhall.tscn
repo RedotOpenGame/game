@@ -17,8 +17,9 @@ file = "res://assets/a_totally_normal_video.ogg"
 
 [node name="Townhall" type="CharacterBody3D" groups=["Ally", "Important"]]
 collision_layer = 6
-collision_mask = 43
+collision_mask = 41
 script = ExtResource("1_25rbt")
+max_health = 1500.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PrismMesh_25rbt")

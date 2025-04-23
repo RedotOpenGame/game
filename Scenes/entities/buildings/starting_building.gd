@@ -59,13 +59,13 @@ func fucking_die() -> void:
 	queue_free()
 
 func _on_make_combatant_pressed() -> void:
-	if check_balance(1):
+	if check_balance(2):
 		owning_player.get_unit(1, 0)
 func _on_make_collector_pressed() -> void:
-	if check_balance(1):
+	if check_balance(2):
 		owning_player.get_unit(1, 2)
 func _on_make_constructor_pressed() -> void:
-	if check_balance(1):
+	if check_balance(2):
 		owning_player.get_unit(1, 1)
 
 func _on_build_turret_pressed() -> void:

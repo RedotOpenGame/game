@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=25 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -20,6 +20,11 @@ font_size = 26
 
 [sub_resource type="LabelSettings" id="LabelSettings_qow3q"]
 font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_6m61b"]
+font_color = Color(1, 0.270588, 0.266667, 1)
+outline_size = 2
+outline_color = Color(0.305882, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_gv87a"]
 font_size = 19
@@ -152,8 +157,11 @@ height = 0.1
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_gv87a"]
 radius = 1.42888
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xjmh8"]
+radius = 1.5
+
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
-collision_mask = 45
+collision_mask = 109
 script = ExtResource("1_cstqs")
 
 [node name="characterMesh" type="Node3D" parent="."]
@@ -220,6 +228,11 @@ offset_top = -139.0
 offset_right = 187.0
 offset_bottom = -35.0
 grow_vertical = 0
+
+[node name="IsDemolishing" type="Label" parent="CanvasLayer/Labels"]
+layout_mode = 2
+text = "Demolishing buildings: BOOL"
+label_settings = SubResource("LabelSettings_6m61b")
 
 [node name="IsCollectingUnits" type="Label" parent="CanvasLayer/Labels"]
 layout_mode = 2
@@ -441,6 +454,12 @@ grow_vertical = 2
 placeholder_text = "messages should appear here."
 editable = false
 
+[node name="DemolishBuilding" type="Area3D" parent="."]
+collision_mask = 64
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DemolishBuilding"]
+shape = SubResource("CylinderShape3D_xjmh8")
+
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="pressed" from="CanvasLayer/Pausemenu/Resune" to="." method="_on_resune_pressed"]
 [connection signal="value_changed" from="CanvasLayer/Pausemenu/MusicVolume" to="." method="_on_music_volume_value_changed"]
@@ -454,3 +473,4 @@ editable = false
 [connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
 [connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
 [connection signal="text_submitted" from="Chat/LineEdit" to="Chat" method="_on_line_edit_text_submitted"]
+[connection signal="body_entered" from="DemolishBuilding" to="." method="_on_demolish_building_body_entered"]

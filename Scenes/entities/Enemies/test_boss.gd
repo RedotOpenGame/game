@@ -10,7 +10,7 @@ const spread:float = 25
 
 var can_fire:bool = true
 
-func _ready():
+func _ready() -> void:
 	# Get player from 'Player' group once at start
 	health_label.text = str("Health: ", health, "/", max_health)
 

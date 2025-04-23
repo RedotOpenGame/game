@@ -36,7 +36,7 @@ size = Vector3(0.2, 0.4, 0.2)
 
 [node name="ShootingEnemy" type="CharacterBody3D" groups=["Hostile"]]
 collision_layer = 8
-collision_mask = 31
+collision_mask = 95
 script = ExtResource("1_ibt7l")
 attacking_range = 11.0
 max_health = 40.0
@@ -55,7 +55,7 @@ shape = SubResource("CapsuleShape3D_ibt7l")
 
 [node name="HostileSeeker" type="Area3D" parent="."]
 collision_layer = 32
-collision_mask = 3
+collision_mask = 67
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HostileSeeker"]
 shape = SubResource("CylinderShape3D_kh3so")

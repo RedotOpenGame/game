@@ -13,8 +13,8 @@ material = SubResource("StandardMaterial3D_6jxpf")
 size = Vector3(1, 2, 1)
 
 [node name="MiningRig" type="CharacterBody3D" groups=["Ally", "Farm"]]
-collision_layer = 2
-collision_mask = 43
+collision_layer = 64
+collision_mask = 41
 script = ExtResource("1_m38p7")
 dropped_scrap = 6
 

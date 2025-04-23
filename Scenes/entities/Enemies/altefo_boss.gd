@@ -1,28 +1,32 @@
 extends GeneralEntity
 
-var bullet_scene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet.tscn")
+
+const max_optimization:int = 10
+var optim:int = max_optimization
+const bullet_scene:PackedScene = preload("res://Scenes/entities/Projectiles/Enemy/enemy_bullet.tscn")
 
 @onready var mesh: Node3D = $mesh
 
 @onready var steyr_aug: Node3D = $mesh/steyr_aug
 
 @onready var reloading_label: Label3D = $ReloadingLabel
+@onready var hostile_seeker: Area3D = $HostileSeeker
 @onready var health_label: Label3D = $HealthLabel
 @onready var gun_barrel: Marker3D = $mesh/steyr_aug/GunBarrel
 @onready var firerate: Timer = $Firerate
 @onready var reload: Timer = $Reload
 @onready var jump: Timer = $Jump
 
-var Jump_power:float = 8
-var speed:float = 4
-var retreat_speed:float = 2
+const Jump_power:float = 8
+const speed:float = 4
+const retreat_speed:float = 2
 var curr_target:Node3D
 
 const max_ammo:int = 30
 var ammo:int = max_ammo
 var can_fire:bool = true
 var reloading:bool = false
-var damage:float = 5.0
+const damage:float = 5.0
 
 var double_jump:bool = true
 
@@ -33,39 +37,47 @@ func _ready():
 func _process(delta: float) -> void:
 	if !is_on_floor():
 		velocity += get_gravity() * delta
-	curr_target = find_closest_global_target("Ally")
+	
+	optim -= 1
+	if optim <= 0:
+		curr_target = find_closest_global_target("Ally")
+		optim = max_optimization
 	reloading_label.text = str("Reloading: ", snapped(reload.time_left, 0.01))
+	
 	if is_instance_valid(curr_target):
 		mesh.look_at(Vector3(curr_target.global_position.x, global_position.y, curr_target.global_position.z))
-		var preffered_position = curr_target.global_position
-		var direction = (preffered_position - global_position).normalized()
+		var direction:Vector3 = (curr_target.global_position - global_position).normalized()
 		if global_position.distance_to(curr_target.global_position) > 20:
 			velocity.x = direction.x * speed
 			velocity.z = direction.z * speed
 		else:
 			velocity.x = direction.x * -retreat_speed
 			velocity.z = direction.x * -retreat_speed
-			if ammo > 0:
-				if can_fire:
-					ammo -= 1
-					var bullet_direction:Vector3 = (preffered_position - gun_barrel.global_position).normalized()
-					var scene = bullet_scene.instantiate()
-					scene.position = gun_barrel.global_position
-					scene.direction = bullet_direction
-					scene.rotation = mesh.global_rotation
-					scene.damage = damage
-					get_tree().root.add_child(scene)
-					can_fire = false
-					firerate.start()
-			else:
-				if !reloading:
-					reload.start()
-				reloading = true
-				reloading_label.visible = reloading
-				
-	move_and_slide()
+			shoot(curr_target.global_position)
+		move_and_slide()
 
+	
 
+func shoot(pos:Vector3) -> void:
+	if ammo > 0:
+		if can_fire:
+			ammo -= 1
+			can_fire = false
+			firerate.start()
+			var bullet_direction:Vector3 = (pos - gun_barrel.global_position).normalized()
+			var scene:Area3D = bullet_scene.instantiate()
+			scene.position = gun_barrel.global_position
+			scene.direction = bullet_direction
+			scene.rotation = mesh.global_rotation
+			scene.damage = damage
+			get_tree().current_scene.add_child(scene)
+			
+			
+	else:
+		if !reloading:
+			reload.start()
+			reloading = true
+			reloading_label.visible = reloading
 
 
 func damage_func(amount:float) -> void:

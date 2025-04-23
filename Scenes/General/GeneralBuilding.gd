@@ -13,3 +13,7 @@ func death() -> void:
 	scene.scrap = dropped_scrap
 	add_sibling(scene)
 	queue_free()
+
+@rpc("any_peer", "call_local")
+func demolish() -> void:
+	death()

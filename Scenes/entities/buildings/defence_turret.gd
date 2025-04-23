@@ -66,3 +66,7 @@ func _on_hostile_seeker_body_exited(body: Node3D) -> void:
 
 func _on_firerate_timeout() -> void:
 	can_fire = true
+
+
+func _on_button_pressed() -> void:
+	demolish.rpc()

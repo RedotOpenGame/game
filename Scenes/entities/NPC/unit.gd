@@ -37,7 +37,8 @@ var _leader:Node3D #meant for multiplayer, in order for the only owner to collec
 var unit_index: int = 0  # Assign unique index to each unit
 var is_collected:bool = false #need in order for not dupe.
 var player_name:String = "Pewweper"
-var importance:int = 0 #needen for optimization purposes
+var importance:int = 0 #needed for optimization purposes. Not used yet.
+var just_follow_player_no_matter_what:bool = false
 
 var curr_hostile:Node3D #find closest hostile.
 var curr_recource: Node3D
@@ -84,20 +85,23 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	var bodies = detection_collision.get_overlapping_bodies()
-	for body in bodies:
-		if(body.is_in_group("Hostile") && curr_logic != logic.THROWN):
-			var current_position = global_position
-			curr_logic = logic.ATTACK_ENEMY
-			if(is_instance_valid(curr_hostile)):
-				if(current_position.distance_to(body.global_position) < current_position.distance_to(curr_hostile.global_position)):
+	if !just_follow_player_no_matter_what:
+		var bodies = detection_collision.get_overlapping_bodies()
+		for body in bodies:
+			if(body.is_in_group("Hostile") && curr_logic != logic.THROWN):
+				var current_position = global_position
+				curr_logic = logic.ATTACK_ENEMY
+				if(is_instance_valid(curr_hostile)):
+					if(current_position.distance_to(body.global_position) < current_position.distance_to(curr_hostile.global_position)):
+						curr_hostile = body
+				else:
 					curr_hostile = body
-			else:
-				curr_hostile = body
-		if(body.is_in_group("Resource") && curr_logic == logic.IDLE): #curr_logic != logic.THROWN && curr_logic != logic.ATTACK_ENEMY && curr_logic != logic.RETURN
+			if(body.is_in_group("Resource") && curr_logic == logic.IDLE): #curr_logic != logic.THROWN && curr_logic != logic.ATTACK_ENEMY && curr_logic != logic.RETURN
+				curr_logic = logic.COLLECT
+		if resources > 0 and curr_logic == logic.IDLE:
 			curr_logic = logic.COLLECT
-	if resources > 0 and curr_logic == logic.IDLE:
-		curr_logic = logic.COLLECT
+	else:
+		curr_logic = logic.RETURN
 	match(curr_logic):
 		logic.ATTACK_ENEMY:
 			#curr_hostile = find_closest_target()

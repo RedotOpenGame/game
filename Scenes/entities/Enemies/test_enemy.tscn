@@ -35,7 +35,7 @@ size = Vector3(1, 1, 0.5)
 
 [node name="TestEnemy" type="CharacterBody3D" groups=["Hostile"]]
 collision_layer = 8
-collision_mask = 31
+collision_mask = 95
 script = ExtResource("1_c66dd")
 max_health = 40.0
 
@@ -52,7 +52,7 @@ shape = SubResource("CapsuleShape3D_c66dd")
 
 [node name="HostileSeeker" type="Area3D" parent="."]
 collision_layer = 32
-collision_mask = 3
+collision_mask = 67
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HostileSeeker"]
 shape = SubResource("CylinderShape3D_c66dd")
@@ -68,7 +68,7 @@ transform = Transform3D(-0.44, 0, -3.8466e-08, 0, 0.44, 0, 3.8466e-08, 0, -0.44,
 [node name="DamageArea" type="Area3D" parent="mesh/enemy_bot"]
 transform = Transform3D(-2.27273, 0, -1.98688e-07, 0, 2.27273, 0, 1.98688e-07, 0, -2.27273, 0, 1.93182, 0)
 collision_layer = 32
-collision_mask = 3
+collision_mask = 67
 
 [node name="AttackCollision" type="CollisionShape3D" parent="mesh/enemy_bot/DamageArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)

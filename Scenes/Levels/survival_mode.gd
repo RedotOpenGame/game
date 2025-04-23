@@ -10,6 +10,7 @@ var player_char = preload("res://Scenes/players/player_actor.tscn")
 @onready var resources: Node3D = $Entities/Resources
 @onready var intermission_bar: ProgressBar = $CanvasLayer/IntermissionBar
 @onready var enemy_spawnpoints: Node3D = $EnemySpawnpoints
+@onready var enemy_spawn_timer: Timer = $EnemySpawnTimer
 
 
 const second_part_music = "res://assets/Music/Robotic Wasteland.mp3"
@@ -22,7 +23,10 @@ var game_started:bool = false
 var multiple_entrances:bool = false
 var curr_wave:int = 0
 var is_in_intermission:bool = false
-var enemy_list:Dictionary = {
+var can_spawn:bool = true
+var enemies_in_queue:Array = []
+var health_multiplier:float = 1 #formula: 1 * 1.1^(FLOOR(curr_wave / 10))
+const enemy_list:Dictionary = {
 	#"Example":preload("path/to/enemy/scene.tscn"),
 	"Test_Enemy":[preload("res://Scenes/entities/Enemies/test_enemy.tscn"), 5],
 	"Shooter":[preload("res://Scenes/entities/Enemies/shooting_enemy.tscn"), 7],
@@ -34,7 +38,7 @@ var enemy_list:Dictionary = {
 	"Shielder_t2":[preload("res://Scenes/entities/Enemies/shield_enemy_tier_two.tscn"), 18],
 	"Medic":[preload("res://Scenes/entities/Enemies/enemy_medic.tscn"), 17],
 }
-var wave_structure:Dictionary = {
+const wave_structure:Dictionary = {
 	1:{"Test_Enemy":1}, #just a single enemy.
 	2:{"Test_Enemy":6}, #more of them.
 	3:{"Test_Enemy":4, "Shooter":3}, #enemies have guns now.
@@ -71,7 +75,11 @@ func _ready() -> void:
 	start_vote()
 
 func _process(_delta: float) -> void:
-	if enemies.get_child_count() == 0 and !is_in_intermission and game_started:
+	if enemies_in_queue != [] and can_spawn and multiplayer.is_server():
+		can_spawn = false
+		enemy_spawn_timer.start()
+		spawn_enemy.rpc(enemies_in_queue.pop_front(), Vector3(randf_range(-10, 10), 0, randf_range(-10, 10)), enemy_spawnpoints.get_children().pick_random())
+	if enemies.get_child_count() == 0 and !is_in_intermission and game_started and enemies_in_queue == []:
 		is_in_intermission = true
 		intermission.start()
 		for i in get_tree().get_nodes_in_group("Ally"):
@@ -85,6 +93,7 @@ func new_wave() -> void:
 
 	is_in_intermission = false
 	curr_wave += 1
+	health_multiplier = 1.1 ** floor(curr_wave / 10)
 	if curr_wave == 10:
 		$Music.stream = load(second_part_music)
 	if curr_wave % 5 == 0:
@@ -97,14 +106,13 @@ func new_wave() -> void:
 	wave_counter.text = str("Wave: ", curr_wave)
 	if !wave_structure.has(curr_wave): #If there are no pre-made waves, we will make them ourselves.
 		wave_counter.text = str("Wave: ", curr_wave)
-		var picking_enemies = pick_enemies_for_wave()
-		for enemy in picking_enemies:
-			spawn_enemy(enemy)
+		enemies_in_queue = pick_enemies_for_wave()
 		return
 	for i in wave_structure[curr_wave]:
 		
 		for j in wave_structure[curr_wave][i]:
-			spawn_enemy(i)
+			enemies_in_queue.append(i)
+	#print(enemies_in_queue)
 	@warning_ignore("integer_division")
 	for i in range(floor(curr_wave / 5) + 1):
 		spawn_resource_pile()
@@ -133,12 +141,13 @@ func pick_enemies_for_wave() -> Array:
 	return selected_enemies
 
 @rpc("any_peer", "call_local")
-func spawn_enemy(enmy_name) -> void:
+func spawn_enemy(enmy_name:String, pos_addition:Vector3, sel_spawn) -> void:
 	var enemy = enemy_list[enmy_name][0].instantiate()
+	enemy.max_health *= health_multiplier
 	if multiple_entrances:
-		enemy.position = enemy_spawnpoints.get_children().pick_random().position + Vector3(randf_range(-10, 10), 0, randf_range(-10, 10))
+		enemy.position = sel_spawn.position + pos_addition
 	else:
-		enemy.position = enemy_spawnpoint.position + Vector3(randf_range(-10, 10), 0, randf_range(-10, 10))
+		enemy.position = enemy_spawnpoint.position + pos_addition
 	enemies.add_child(enemy)
 
 @rpc("any_peer", "call_local")
@@ -273,3 +282,22 @@ func _on_vote_timer_timeout():
 func _on_kill_all_enemies_pressed() -> void:
 	for i in enemies.get_children():
 		i.queue_free()
+
+
+func _on_killzone_body_entered(body: Node3D) -> void:
+	body.position = $EnemySpawnpoint.position
+
+
+func _on_enemy_spawn_timer_timeout() -> void:
+	can_spawn = true
+
+
+func _on_skip_intermission_pressed() -> void:
+	if multiplayer.is_server() and !intermission.is_stopped():
+		skip_intermission.rpc()
+	
+
+@rpc("any_peer", "call_local")
+func skip_intermission() -> void:
+	intermission.stop()
+	new_wave()
