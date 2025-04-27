@@ -6,3 +6,5 @@ func set_tier(num:int) -> void:
 		$Wheel.mesh["surface_0/material"]["albedo_color"] = Color.RED
 	elif num == 2:
 		$Wheel.mesh["surface_0/material"]["albedo_color"] = Color.ORANGE_RED
+	elif num == 3:
+		$Wheel.mesh["surface_0/material"]["albedo_color"] = Color.YELLOW

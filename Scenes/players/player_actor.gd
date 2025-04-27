@@ -230,7 +230,7 @@ func _process(_delta: float) -> void:
 	else:
 		unit_call_collision.set_visible(false)
 
-@rpc("any_peer", "call_local")
+@rpc("call_local", "any_peer")
 func unit_throw(cursor_pos_on_plane) -> void:
 				var instance = unit.instantiate()
 				match selected_unit_type:

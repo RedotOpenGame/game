@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://546jv5g03qxt"]
+[gd_scene load_steps=6 format=3 uid="uid://546jv5g03qxt"]
 
 [ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="1_4766n"]
+[ext_resource type="PackedScene" uid="uid://blsy4mq7b18te" path="res://assets/unsorted meshes/Wrench.glb" id="2_8qak4"]
 
 [sub_resource type="GDScript" id="GDScript_4766n"]
 script/source = "extends GeneralEnemy
@@ -109,3 +110,6 @@ modulate = Color(0, 1, 0, 1)
 text = "➕
 "
 font_size = 96
+
+[node name="Wrench" parent="." index="8" instance=ExtResource("2_8qak4")]
+transform = Transform3D(0.592714, -0.202195, -0.77962, 0.801892, 0.057742, 0.594672, -0.0752232, -0.977642, 0.196364, -0.387414, 0.40186, -0.297293)

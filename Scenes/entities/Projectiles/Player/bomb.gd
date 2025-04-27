@@ -36,7 +36,8 @@ func _physics_process(_delta):
 	var parabola = sin(journey_fraction * PI) * arc_height
 	current_position.y += parabola
 	
-	look_at(current_position) #Except for this.
+	if global_position != current_position:
+		look_at(current_position) #Except for this.
 	
 	global_position = current_position
 	

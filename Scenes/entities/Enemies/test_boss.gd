@@ -11,6 +11,7 @@ const spread:float = 25
 var can_fire:bool = true
 
 func _ready() -> void:
+	enemy_bot.set_tier(enemy_tier)
 	# Get player from 'Player' group once at start
 	health_label.text = str("Health: ", health, "/", max_health)
 

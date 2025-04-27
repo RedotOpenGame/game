@@ -161,7 +161,7 @@ radius = 1.42888
 radius = 1.5
 
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
-collision_mask = 109
+collision_mask = 45
 script = ExtResource("1_cstqs")
 
 [node name="characterMesh" type="Node3D" parent="."]

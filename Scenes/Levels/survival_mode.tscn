@@ -61,11 +61,10 @@ shadow_enabled = true
 
 [node name="Townhall" parent="Entities/Buildings" instance=ExtResource("2_6cym4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56968, 19.0687)
+collision_layer = 2
 
 [node name="MainStructure" parent="Entities/Buildings" instance=ExtResource("4_b17es")]
 transform = Transform3D(1.37309, 0, 0, 0, 1.37309, 0, 0, 0, 1.37309, -7.29254, 0, 12.6068)
-collision_layer = 64
-collision_mask = 1
 
 [node name="Resources" type="Node3D" parent="Entities"]
 
@@ -240,6 +239,21 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Skip"
 
+[node name="Button" type="Button" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -212.0
+offset_right = -2.0
+offset_bottom = -181.0
+grow_horizontal = 0
+grow_vertical = 0
+toggle_mode = true
+text = "Autoskip:BOOL"
+
 [node name="Intermission" type="Timer" parent="."]
 wait_time = 30.0
 one_shot = true
@@ -317,6 +331,7 @@ one_shot = true
 [connection signal="pressed" from="CanvasLayer/SelectMode/SingleEntrance" to="." method="_on_single_entrance_pressed"]
 [connection signal="pressed" from="CanvasLayer/SelectMode/MultipleEntrance2" to="." method="_on_multiple_entrance_2_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkipIntermission" to="." method="_on_skip_intermission_pressed"]
+[connection signal="toggled" from="CanvasLayer/Button" to="." method="_on_button_toggled"]
 [connection signal="timeout" from="Intermission" to="." method="_on_intermission_timeout"]
 [connection signal="timeout" from="VoteTimer" to="." method="_on_vote_timer_timeout"]
 [connection signal="body_entered" from="Killzone" to="." method="_on_killzone_body_entered"]
