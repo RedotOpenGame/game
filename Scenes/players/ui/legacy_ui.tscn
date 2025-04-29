@@ -1,0 +1,173 @@
+[gd_scene load_steps=7 format=3 uid="uid://th8cd5hm8frm"]
+
+[ext_resource type="FontFile" uid="uid://btw04pt5eomhg" path="res://assets/fonts/ttf - Cascadia Code/CascadiaCode.ttf" id="1_ciplj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_o1g43"]
+font_size = 26
+
+[sub_resource type="LabelSettings" id="LabelSettings_qow3q"]
+font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_6m61b"]
+font_color = Color(1, 0.270588, 0.266667, 1)
+outline_size = 2
+outline_color = Color(0.305882, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gv87a"]
+font_size = 19
+
+[sub_resource type="LabelSettings" id="LabelSettings_xjmh8"]
+font = ExtResource("1_ciplj")
+font_size = 32
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -124.0
+offset_top = -23.0
+offset_right = 124.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "You are carrying curr/max scrap"
+label_settings = SubResource("LabelSettings_o1g43")
+
+[node name="Health" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -35.0
+offset_right = 219.0
+grow_vertical = 0
+text = "Health:CURR/MAX"
+label_settings = SubResource("LabelSettings_qow3q")
+
+[node name="Labels" type="VBoxContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -139.0
+offset_right = 187.0
+offset_bottom = -35.0
+grow_vertical = 0
+
+[node name="IsDemolishing" type="Label" parent="Labels"]
+layout_mode = 2
+text = "Demolishing buildings: BOOL"
+label_settings = SubResource("LabelSettings_6m61b")
+
+[node name="IsCollectingUnits" type="Label" parent="Labels"]
+layout_mode = 2
+text = "Is collecting units: BOOL"
+
+[node name="CombatantAmount" type="Label" parent="Labels"]
+layout_mode = 2
+text = "Combatant units: INT"
+
+[node name="ConstructorAmount" type="Label" parent="Labels"]
+layout_mode = 2
+text = "Constructor units: INT"
+
+[node name="CollectorsAmount" type="Label" parent="Labels"]
+layout_mode = 2
+text = "Collector units: INT"
+
+[node name="Instructions" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -95.0
+offset_top = -160.0
+offset_right = 101.0
+offset_bottom = -59.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "2, 3 or 4 - unit throwing
+Z - to call all units
+V - setting up a workshop
+Left click - attack"
+
+[node name="BuildHelp" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -124.0
+offset_top = -62.0
+offset_right = 115.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press X to place blueprint."
+label_settings = SubResource("LabelSettings_gv87a")
+
+[node name="Pausemenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Pausemenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.0
+offset_top = -69.0
+offset_right = 112.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Game paused."
+label_settings = SubResource("LabelSettings_xjmh8")
+
+[node name="Resune" type="Button" parent="Pausemenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -103.0
+offset_top = -26.0
+offset_right = 103.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Resume"
+
+[node name="MusicVolume" type="HSlider" parent="Pausemenu"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -390.0
+offset_top = 239.0
+offset_right = -219.0
+offset_bottom = 255.0
+grow_horizontal = 0
+max_value = 1.0
+step = 0.001
+
+[node name="Music" type="Label" parent="Pausemenu"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -356.0
+offset_top = 263.0
+offset_right = -252.0
+offset_bottom = 286.0
+grow_horizontal = 0
+text = "MusicVolume"

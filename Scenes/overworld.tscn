@@ -66,6 +66,12 @@ environment = SubResource("Environment_j1dxk")
 
 [node name="PlayerActor" parent="." instance=ExtResource("1_ccpx5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46153, 0)
+combatant_amount = 10
+builder_amount = 10
+agriculture_amount = 10
+SPEED = 6.5
+max_health = 100.0
+max_scrap = 3
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.486198, 0.873849, 0, -0.873849, 0.486198, 0, 0, 0)

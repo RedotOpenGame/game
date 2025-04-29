@@ -2,18 +2,18 @@ extends GeneralEntity
 
 var bus_index_music:int
 var bus_index_sound:int
-var sound_bus_name:String = "SFX"
-var music_bus_name:String = "Music"
+const sound_bus_name:String = "SFX"
+const music_bus_name:String = "Music"
 
-var starting_building:PackedScene = preload("res://Scenes/entities/buildings/starting_building.tscn")
+const starting_building:PackedScene = preload("res://Scenes/entities/buildings/starting_building.tscn")
 var starting_building_placed:bool = false
-var building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
+const building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
 
-var module_scenes:Dictionary = {
+const module_scenes:Dictionary = {
 	"shouldergun":preload("res://Scenes/players/upgrades/shouldergun.tscn")
 }
 
-@onready var build_help: Label = $CanvasLayer/BuildHelp
+#@onready var build_help: Label = $CanvasLayer/BuildHelp
 @onready var modular_guns: Node3D = $characterMesh/ModularGuns
 
 @onready var multi_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
@@ -22,9 +22,9 @@ var module_scenes:Dictionary = {
 
 @onready var hostile_seeker: Area3D = $HostileSeeker
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var health_label: Label = $CanvasLayer/Health
-@onready var music_volume: HSlider = $CanvasLayer/Pausemenu/MusicVolume
-@onready var pausemenu: Control = $CanvasLayer/Pausemenu
+#@onready var health_label: Label = $CanvasLayer/Health
+#@onready var music_volume: HSlider = $CanvasLayer/Pausemenu/MusicVolume
+#@onready var pausemenu: Control = $CanvasLayer/Pausemenu
 
 enum unit_types{COMBAT,BUILDER,AGRI}
 
@@ -34,15 +34,15 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 
 @onready var throw_location: Node3D = $characterMesh/ThrowLocation
 @onready var throw_position_showcase: MeshInstance3D = $ThrowPositionShowcase
-@onready var canvas_layer: CanvasLayer = $CanvasLayer
+#@onready var canvas_layer: CanvasLayer = $CanvasLayer
 
-@onready var combatant_amount_label: Label = $CanvasLayer/Labels/CombatantAmount
-@onready var constructor_amount_label: Label = $CanvasLayer/Labels/ConstructorAmount
-@onready var collectors_amount_label: Label = $CanvasLayer/Labels/CollectorsAmount
-@onready var is_demolishing: Label = $CanvasLayer/Labels/IsDemolishing
+#@onready var combatant_amount_label: Label = $CanvasLayer/Labels/CombatantAmount
+#@onready var constructor_amount_label: Label = $CanvasLayer/Labels/ConstructorAmount
+#@onready var collectors_amount_label: Label = $CanvasLayer/Labels/CollectorsAmount
+#@onready var is_demolishing: Label = $CanvasLayer/Labels/IsDemolishing
 
 @onready var unit_collection_collision: CollisionShape3D = $CollectUnits/CollisionShape3D
-@onready var is_collecting_units: Label = $CanvasLayer/Labels/IsCollectingUnits
+#@onready var is_collecting_units: Label = $CanvasLayer/Labels/IsCollectingUnits
 @onready var unit_call_collision: Area3D = $CallUnits
 @onready var camera: Camera3D = $CameraControl/Yaw/Pitch/SpringArm3D/Camera3D
 @onready var cam_yaw = $CameraControl/Yaw
@@ -54,7 +54,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @onready var chat: Control = $Chat
 @onready var demolition_showcase: MeshInstance3D = $DemolishBuilding/DemolitionShowcase
 @onready var unit_collection_particles: GPUParticles3D = $CollectUnits/UnitCollectionParticles
-
+@onready var pewr_ui:CanvasLayer = $PewweperUI
 
 
 @onready var selected_unit_type = -1
@@ -72,28 +72,25 @@ var followers:Array = []
 var follower_amount:int = 0
 var ignore_first_input:bool = true
 
-var unit = preload("res://Scenes/entities/NPC/unit.tscn")
+const unit = preload("res://Scenes/entities/NPC/unit.tscn")
 
 var nearby_hostiles:Array = []
 
 func _ready() -> void:
-	bus_index_music = AudioServer.get_bus_index("Music")
-	bus_index_sound = AudioServer.get_bus_index(sound_bus_name)
-	var value = AudioServer.get_bus_volume_db(bus_index_music)
-	music_volume.set_value_no_signal(db_to_linear(value))
+
 	camera.current = false
 	Gameplay.scrap = 0 #reset scrap every time player spawns... Oh. I don't think this should stay here, but for now, this is enough.
-	health_label.text = str("Health: ", health, "/", max_health)
-	combatant_amount_label.text = str("Combatant units: ", combatant_amount)
-	constructor_amount_label.text = str("Constructor units: ", builder_amount)
-	collectors_amount_label.text = str("Collector units: ", agriculture_amount)
-	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
-	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
-	is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
+	#health_label.text = str("Health: ", health, "/", max_health)
+	#combatant_amount_label.text = str("Combatant units: ", combatant_amount)
+	#constructor_amount_label.text = str("Constructor units: ", builder_amount)
+	#collectors_amount_label.text = str("Collector units: ", agriculture_amount)
+	#is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
+	#$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
+	#is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
 	unit_collection_particles.emitting = !unit_collection_collision.disabled
-	build_help.visible = false
+#	build_help.visible = false
 	throw_position_showcase.visible = false
-	pausemenu.visible = Gameplay.paused
+#	pausemenu.visible = Gameplay.paused
 	demolition_showcase.visible = building_demolishing_mode
 	
 	if str(name) == "PlayerActor":
@@ -106,12 +103,14 @@ func _ready() -> void:
 		nickname.text = MultiplayerHelper.Players[int(str(name))].name
 		if multi_sync.get_multiplayer_authority() == multiplayer.get_unique_id():
 			camera.make_current()
-			canvas_layer.visible = true
+			pewr_ui.visible = true
 			
 		else:
 			camera.current = false
-			canvas_layer.visible = false
+			pewr_ui.visible = false
 		chat.visible = multi_sync.get_multiplayer_authority() == 1
+		
+	pewr_ui.initialize()
 
 func _input(event: InputEvent) -> void:
 	if name == "PlayerActor":
@@ -145,12 +144,12 @@ func _input(event: InputEvent) -> void:
 	
 	if Input.is_action_just_pressed("f"): #turn on/off unit collection
 		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
-		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
+#		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
 		unit_collection_particles.emitting = unit_collection_collision.disabled
 	if Input.is_action_just_pressed("y"):
 		building_demolishing_mode = !building_demolishing_mode
 		demolition_showcase.visible = building_demolishing_mode
-		is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
+#		is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
 	if Input.is_action_just_pressed("z"): #Calling all idle units
 		call_all_units.rpc()
 	if Input.is_action_just_pressed("z+ctrl"): #Calling ALL units
@@ -161,12 +160,8 @@ func _input(event: InputEvent) -> void:
 		if building_marker.get_child_count() != 0:
 			var node = building_marker.get_child(0)
 			node.place_itself.rpc()
-			build_help.visible = false
-	if Input.is_action_just_pressed("m"):
-		if music_volume.value != 0:
-			music_volume.value = 0
-		else:
-			music_volume.value = 1
+#			build_help.visible = false
+
 		#followers.pick_random().death()
 	#Temporarily implimentation: select unit type
 	if Input.is_key_pressed(KEY_1):
@@ -188,7 +183,7 @@ func _input(event: InputEvent) -> void:
 		throw_position_showcase.mesh["material"]["emission"] = Color.GREEN
 		throw_position_showcase.mesh["material"]["albedo_color"] = Color.GREEN
 	if Input.is_action_just_pressed("f2"):
-		canvas_layer.visible = !canvas_layer.visible
+		pewr_ui.visible = !pewr_ui.visible
 	if Input.is_action_just_pressed("f11"):
 		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
@@ -196,7 +191,7 @@ func _input(event: InputEvent) -> void:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	if Input.is_action_just_pressed("esc"):
 		Gameplay.paused = !Gameplay.paused
-		pausemenu.visible = Gameplay.paused
+#		pausemenu.visible = Gameplay.paused
 		if str(name) == "PlayerActor":
 			if Gameplay.paused:
 				Engine.time_scale = 0.0001
@@ -246,19 +241,19 @@ func unit_throw(cursor_pos_on_plane) -> void:
 					unit_types.COMBAT:
 						if combatant_amount > 0:
 							combatant_amount -= 1
-							combatant_amount_label.text = str("Combatant units: ", combatant_amount)
+#							combatant_amount_label.text = str("Combatant units: ", combatant_amount)
 						else:
 							return
 					unit_types.BUILDER:
 						if builder_amount > 0:
 							builder_amount -= 1
-							constructor_amount_label.text = str("Constructor units: ", builder_amount)
+#							constructor_amount_label.text = str("Constructor units: ", builder_amount)
 						else:
 							return
 					unit_types.AGRI:
 						if agriculture_amount > 0:
 							agriculture_amount -= 1
-							collectors_amount_label.text = str("Collector units: ", agriculture_amount)
+#							collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 						else:
 							return
 				instance._leader = self
@@ -336,14 +331,14 @@ func teleport_allies_with_me() -> void:
 func get_scrap(amount) -> int:
 	var old_scrap = curr_scrap
 	curr_scrap = min(max_scrap, curr_scrap + amount)
-	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
+#	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
 	return curr_scrap - old_scrap
 
 @rpc("any_peer", "call_local")
 func remove_scrap() -> int:
 	var old_amount:int = curr_scrap
 	curr_scrap = 0
-	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
+#	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
 	return old_amount
 
 func signal_follow(body):
@@ -365,13 +360,13 @@ func damage_func(amount:float) -> void:
 			can_be_hit = false
 			$MercyFrame.start()
 			health -= amount
-			health_label.text = str("Health: ", health, "/", max_health)
+#			health_label.text = str("Health: ", health, "/", max_health)
 		else:
 			death()
 
 func heal_func(amount:float) -> void:
 	health = min(health + amount, max_health)
-	health_label.text = str("Health: ", health, "/", max_health)
+#	health_label.text = str("Health: ", health, "/", max_health)
 
 @rpc("any_peer", "call_local")
 func death():
@@ -398,7 +393,7 @@ func respawn_func() -> void:
 	collision_mask = 45
 	$characterMesh/DamageArea.monitoring = true
 	health = max_health
-	health_label.text = str("Health: ", health, "/", max_health)
+#	health_label.text = str("Health: ", health, "/", max_health)
 	can_be_hit = true
 
 func add_interactable(node:Node3D) -> void:
@@ -418,7 +413,7 @@ func get_blueprint(scene:String, build_name:String, constructor_req:int, build_c
 	blueprint.build_cost = build_cost
 	blueprint.build_name = build_name
 	building_marker.add_child(blueprint)
-	build_help.visible = true
+#	build_help.visible = true
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
@@ -442,15 +437,15 @@ func get_unit(amount, type) -> void:
 		0: #combatants
 			#print("getting ", amount, " combatant")
 			combatant_amount += amount
-			combatant_amount_label.text = str("Combatant units: ", combatant_amount)
+#			combatant_amount_label.text = str("Combatant units: ", combatant_amount)
 		1:
 			#print("getting ", amount, " builder")
 			builder_amount += amount
-			constructor_amount_label.text = str("Constructor units: ", builder_amount)
+#			constructor_amount_label.text = str("Constructor units: ", builder_amount)
 		2:
 			#print("getting ", amount, " agri")
 			agriculture_amount += amount
-			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
+#			collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 
 func _on_collect_units_body_entered(body: Node3D) -> void:
 	if(body.is_in_group("Unit") and (body.curr_logic == 4 or body.curr_logic == 2) and body._leader == self):
@@ -501,7 +496,7 @@ func add_module(scene:String) -> bool:
 
 func _on_resune_pressed() -> void:
 	Gameplay.paused = false
-	pausemenu.visible = Gameplay.paused
+#	pausemenu.visible = Gameplay.paused
 	if Gameplay.paused:
 		Engine.time_scale = 0.0001
 	else:

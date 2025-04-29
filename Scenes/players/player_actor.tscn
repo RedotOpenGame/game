@@ -1,8 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=26 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
 [ext_resource type="Script" path="res://Scenes/menus/chat.gd" id="3_qow3q"]
+[ext_resource type="PackedScene" uid="uid://bj74gelxixrp0" path="res://Scenes/players/ui/pewweper_ui.tscn" id="4_6m61b"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o1g43"]
 
@@ -14,23 +15,6 @@ albedo_color = Color(1, 1, 1, 0.14902)
 material = SubResource("StandardMaterial3D_qow3q")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cstqs"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_o1g43"]
-font_size = 26
-
-[sub_resource type="LabelSettings" id="LabelSettings_qow3q"]
-font_size = 25
-
-[sub_resource type="LabelSettings" id="LabelSettings_6m61b"]
-font_color = Color(1, 0.270588, 0.266667, 1)
-outline_size = 2
-outline_color = Color(0.305882, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_gv87a"]
-font_size = 19
-
-[sub_resource type="LabelSettings" id="LabelSettings_xjmh8"]
-font_size = 32
 
 [sub_resource type="Animation" id="Animation_6m61b"]
 length = 0.001
@@ -233,157 +217,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cstqs")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Label" type="Label" parent="CanvasLayer"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -124.0
-offset_top = -23.0
-offset_right = 124.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "You are carrying curr/max scrap"
-label_settings = SubResource("LabelSettings_o1g43")
-
-[node name="Health" type="Label" parent="CanvasLayer"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -35.0
-offset_right = 219.0
-grow_vertical = 0
-text = "Health:CURR/MAX"
-label_settings = SubResource("LabelSettings_qow3q")
-
-[node name="Labels" type="VBoxContainer" parent="CanvasLayer"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -139.0
-offset_right = 187.0
-offset_bottom = -35.0
-grow_vertical = 0
-
-[node name="IsDemolishing" type="Label" parent="CanvasLayer/Labels"]
-layout_mode = 2
-text = "Demolishing buildings: BOOL"
-label_settings = SubResource("LabelSettings_6m61b")
-
-[node name="IsCollectingUnits" type="Label" parent="CanvasLayer/Labels"]
-layout_mode = 2
-text = "Is collecting units: BOOL"
-
-[node name="CombatantAmount" type="Label" parent="CanvasLayer/Labels"]
-layout_mode = 2
-text = "Combatant units: INT"
-
-[node name="ConstructorAmount" type="Label" parent="CanvasLayer/Labels"]
-layout_mode = 2
-text = "Constructor units: INT"
-
-[node name="CollectorsAmount" type="Label" parent="CanvasLayer/Labels"]
-layout_mode = 2
-text = "Collector units: INT"
-
-[node name="Instructions" type="Label" parent="CanvasLayer"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -95.0
-offset_top = -160.0
-offset_right = 101.0
-offset_bottom = -59.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "2, 3 or 4 - unit throwing
-Z - to call all units
-V - setting up a workshop
-Left click - attack"
-
-[node name="BuildHelp" type="Label" parent="CanvasLayer"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -124.0
-offset_top = -62.0
-offset_right = 115.0
-offset_bottom = -35.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "Press X to place blueprint."
-label_settings = SubResource("LabelSettings_gv87a")
-
-[node name="Pausemenu" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Pausemenu"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -110.0
-offset_top = -79.0
-offset_right = 111.0
-offset_bottom = -34.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Game paused."
-label_settings = SubResource("LabelSettings_xjmh8")
-
-[node name="Resune" type="Button" parent="CanvasLayer/Pausemenu"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -103.0
-offset_top = -26.0
-offset_right = 103.0
-offset_bottom = 26.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Resume"
-
-[node name="MusicVolume" type="HSlider" parent="CanvasLayer/Pausemenu"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -390.0
-offset_top = 239.0
-offset_right = -219.0
-offset_bottom = 255.0
-grow_horizontal = 0
-max_value = 1.0
-step = 0.001
-
-[node name="Music" type="Label" parent="CanvasLayer/Pausemenu"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -356.0
-offset_top = 263.0
-offset_right = -252.0
-offset_bottom = 286.0
-grow_horizontal = 0
-text = "MusicVolume"
+[node name="PewweperUI" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_6m61b")]
+player = NodePath("..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -510,16 +345,11 @@ shape = SubResource("CylinderShape3D_xjmh8")
 mesh = SubResource("CylinderMesh_xjmh8")
 
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
-[connection signal="pressed" from="CanvasLayer/Pausemenu/Resune" to="." method="_on_resune_pressed"]
-[connection signal="value_changed" from="CanvasLayer/Pausemenu/MusicVolume" to="." method="_on_music_volume_value_changed"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
 [connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
 [connection signal="timeout" from="MercyFrame" to="." method="_on_mercy_frame_timeout"]
 [connection signal="body_entered" from="CollectUnits" to="." method="_on_collect_units_body_entered"]
 [connection signal="body_entered" from="CallUnits" to="." method="_on_call_units_body_entered"]
 [connection signal="timeout" from="Respawn" to="." method="_on_respawn_timeout"]
-[connection signal="timeout" from="DoneNothing" to="." method="_on_done_nothing_timeout"]
-[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
-[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
 [connection signal="text_submitted" from="Chat/LineEdit" to="Chat" method="_on_line_edit_text_submitted"]
 [connection signal="body_entered" from="DemolishBuilding" to="." method="_on_demolish_building_body_entered"]
