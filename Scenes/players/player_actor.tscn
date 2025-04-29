@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=30 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
@@ -100,6 +100,36 @@ radius = 11.0
 height = 1.5
 radius = 1.6
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qow3q"]
+emission_shape_offset = Vector3(0, -1.5, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.1
+emission_ring_radius = 1.7
+emission_ring_inner_radius = 1.0
+direction = Vector3(0, 1, 0)
+initial_velocity_max = 1.0
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = -1.60933e-05
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = -2.23517e-06
+radial_accel_min = -3.0
+radial_accel_max = -2.0
+tangential_accel_min = -2.23517e-06
+tangential_accel_max = -2.23517e-06
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_qow3q"]
+shading_mode = 0
+albedo_color = Color(0.364706, 0.364706, 0.364706, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_gv87a"]
+material = SubResource("ORMMaterial3D_qow3q")
+radius = 0.08
+height = 0.16
+radial_segments = 16
+rings = 8
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3n67"]
 transparency = 1
 albedo_color = Color(0, 1, 1, 0.447059)
@@ -159,6 +189,15 @@ radius = 1.42888
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_xjmh8"]
 radius = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv87a"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.27451)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xjmh8"]
+material = SubResource("StandardMaterial3D_gv87a")
+top_radius = 1.5
+bottom_radius = 1.5
 
 [node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
 collision_mask = 45
@@ -386,6 +425,13 @@ collision_mask = 47
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CollectUnits"]
 shape = SubResource("CylinderShape3D_qow3q")
 
+[node name="UnitCollectionParticles" type="GPUParticles3D" parent="CollectUnits"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+amount = 50
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_qow3q")
+draw_pass_1 = SubResource("SphereMesh_gv87a")
+
 [node name="CallUnits" type="Area3D" parent="."]
 collision_layer = 2
 collision_mask = 47
@@ -459,6 +505,9 @@ collision_mask = 64
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DemolishBuilding"]
 shape = SubResource("CylinderShape3D_xjmh8")
+
+[node name="DemolitionShowcase" type="MeshInstance3D" parent="DemolishBuilding"]
+mesh = SubResource("CylinderMesh_xjmh8")
 
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="pressed" from="CanvasLayer/Pausemenu/Resune" to="." method="_on_resune_pressed"]

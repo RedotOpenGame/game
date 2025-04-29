@@ -52,6 +52,9 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @onready var character = $characterMesh
 @onready var nickname: Label3D = $Nickname
 @onready var chat: Control = $Chat
+@onready var demolition_showcase: MeshInstance3D = $DemolishBuilding/DemolitionShowcase
+@onready var unit_collection_particles: GPUParticles3D = $CollectUnits/UnitCollectionParticles
+
 
 
 @onready var selected_unit_type = -1
@@ -87,9 +90,11 @@ func _ready() -> void:
 	is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
 	$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
 	is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
+	unit_collection_particles.emitting = !unit_collection_collision.disabled
 	build_help.visible = false
 	throw_position_showcase.visible = false
 	pausemenu.visible = Gameplay.paused
+	demolition_showcase.visible = building_demolishing_mode
 	
 	if str(name) == "PlayerActor":
 		camera.make_current()
@@ -141,8 +146,10 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("f"): #turn on/off unit collection
 		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
 		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
+		unit_collection_particles.emitting = unit_collection_collision.disabled
 	if Input.is_action_just_pressed("y"):
 		building_demolishing_mode = !building_demolishing_mode
+		demolition_showcase.visible = building_demolishing_mode
 		is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
 	if Input.is_action_just_pressed("z"): #Calling all idle units
 		call_all_units.rpc()
@@ -180,6 +187,8 @@ func _input(event: InputEvent) -> void:
 		throw_position_showcase.visible = true
 		throw_position_showcase.mesh["material"]["emission"] = Color.GREEN
 		throw_position_showcase.mesh["material"]["albedo_color"] = Color.GREEN
+	if Input.is_action_just_pressed("f2"):
+		canvas_layer.visible = !canvas_layer.visible
 	if Input.is_action_just_pressed("f11"):
 		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
