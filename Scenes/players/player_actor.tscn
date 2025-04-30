@@ -206,9 +206,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.174)
 visible = false
 mesh = SubResource("BoxMesh_gv87a")
 
-[node name="BuildingMarker" type="Marker3D" parent="characterMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.17859)
-
 [node name="ModularGuns" type="Node3D" parent="characterMesh"]
 
 [node name="ThrowLocation" type="Node3D" parent="characterMesh"]
@@ -343,6 +340,8 @@ shape = SubResource("CylinderShape3D_xjmh8")
 
 [node name="DemolitionShowcase" type="MeshInstance3D" parent="DemolishBuilding"]
 mesh = SubResource("CylinderMesh_xjmh8")
+
+[node name="BuildingMarker" type="Marker3D" parent="."]
 
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]

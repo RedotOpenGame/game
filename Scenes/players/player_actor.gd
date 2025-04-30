@@ -18,7 +18,7 @@ const module_scenes:Dictionary = {
 
 @onready var multi_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
-@onready var building_marker: Marker3D = $characterMesh/BuildingMarker
+@onready var building_marker: Marker3D = $BuildingMarker
 
 @onready var hostile_seeker: Area3D = $HostileSeeker
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -214,6 +214,8 @@ func _process(_delta: float) -> void:
 	params.to = to
 	var collision = get_world_3d().direct_space_state.intersect_ray(params)
 	var target_point = collision.position if collision else to
+	if cursor_pos_on_plane:
+		building_marker.position = (cursor_pos_on_plane - global_position).limit_length(10)
 	if target_point:
 		throw_position_showcase.global_position = target_point
 		

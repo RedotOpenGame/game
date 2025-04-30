@@ -127,6 +127,19 @@ text = "Build Mortar: 20 scrap"
 layout_mode = 2
 text = "Add a gun to yourself: 6 scrap"
 
+[node name="Help" type="Label" parent="UI"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -258.0
+offset_top = 208.0
+offset_bottom = 231.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Press X to place down a blueprint"
+
 [node name="PlayerOwner" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54745, 0)
 visible = false
