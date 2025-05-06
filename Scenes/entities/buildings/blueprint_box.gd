@@ -60,7 +60,12 @@ func make_building() -> void:
 	scene.show_name = player_owner_label.visible
 	scene.player_name = player_name
 	scene.position = global_position
+	scene.rotation = global_rotation
 	get_tree().get_first_node_in_group("AllyContainer").add_child(scene)
+
+@rpc("any_peer", "call_local")
+func rotate_pls() -> void:
+	global_rotation.y += 45
 
 func _on_body_exited(body: Node3D) -> void:
 	if "unit_type" in body:

@@ -160,8 +160,10 @@ func _input(event: InputEvent) -> void:
 		if building_marker.get_child_count() != 0:
 			var node = building_marker.get_child(0)
 			node.place_itself.rpc()
+	if Input.is_action_just_pressed("r"):
+		if building_marker.get_child_count() != 0:
+			building_marker.get_child(0).rotate_pls.rpc()
 #			build_help.visible = false
-
 		#followers.pick_random().death()
 	#Temporarily implimentation: select unit type
 	if Input.is_key_pressed(KEY_1):

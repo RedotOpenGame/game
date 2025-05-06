@@ -117,7 +117,7 @@ text = "BuildTurret: 5 scrap
 
 [node name="BuildMiningRig" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
-text = "Build mining rig: 8 scrap"
+text = "Build mining rig: 16 scrap"
 
 [node name="BuildMortar" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
@@ -138,7 +138,8 @@ offset_top = 208.0
 offset_bottom = 231.0
 grow_horizontal = 0
 grow_vertical = 2
-text = "Press X to place down a blueprint"
+text = "Press X to place down a blueprint
+Press R to rotate it by 45 degress"
 
 [node name="PlayerOwner" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54745, 0)

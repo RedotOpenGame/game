@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://ck7y6yayturu4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_43oaj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0gbt1"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6amti"]
+material = SubResource("StandardMaterial3D_0gbt1")
+size = Vector3(0.15, 0.3, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8dy24"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cclss"]
+material = SubResource("StandardMaterial3D_8dy24")
+size = Vector3(0.45, 0.6, 0.1)
+
+[node name="UnitFactory" type="CharacterBody3D"]
+
+[node name="mesh" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="mesh"]
+mesh = SubResource("BoxMesh_43oaj")
+
+[node name="Tube" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389806, 0.565939, 0.0648516)
+mesh = SubResource("BoxMesh_6amti")
+
+[node name="Tube2" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389806, 0.565939, 0.326205)
+mesh = SubResource("BoxMesh_6amti")
+
+[node name="Door" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.191004, -0.492501)
+mesh = SubResource("BoxMesh_cclss")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="mesh"]
+
+[node name="UnitSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.186424, -0.889173)

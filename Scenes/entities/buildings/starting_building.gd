@@ -71,7 +71,7 @@ func _on_make_constructor_pressed() -> void:
 func _on_build_turret_pressed() -> void:
 	IHateThis("defence_turret", "Defence turret", 3, 5)
 func _on_build_mining_rig_pressed() -> void:
-	IHateThis("mining_rig", "Mining rig", 5, 8)
+	IHateThis("mining_rig", "Mining rig", 5, 16)
 func _on_add_shoulder_gun_pressed() -> void:
 	if Gameplay.scrap >= 6:
 		HangTheDeveloper()

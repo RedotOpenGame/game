@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnrwudfk4n435"]
+[gd_scene load_steps=7 format=3 uid="uid://bnrwudfk4n435"]
 
 [ext_resource type="Script" path="res://Scenes/entities/buildings/blueprint_box.gd" id="1_hxwhm"]
 
@@ -14,6 +14,13 @@ albedo_color = Color(0, 1, 1, 0.121569)
 [sub_resource type="BoxMesh" id="BoxMesh_hxwhm"]
 material = SubResource("StandardMaterial3D_hxwhm")
 size = Vector3(5, 5, 5)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hxwhm"]
+top_radius = 0.2
+bottom_radius = 0.2
+
+[sub_resource type="PrismMesh" id="PrismMesh_1lf62"]
+size = Vector3(0.5, 1, 0.5)
 
 [node name="BlueprintBox" type="Area3D"]
 collision_layer = 4
@@ -50,6 +57,16 @@ visible = false
 billboard = 1
 text = "Placed by:Pewweper"
 font_size = 50
+
+[node name="arrow" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="arrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -3.74226)
+mesh = SubResource("CylinderMesh_hxwhm")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="arrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -5.0579)
+mesh = SubResource("PrismMesh_1lf62")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
