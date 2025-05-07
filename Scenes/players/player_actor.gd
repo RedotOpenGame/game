@@ -411,6 +411,8 @@ func get_blueprint(scene:String, build_name:String, constructor_req:int, build_c
 	var blueprint = building_blueprint.instantiate()
 	blueprint.player_name = nickname.text
 	blueprint.player_owner = self
+	if str(name) != "PlayerActor":
+		blueprint.player_id = name.to_int()
 	blueprint.planned_bulding = scene
 	blueprint.process_mode = Node.PROCESS_MODE_DISABLED
 	blueprint.unit_req = constructor_req

@@ -9,9 +9,11 @@ const BUILDABLES:Dictionary = {
 	"defence_turret":preload("res://Scenes/entities/buildings/defence_turret.tscn"),
 	"mining_rig":preload("res://Scenes/entities/buildings/mining_rig.tscn"),
 	"mortar":preload("res://Scenes/entities/buildings/mortar.tscn"),
+	"unit_factory":preload("res://Scenes/entities/buildings/unit_factory.tscn")
 }
 
 var planned_bulding:String
+var player_id:int
 var player_owner:CharacterBody3D
 @export var unit_req:int = 3
 var curr_unit:int = 0
@@ -58,6 +60,7 @@ func make_building() -> void:
 	Gameplay.scrap -= build_cost
 	var scene = BUILDABLES[planned_bulding].instantiate()
 	scene.show_name = player_owner_label.visible
+	scene.player_id = player_id
 	scene.player_name = player_name
 	scene.position = global_position
 	scene.rotation = global_rotation

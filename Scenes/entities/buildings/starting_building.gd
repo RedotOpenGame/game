@@ -87,3 +87,7 @@ func IHateThis(scene, string, work_req, price) -> void:
 
 func _on_build_mortar_pressed() -> void:
 	IHateThis("mortar", "Mortar", 7, 20)
+
+
+func _on_build_unit_factory_pressed() -> void:
+	IHateThis("unit_factory", "Unit factory", 4, 8)

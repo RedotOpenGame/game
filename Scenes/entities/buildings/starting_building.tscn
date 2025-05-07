@@ -115,6 +115,10 @@ layout_mode = 2
 text = "BuildTurret: 5 scrap
 "
 
+[node name="BuildUnitFactory" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Build unit factory: 8 scrap"
+
 [node name="BuildMiningRig" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
 text = "Build mining rig: 16 scrap"
@@ -160,6 +164,7 @@ libraries = {
 [connection signal="pressed" from="UI/UnitMaker/MakeConstructor" to="." method="_on_make_constructor_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/MakeCollector" to="." method="_on_make_collector_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildTurret" to="." method="_on_build_turret_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildUnitFactory" to="." method="_on_build_unit_factory_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMiningRig" to="." method="_on_build_mining_rig_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMortar" to="." method="_on_build_mortar_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/AddShoulderGun" to="." method="_on_add_shoulder_gun_pressed"]

@@ -78,4 +78,4 @@ func _on_music_volume_value_changed(value: float) -> void:
 
 
 func _on_resume_pressed() -> void:
-	player.on_resune_pressed()
+	player._on_resune_pressed()

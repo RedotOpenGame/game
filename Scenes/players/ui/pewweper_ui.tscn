@@ -225,6 +225,7 @@ offset_right = 103.0
 offset_bottom = 26.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 text = "Resume"
 
 [node name="MusicVolume" type="HSlider" parent="Pausemenu"]
