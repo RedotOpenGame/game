@@ -10,7 +10,8 @@ var starting_building_placed:bool = false
 const building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
 
 const module_scenes:Dictionary = {
-	"shouldergun":preload("res://Scenes/players/upgrades/shouldergun.tscn")
+	"shouldergun":preload("res://Scenes/players/upgrades/shouldergun.tscn"),
+	"back_artillery":preload("res://Scenes/players/upgrades/back_artillery.tscn"),
 }
 
 #@onready var build_help: Label = $CanvasLayer/BuildHelp

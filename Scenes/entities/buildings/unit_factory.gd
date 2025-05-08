@@ -14,6 +14,16 @@ func _ready():
 	$PlayerOwner.visible = show_name
 	$PlayerOwner.text = str("Placed by: ", player_name)
 
+func damage_func(amount:float) -> void:
+	health -= amount
+	health_label.text = str("Health: ", health, "/", max_health)
+	if health <= 0:
+		death()
+
+func heal_func(amount:float) -> void:
+	health = min(health + amount, max_health)
+	health_label.text = str("Health: ", health, "/", max_health)
+
 func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == 1 and event.pressed:

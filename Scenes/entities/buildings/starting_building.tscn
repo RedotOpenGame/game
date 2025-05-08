@@ -131,6 +131,10 @@ text = "Build Mortar: 20 scrap"
 layout_mode = 2
 text = "Add a gun to yourself: 6 scrap"
 
+[node name="AddBackArtillery" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Add backpack artillery: 60 scrap"
+
 [node name="Help" type="Label" parent="UI"]
 anchors_preset = 6
 anchor_left = 1.0
@@ -168,3 +172,4 @@ libraries = {
 [connection signal="pressed" from="UI/UnitMaker/BuildMiningRig" to="." method="_on_build_mining_rig_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMortar" to="." method="_on_build_mortar_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/AddShoulderGun" to="." method="_on_add_shoulder_gun_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/AddBackArtillery" to="." method="_on_add_back_artillery_pressed"]

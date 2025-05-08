@@ -91,3 +91,9 @@ func _on_build_mortar_pressed() -> void:
 
 func _on_build_unit_factory_pressed() -> void:
 	IHateThis("unit_factory", "Unit factory", 4, 8)
+
+
+func _on_add_back_artillery_pressed() -> void:
+	if Gameplay.scrap >= 60:
+		owning_player.add_module.rpc("back_artillery")
+		Gameplay.scrap -= 60

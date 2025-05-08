@@ -16,7 +16,7 @@ size = Vector3(1, 2, 1)
 collision_layer = 64
 collision_mask = 40
 script = ExtResource("1_m38p7")
-dropped_scrap = 6
+dropped_scrap = 13
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_1s1kw")
