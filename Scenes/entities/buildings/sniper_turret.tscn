@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://c0bikubdca47k"]
+
+[ext_resource type="PackedScene" uid="uid://c6mfi0s8avy8j" path="res://Scenes/entities/buildings/defence_turret.tscn" id="1_6c5ca"]
+[ext_resource type="Script" path="res://Scenes/entities/buildings/sniper_turret.gd" id="2_i0xmg"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6c5ca"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_i0xmg"]
+size = Vector3(1.5, 0.5, 1.5)
+
+[sub_resource type="PrismMesh" id="PrismMesh_5rib1"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_i0xmg"]
+viewport_path = NodePath("NotUsed")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hlej2"]
+top_radius = 0.35
+height = 1.5
+
+[sub_resource type="PrismMesh" id="PrismMesh_cyj0v"]
+left_to_right = 1.0
+size = Vector3(0.3, 0.5, 1.5)
+
+[node name="SniperTurret" instance=ExtResource("1_6c5ca")]
+script = ExtResource("2_i0xmg")
+damage = 50.0
+dropped_scrap = 28
+max_health = 300.0
+
+[node name="MeshInstance3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.80514, 0)
+mesh = SubResource("SphereMesh_6c5ca")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.810895, 0)
+mesh = SubResource("BoxMesh_i0xmg")
+
+[node name="MeshInstance3D" parent="Barrel" index="0"]
+transform = Transform3D(1.4, 0, 0, 0, 1.4, 0, 0, 0, 1.4, 0, 0, -0.75)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Barrel" index="2"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.569295)
+mesh = SubResource("PrismMesh_5rib1")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Barrel" index="3"]
+transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0, 0, -0.569295)
+mesh = SubResource("PrismMesh_5rib1")
+
+[node name="HealthLabel" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.56642, 0)
+
+[node name="Firerate" parent="." index="6"]
+wait_time = 2.5
+
+[node name="PlayerOwner" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00538, 0)
+
+[node name="Demolish" parent="." index="8"]
+texture = SubResource("ViewportTexture_i0xmg")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." index="10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0336584, 0)
+mesh = SubResource("CylinderMesh_hlej2")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="." index="11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, -0.811, 0)
+mesh = SubResource("PrismMesh_cyj0v")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="." index="12"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.9, -0.811, 0)
+mesh = SubResource("PrismMesh_cyj0v")

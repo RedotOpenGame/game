@@ -96,7 +96,7 @@ func _process(delta: float) -> void:
 						curr_hostile = body
 				else:
 					curr_hostile = body
-			if(body.is_in_group("Resource") && curr_logic == logic.IDLE): #curr_logic != logic.THROWN && curr_logic != logic.ATTACK_ENEMY && curr_logic != logic.RETURN
+			if(body.is_in_group("Resource") && curr_logic == logic.IDLE && unit_type == unit_types.AGRI): #curr_logic != logic.THROWN && curr_logic != logic.ATTACK_ENEMY && curr_logic != logic.RETURN
 				curr_logic = logic.COLLECT
 		if resources > 0 and curr_logic == logic.IDLE:
 			curr_logic = logic.COLLECT
@@ -302,7 +302,7 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 		attack_collision.set_deferred("disabled", true)
 		hitscan_preview.visible = false
 		attackrate.start()
-	if body.is_in_group("Resource"):
+	if body.is_in_group("Resource") and unit_type == unit_types.AGRI:
 		#print("Resouce found")
 		if(body.scrap - (max_resources - resources) > 0):
 			body.scrap -= (max_resources - resources)

@@ -1,5 +1,5 @@
 extends GeneralBuilding
-
+class_name DefenceTurret
 var bullet = preload("res://Scenes/entities/Projectiles/Player/bullet.tscn")
 @onready var barrel: Node3D = $Barrel
 

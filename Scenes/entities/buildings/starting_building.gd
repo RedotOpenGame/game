@@ -4,9 +4,6 @@ extends CharacterBody3D
 @onready var scrap_counter: Label3D = $ScrapCounter
 @onready var player_owner: Label3D = $PlayerOwner
 
-var defence_turret:PackedScene = preload("res://Scenes/entities/buildings/defence_turret.tscn")
-var mining_rig:PackedScene = preload("res://Scenes/entities/buildings/mining_rig.tscn")
-var shoulder_gun:PackedScene = preload("res://Scenes/players/upgrades/shouldergun.tscn")
 
 var owning_player:CharacterBody3D # tracking player
 var player_name:String = "Pewweper"
@@ -97,3 +94,7 @@ func _on_add_back_artillery_pressed() -> void:
 	if Gameplay.scrap >= 60:
 		owning_player.add_module.rpc("back_artillery")
 		Gameplay.scrap -= 60
+
+
+func _on_build_sniper_turret_pressed() -> void:
+	IHateThis("sniper_turret", "Sniper turret", 10, 35)

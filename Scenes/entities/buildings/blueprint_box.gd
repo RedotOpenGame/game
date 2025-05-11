@@ -9,7 +9,8 @@ const BUILDABLES:Dictionary = {
 	"defence_turret":preload("res://Scenes/entities/buildings/defence_turret.tscn"),
 	"mining_rig":preload("res://Scenes/entities/buildings/mining_rig.tscn"),
 	"mortar":preload("res://Scenes/entities/buildings/mortar.tscn"),
-	"unit_factory":preload("res://Scenes/entities/buildings/unit_factory.tscn")
+	"unit_factory":preload("res://Scenes/entities/buildings/unit_factory.tscn"),
+	"sniper_turret":preload("res://Scenes/entities/buildings/sniper_turret.tscn"),
 }
 
 var planned_bulding:String
@@ -68,7 +69,7 @@ func make_building() -> void:
 
 @rpc("any_peer", "call_local")
 func rotate_pls() -> void:
-	global_rotation.y += 45
+	global_rotation.y += deg_to_rad(45)
 
 func _on_body_exited(body: Node3D) -> void:
 	if "unit_type" in body:

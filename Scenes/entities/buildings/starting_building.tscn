@@ -127,6 +127,10 @@ text = "Build mining rig: 16 scrap"
 layout_mode = 2
 text = "Build Mortar: 20 scrap"
 
+[node name="BuildSniperTurret" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Build sniper turret: 35 scrap"
+
 [node name="AddShoulderGun" type="Button" parent="UI/UnitMaker"]
 layout_mode = 2
 text = "Add a gun to yourself: 6 scrap"
@@ -142,8 +146,8 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -258.0
-offset_top = 208.0
-offset_bottom = 231.0
+offset_top = 230.0
+offset_bottom = 279.0
 grow_horizontal = 0
 grow_vertical = 2
 text = "Press X to place down a blueprint
@@ -171,5 +175,6 @@ libraries = {
 [connection signal="pressed" from="UI/UnitMaker/BuildUnitFactory" to="." method="_on_build_unit_factory_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMiningRig" to="." method="_on_build_mining_rig_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/BuildMortar" to="." method="_on_build_mortar_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildSniperTurret" to="." method="_on_build_sniper_turret_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/AddShoulderGun" to="." method="_on_add_shoulder_gun_pressed"]
 [connection signal="pressed" from="UI/UnitMaker/AddBackArtillery" to="." method="_on_add_back_artillery_pressed"]
