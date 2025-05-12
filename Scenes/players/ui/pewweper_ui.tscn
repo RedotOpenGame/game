@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bj74gelxixrp0"]
+[gd_scene load_steps=15 format=3 uid="uid://bj74gelxixrp0"]
 
 [ext_resource type="Texture2D" uid="uid://bubrxhpxys45c" path="res://assets/placeholder images/combatant_icon.png" id="1_2h2pb"]
 [ext_resource type="Script" path="res://Scenes/players/ui/pewweper_ui.gd" id="1_74q3k"]
@@ -8,6 +8,7 @@
 [ext_resource type="Shader" path="res://Scenes/players/ui/greyscale.gdshader" id="6_ghh6j"]
 [ext_resource type="Texture2D" uid="uid://dj6rqvaqp73bq" path="res://assets/placeholder images/demolishing_icon.png" id="7_3gcho"]
 [ext_resource type="Texture2D" uid="uid://dwp6wurbvbcsb" path="res://assets/placeholder images/unit_collection_icon.png" id="8_kijw2"]
+[ext_resource type="Texture2D" uid="uid://cw60n6jkw3sjv" path="res://assets/placeholder images/lock_on_activated.png" id="9_3gcho"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g8fn8"]
 font = ExtResource("3_g8fn8")
@@ -133,12 +134,64 @@ layout_mode = 2
 texture = ExtResource("7_3gcho")
 expand_mode = 1
 
+[node name="Label" type="Label" parent="VBoxContainer/Statuses/DemolishingBuildings"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -11.0
+offset_right = 5.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Y"
+
 [node name="CollectingUnits" type="TextureRect" parent="VBoxContainer/Statuses"]
 material = SubResource("ShaderMaterial_ghh6j")
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 texture = ExtResource("8_kijw2")
 expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/Statuses/CollectingUnits"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -11.0
+offset_right = 5.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "F"
+
+[node name="LockOnMode" type="TextureRect" parent="VBoxContainer/Statuses"]
+material = SubResource("ShaderMaterial_ghh6j")
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("9_3gcho")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/Statuses/LockOnMode"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -11.0
+offset_right = 5.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "G"
 
 [node name="HealthBar" type="ProgressBar" parent="VBoxContainer"]
 modulate = Color(0, 1, 0, 1)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=26 format=3 uid="uid://b4c05mkr5u63a"]
+[gd_scene load_steps=27 format=3 uid="uid://b4c05mkr5u63a"]
 
 [ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
 [ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
 [ext_resource type="Script" path="res://Scenes/menus/chat.gd" id="3_qow3q"]
 [ext_resource type="PackedScene" uid="uid://bj74gelxixrp0" path="res://Scenes/players/ui/pewweper_ui.tscn" id="4_6m61b"]
+[ext_resource type="Texture2D" uid="uid://b3kcr8i4lv3o5" path="res://assets/placeholder images/shield.png" id="5_xjmh8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o1g43"]
 
@@ -348,6 +349,14 @@ shape = SubResource("CylinderShape3D_xjmh8")
 mesh = SubResource("CylinderMesh_xjmh8")
 
 [node name="BuildingMarker" type="Marker3D" parent="."]
+
+[node name="ShieldShowcase" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56448, 0)
+visible = false
+pixel_size = 0.007
+billboard = 1
+alpha_antialiasing_mode = 1
+texture = ExtResource("5_xjmh8")
 
 [connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]

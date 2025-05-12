@@ -14,6 +14,7 @@ const music_bus_name:String = "Music"
 @onready var collecting_units: TextureRect = $VBoxContainer/Statuses/CollectingUnits
 @onready var health_bar: ProgressBar = $VBoxContainer/HealthBar
 @onready var health_label: Label = $VBoxContainer/HealthBar/HealthLabel
+@onready var lock_on_mode: TextureRect = $VBoxContainer/Statuses/LockOnMode
 
 @onready var scrap_bar: ProgressBar = $VBoxContainer/ScrapBar
 @onready var scrap_label: Label = $VBoxContainer/ScrapBar/ScrapLabel
@@ -67,7 +68,7 @@ func _process(delta: float) -> void:
 	scrap_label.text = str(scrap_bar.value, "/", scrap_bar.max_value)
 	demolishing_buildings.use_parent_material = player.building_demolishing_mode
 	collecting_units.use_parent_material = !player.unit_collection_collision.disabled
-	
+	lock_on_mode.use_parent_material = player.lock_on_mode
 	
 
 func _on_music_volume_value_changed(value: float) -> void:

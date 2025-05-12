@@ -27,7 +27,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="ResourcePile" type="CharacterBody3D" groups=["Resource"]]
-collision_layer = 44
+collision_layer = 8
 collision_mask = 16
 script = ExtResource("1_k3m5y")
 

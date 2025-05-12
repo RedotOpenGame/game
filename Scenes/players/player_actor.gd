@@ -56,6 +56,7 @@ enum unit_types{COMBAT,BUILDER,AGRI}
 @onready var demolition_showcase: MeshInstance3D = $DemolishBuilding/DemolitionShowcase
 @onready var unit_collection_particles: GPUParticles3D = $CollectUnits/UnitCollectionParticles
 @onready var pewr_ui:CanvasLayer = $PewweperUI
+@onready var shield_showcase: Sprite3D = $ShieldShowcase
 
 
 @onready var selected_unit_type = -1
@@ -65,7 +66,8 @@ const CAMERA_CONSTRAITS:Vector2 = Vector2(90, 180) #constraints for up and down 
 const CAMERA_SCALE_CONSTRAINTS:Vector2 = Vector2(4, 40.0) #how far or close the camera may be
 
 var can_be_hit:bool = true
-
+var lock_on_mode:bool = false
+var curr_target:GeneralEntity
 
 var building_demolishing_mode:bool = false
 var interactables_in_range:Array = []
@@ -143,10 +145,14 @@ func _input(event: InputEvent) -> void:
 		cam_yaw.rotation.y = 0
 		springArm.spring_length = 15
 	
+	shield_showcase.visible = Input.is_action_pressed("q")
+	
 	if Input.is_action_just_pressed("f"): #turn on/off unit collection
 		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
 #		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
 		unit_collection_particles.emitting = unit_collection_collision.disabled
+	if Input.is_action_just_pressed("g"): #turn on/off enemy lock-on
+		lock_on_mode = !lock_on_mode
 	if Input.is_action_just_pressed("y"):
 		building_demolishing_mode = !building_demolishing_mode
 		demolition_showcase.visible = building_demolishing_mode
@@ -222,12 +228,20 @@ func _process(_delta: float) -> void:
 	if target_point:
 		throw_position_showcase.global_position = target_point
 		
-	if Input.is_action_pressed("left_click") and !Gameplay.paused:
+	if lock_on_mode:
+		curr_target = find_closest_global_target("Hostile")
+		if is_instance_valid(curr_target):
+			character.look_at(curr_target.global_position)
+	if Input.is_action_pressed("left_click") and !Gameplay.paused and !shield_showcase.visible:
 		anim.play("attack")
 		if target_point:
 			for i in modular_guns.get_children():
-				i.shoot.rpc(target_point)
-			rotate_towards_target(target_point,character,0.2)
+				if lock_on_mode and is_instance_valid(curr_target):
+					i.shoot.rpc(curr_target.global_position)
+				else:
+					i.shoot.rpc(target_point)
+			if !(lock_on_mode and is_instance_valid(curr_target)):
+				rotate_towards_target(target_point,character,0.2)
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
 				unit_throw.rpc(target_point)
 
@@ -301,8 +315,9 @@ func _physics_process(delta: float) -> void:
 	if direction and !Gameplay.paused:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		character.rotation.y = lerp_angle(character.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
-		character.rotation.x = 0
+		if !Input.is_action_pressed("left_click") and !(lock_on_mode and is_instance_valid(curr_target)):
+			character.rotation.y = lerp_angle(character.rotation.y, atan2(-velocity.x, -velocity.z), 0.2)
+			character.rotation.x = 0
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
@@ -361,6 +376,8 @@ func ally_died(body) -> void:
 
 func damage_func(amount:float) -> void:
 	if can_be_hit:
+		if shield_showcase.visible:
+			amount *= 0.1
 		if health > 0:
 			can_be_hit = false
 			$MercyFrame.start()
