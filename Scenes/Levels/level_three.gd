@@ -17,3 +17,6 @@ func build_staircase() -> void:
 
 func _on_abyss_body_entered(body: Node3D) -> void:
 	body.position = control_point.position
+
+func make_the_block_fall() -> void:
+	$AnimationPlayer.play("BlockFall")

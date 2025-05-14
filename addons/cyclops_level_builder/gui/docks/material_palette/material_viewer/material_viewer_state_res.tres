@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource("1_3sifp")
-active_material_path = "res://addons/cyclops_level_builder/materials/grid.tres"
+active_material_path = "res://addons/cyclops_level_builder/materials/gizmo_axis_selected_material.tres"

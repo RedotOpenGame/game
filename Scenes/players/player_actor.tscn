@@ -263,6 +263,7 @@ collision_mask = 47
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CollectUnits"]
 shape = SubResource("CylinderShape3D_qow3q")
+disabled = true
 
 [node name="UnitCollectionParticles" type="GPUParticles3D" parent="CollectUnits"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

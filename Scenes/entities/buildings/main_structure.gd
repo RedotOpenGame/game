@@ -74,3 +74,6 @@ func _on_increase_speed_pressed() -> void:
 		scrap_counter.text = str("Scrap: ", Gameplay.scrap)
 		track_body.SPEED += 1.5
 		$UI/IncreaseSpeed.disabled = true
+
+func demolish() -> void:
+	print("You really thought you could do that? LMAO")

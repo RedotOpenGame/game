@@ -6,7 +6,8 @@ const sound_bus_name:String = "SFX"
 const music_bus_name:String = "Music"
 
 const starting_building:PackedScene = preload("res://Scenes/entities/buildings/starting_building.tscn")
-var starting_building_placed:bool = false
+##TRUE for player to be unable to place that green box
+@export var starting_building_placed:bool = false
 const building_blueprint:PackedScene = preload("res://Scenes/entities/buildings/blueprint_box.tscn")
 
 const module_scenes:Dictionary = {
@@ -90,6 +91,7 @@ func _ready() -> void:
 	#is_collecting_units.text = str("Is collecting units: ", !unit_collection_collision.disabled)
 	#$CanvasLayer/Label.text = str("You are carrying: ", curr_scrap, "/", max_scrap, " scrap")
 	#is_demolishing.text = str("Demolishing buildings: ", building_demolishing_mode)
+	
 	unit_collection_particles.emitting = !unit_collection_collision.disabled
 #	build_help.visible = false
 	throw_position_showcase.visible = false
@@ -246,8 +248,8 @@ func _process(_delta: float) -> void:
 				unit_throw.rpc(target_point)
 
 	if(Input.is_action_pressed("e")):
-		if cursor_pos_on_plane:
-			unit_call_collision.global_position = cursor_pos_on_plane
+		if target_point:
+			unit_call_collision.position = target_point - global_position
 			if(!unit_call_collision.visible):
 				unit_call_collision.set_visible(true)
 	else:
