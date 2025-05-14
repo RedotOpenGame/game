@@ -20,3 +20,13 @@ func _on_abyss_body_entered(body: Node3D) -> void:
 
 func make_the_block_fall() -> void:
 	$AnimationPlayer.play("BlockFall")
+	
+func build_staircase_2() -> void:
+	$AnimationPlayer.play("BuildStaircase")
+
+func build_staircase_2_continue() -> void:
+	var tween = get_tree().create_tween()
+	for i in $CyclopsBlocks_upgraded/lower_mountain_staircase.get_children():
+		tween.tween_property(i, "position", i.position + Vector3(0, 4, 0), 0.2)
+	for i in $CyclopsBlocks_upgraded/higher_mountain_staircase.get_children():
+		tween.tween_property(i, "position", i.position + Vector3(0, 4, 0), 0.2)
