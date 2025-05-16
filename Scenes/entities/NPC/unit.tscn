@@ -28,8 +28,8 @@ height = 1.0
 radial_segments = 16
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6wbai"]
-radius = 0.349256
-height = 1.12551
+radius = 0.3
+height = 0.9
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_65c4o"]
 radius = 5.96181
@@ -99,6 +99,7 @@ mesh = SubResource("CylinderMesh_igkc4")
 script = ExtResource("3_c0cis")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.116644, -0.0182061)
 shape = SubResource("CapsuleShape3D_6wbai")
 
 [node name="DetectionArea" type="Area3D" parent="."]

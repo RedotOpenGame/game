@@ -153,8 +153,8 @@ func _input(event: InputEvent) -> void:
 		unit_collection_collision.set_deferred("disabled", !unit_collection_collision.disabled)
 #		is_collecting_units.text = str("Is collecting units: ", unit_collection_collision.disabled)
 		unit_collection_particles.emitting = unit_collection_collision.disabled
-	if Input.is_action_just_pressed("g"): #turn on/off enemy lock-on
-		lock_on_mode = !lock_on_mode
+	#if Input.is_action_just_pressed("g"): #turn on/off enemy lock-on
+		#lock_on_mode = !lock_on_mode
 	if Input.is_action_just_pressed("y"):
 		building_demolishing_mode = !building_demolishing_mode
 		demolition_showcase.visible = building_demolishing_mode

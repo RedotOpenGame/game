@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bubrxhpxys45c"
-path.s3tc="res://.godot/imported/combatant_icon.png-ce2df5592a97d64e3f7e306cf95afd92.s3tc.ctex"
+uid="uid://dw5twsynefw40"
+path.s3tc="res://.godot/imported/a_lion_does_not_concern_himself.png-98e8babf1f88c05312930b5efe1b7694.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/placeholder images/combatant_icon.png"
-dest_files=["res://.godot/imported/combatant_icon.png-ce2df5592a97d64e3f7e306cf95afd92.s3tc.ctex"]
+source_file="res://assets/placeholder images/nonsense/a_lion_does_not_concern_himself.png"
+dest_files=["res://.godot/imported/a_lion_does_not_concern_himself.png-98e8babf1f88c05312930b5efe1b7694.s3tc.ctex"]
 
 [params]
 

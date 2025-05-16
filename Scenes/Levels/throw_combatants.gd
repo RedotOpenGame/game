@@ -12,6 +12,10 @@ var curr_unit:int = 0
 @export var build_name:String = "PLACEHOLDER"
 
 func _ready() -> void:
+	if build_cost == 0 and unit_req == 0:
+		print("Blueprint has 0 unit requirement and 0 scrap requirement. Guess I'm building myself lmao.")
+		building_complete.emit()
+		queue_free()
 	planned_building.text = str("Planned building: ", build_name)
 	constructor_req.text = str("Constructors in the area: ", curr_unit, "/", unit_req)
 	scrap_cost.text = str("Scrap cost: ", Gameplay.scrap, "/", build_cost)

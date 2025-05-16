@@ -172,6 +172,7 @@ grow_vertical = 2
 text = "F"
 
 [node name="LockOnMode" type="TextureRect" parent="VBoxContainer/Statuses"]
+visible = false
 material = SubResource("ShaderMaterial_ghh6j")
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
