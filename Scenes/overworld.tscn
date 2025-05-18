@@ -140,7 +140,7 @@ label_text = "Multiplayer test"
 
 [node name="DungeonEntrance2" parent="Objects" instance=ExtResource("2_bbigu")]
 transform = Transform3D(0.446261, 0, 0.894904, 0, 1, 0, -0.894904, 0, 0.446261, -9.64771, -0.0738914, -5.81005)
-path_to_scene = "res://Scenes/Levels/level_one.tscn"
+path_to_scene = "res://Scenes/Levels/second_level.tscn"
 label_text = "Level 2(W.I.P)"
 
 [node name="SurvivalModeEnter" parent="Objects" instance=ExtResource("3_s368d")]

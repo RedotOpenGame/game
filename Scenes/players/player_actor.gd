@@ -216,7 +216,7 @@ func _process(_delta: float) -> void:
 		
 	var target_plane_mouse = Plane(Vector3(0, 1, 0), position.y)
 	var mouse_pos = get_viewport().get_mouse_position()
-	var ray_length = 1000
+	var ray_length = 350
 	var from = camera.project_ray_origin(mouse_pos)
 	var to = from + camera.project_ray_normal(mouse_pos) * ray_length
 	var cursor_pos_on_plane = target_plane_mouse.intersects_ray(from, to)
@@ -227,9 +227,11 @@ func _process(_delta: float) -> void:
 	var target_point = collision.position if collision else to
 	if cursor_pos_on_plane:
 		building_marker.position = (cursor_pos_on_plane - global_position).limit_length(10)
+		
 	if target_point:
 		throw_position_showcase.global_position = target_point
-		
+		if selected_unit_type == unit_types.COMBAT:
+			draw_aim(throw_position_showcase.global_position)
 	if lock_on_mode:
 		curr_target = find_closest_global_target("Hostile")
 		if is_instance_valid(curr_target):
@@ -247,6 +249,7 @@ func _process(_delta: float) -> void:
 			if(Input.is_action_just_pressed("left_click") and selected_unit_type != -1 and !(!is_on_floor() and selected_unit_type == unit_types.AGRI)):
 				unit_throw.rpc(target_point)
 
+
 	if(Input.is_action_pressed("e")):
 		if target_point:
 			unit_call_collision.position = target_point - global_position
@@ -254,6 +257,42 @@ func _process(_delta: float) -> void:
 				unit_call_collision.set_visible(true)
 	else:
 		unit_call_collision.set_visible(false)
+
+func draw_aim(cursor_pos:Vector3):
+
+	var tstep:float = 0.05
+	var start_pos := throw_location.global_position
+	var g:float = -ProjectSettings.get_setting("physics/3d/default_gravity")
+
+	var line_start := start_pos
+	var line_middle := start_pos
+	var line_end := cursor_pos
+	const colors = [Color.HOT_PINK, Color.WHITE]
+	
+	var displacement = cursor_pos - start_pos
+	var horizontal_displacement = Vector3(displacement.x, 0, displacement.z)
+	var vx = horizontal_displacement.x / 1
+	var vz = horizontal_displacement.z / 1
+	var vy = (displacement.y / 1) + (0.5 * -g * 1)
+	var vel2 = Vector3(vx,vy,vz).limit_length(20)
+	
+	for i in range(1, 65):
+		vel2.y += g * tstep
+		line_start = line_middle
+		line_middle += vel2 * tstep
+		#vel2 *= clampf(1.0 - drag * tstep, 0, 1)
+		
+		var space_state = get_world_3d().direct_space_state
+		# use global coordinates, not local to node
+		var query = PhysicsRayQueryParameters3D.create(line_start, line_middle)
+		var ray = space_state.intersect_ray(query)
+		if not ray.is_empty():
+			break
+		DebugDraw3D.draw_line(line_middle, line_start, colors[i%2])
+	#DebugDraw3D.draw_line(line_start, line_end, Color.GREEN)
+
+func get_front_dir() -> Vector3:
+	return -throw_location.global_transform.basis.z
 
 @rpc("call_local", "any_peer")
 func unit_throw(cursor_pos_on_plane) -> void:
@@ -277,6 +316,7 @@ func unit_throw(cursor_pos_on_plane) -> void:
 #							collectors_amount_label.text = str("Collector units: ", agriculture_amount)
 						else:
 							return
+				character.look_at(cursor_pos_on_plane)
 				instance._leader = self
 				instance.player_name = nickname.text
 				instance.position = throw_location.global_position
@@ -333,6 +373,7 @@ func _physics_process(delta: float) -> void:
 				closest = global_position.distance_to(i.global_position)
 				interact_target = i
 		interact_target.interaction(self)
+
 
 @rpc("any_peer", "call_local")
 func call_all_units() -> void:
