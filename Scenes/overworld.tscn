@@ -132,6 +132,8 @@ shape = SubResource("CylinderShape3D_0q8xj")
 
 [node name="DungeonEntrance" parent="Objects" instance=ExtResource("2_bbigu")]
 transform = Transform3D(0.937045, 0, 0.34921, 0, 1, 0, -0.34921, 0, 0.937045, 0, 0, -12.8575)
+path_to_scene = "res://Scenes/Levels/third_leveltscn"
+label_text = "Level 3"
 
 [node name="DungeonEntrance5" parent="Objects" instance=ExtResource("2_bbigu")]
 transform = Transform3D(0.194799, 0, -0.980844, 0, 1, 0, 0.980844, 0, 0.194799, 13.5337, 0, -4.85762)
