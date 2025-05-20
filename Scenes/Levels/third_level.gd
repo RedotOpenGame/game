@@ -25,3 +25,7 @@ func _on_throw_combatants_2_building_complete() -> void:
 	for i in $Blocks/Endgame/Stairs.get_children():
 		increment += 0.01
 		tween.tween_property(i, "position", i.position + Vector3(0, 17, 0), 0.8 - increment)
+
+
+func _on_char_3d_3_block_dead() -> void:
+	$Blocks/Maze/BlockingBlocks/Block_2.queue_free()

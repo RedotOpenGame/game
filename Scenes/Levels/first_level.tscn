@@ -16236,11 +16236,11 @@ _data = {
 "RESET": SubResource("Animation_85hbc")
 }
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8fmyg"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4uuhe"]
 albedo_color = Color(1, 1, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_7ts1l"]
-material = SubResource("StandardMaterial3D_8fmyg")
+material = SubResource("StandardMaterial3D_4uuhe")
 
 [sub_resource type="BoxMesh" id="BoxMesh_u21xs"]
 material = ExtResource("11_u21xs")
