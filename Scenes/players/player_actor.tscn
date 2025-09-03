@@ -1,0 +1,370 @@
+[gd_scene load_steps=27 format=3 uid="uid://b4c05mkr5u63a"]
+
+[ext_resource type="Script" path="res://Scenes/players/player_actor.gd" id="1_cstqs"]
+[ext_resource type="PackedScene" uid="uid://dmne774a7cs5b" path="res://assets/unsorted meshes/AllyBot.glb" id="2_o1g43"]
+[ext_resource type="Script" path="res://Scenes/menus/chat.gd" id="3_qow3q"]
+[ext_resource type="PackedScene" uid="uid://bj74gelxixrp0" path="res://Scenes/players/ui/pewweper_ui.tscn" id="4_6m61b"]
+[ext_resource type="Texture2D" uid="uid://b3kcr8i4lv3o5" path="res://assets/placeholder images/shield.png" id="5_xjmh8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o1g43"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qow3q"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.14902)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gv87a"]
+material = SubResource("StandardMaterial3D_qow3q")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cstqs"]
+
+[sub_resource type="Animation" id="Animation_6m61b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("characterMesh/DamageArea/CollisionShape3D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("characterMesh/DamageArea/MeshInstance3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_xjmh8"]
+resource_name = "attack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("characterMesh/DamageArea/CollisionShape3D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("characterMesh/DamageArea/MeshInstance3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vmj44"]
+_data = {
+"RESET": SubResource("Animation_6m61b"),
+"attack": SubResource("Animation_xjmh8")
+}
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_o1g43"]
+radius = 11.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qow3q"]
+height = 1.5
+radius = 1.6
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qow3q"]
+emission_shape_offset = Vector3(0, -1.5, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.1
+emission_ring_radius = 1.7
+emission_ring_inner_radius = 1.0
+direction = Vector3(0, 1, 0)
+initial_velocity_max = 1.0
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = -1.60933e-05
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = -2.23517e-06
+radial_accel_min = -3.0
+radial_accel_max = -2.0
+tangential_accel_min = -2.23517e-06
+tangential_accel_max = -2.23517e-06
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_qow3q"]
+shading_mode = 0
+albedo_color = Color(0.364706, 0.364706, 0.364706, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_gv87a"]
+material = SubResource("ORMMaterial3D_qow3q")
+radius = 0.08
+height = 0.16
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3n67"]
+transparency = 1
+albedo_color = Color(0, 1, 1, 0.447059)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mj16b"]
+material = SubResource("StandardMaterial3D_t3n67")
+top_radius = 1.6
+bottom_radius = 1.6
+height = 1.5
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_o1g43"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("characterMesh:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("CallUnits:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("CollectUnits/CollisionShape3D:disabled")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("characterMesh/DamageArea/CollisionShape3D:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("characterMesh/DamageArea/MeshInstance3D:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath(".:selected_unit_type")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("CallUnits:position")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+properties/8/path = NodePath(".:collision_mask")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+properties/9/path = NodePath("characterMesh/DamageArea:monitoring")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+properties/10/path = NodePath("CollectUnits/UnitCollectionParticles:emitting")
+properties/10/spawn = true
+properties/10/replication_mode = 1
+properties/11/path = NodePath("DemolishBuilding/DemolitionShowcase:visible")
+properties/11/spawn = true
+properties/11/replication_mode = 1
+properties/12/path = NodePath("BuildingMarker:position")
+properties/12/spawn = true
+properties/12/replication_mode = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1g43"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_o1g43"]
+material = SubResource("StandardMaterial3D_o1g43")
+bottom_radius = 0.7
+height = 0.1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gv87a"]
+radius = 1.42888
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xjmh8"]
+radius = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv87a"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.27451)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xjmh8"]
+material = SubResource("StandardMaterial3D_gv87a")
+top_radius = 1.5
+bottom_radius = 1.5
+
+[node name="PlayerActor" type="CharacterBody3D" groups=["Ally", "Player"]]
+collision_mask = 45
+script = ExtResource("1_cstqs")
+
+[node name="characterMesh" type="Node3D" parent="."]
+
+[node name="AllyBot" parent="characterMesh" instance=ExtResource("2_o1g43")]
+transform = Transform3D(-0.533594, 0, -4.66483e-08, 0, 0.533594, 0, 4.66483e-08, 0, -0.533594, 0.00765601, -0.785634, -0.00859171)
+
+[node name="DamageArea" type="Area3D" parent="characterMesh"]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="characterMesh/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.17384)
+shape = SubResource("BoxShape3D_o1g43")
+disabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="characterMesh/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.174)
+visible = false
+mesh = SubResource("BoxMesh_gv87a")
+
+[node name="ModularGuns" type="Node3D" parent="characterMesh"]
+
+[node name="ThrowLocation" type="Node3D" parent="characterMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_cstqs")
+
+[node name="PewweperUI" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_6m61b")]
+player = NodePath("..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_vmj44")
+}
+
+[node name="HostileSeeker" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HostileSeeker"]
+shape = SubResource("CylinderShape3D_o1g43")
+
+[node name="CameraControl" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.77627, 0)
+
+[node name="Yaw" type="Node3D" parent="CameraControl"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.778984, 0)
+
+[node name="Pitch" type="Node3D" parent="CameraControl/Yaw"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraControl/Yaw/Pitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.778984, 0)
+collision_mask = 213
+spring_length = 15.0
+margin = 0.5
+
+[node name="Camera3D" type="Camera3D" parent="CameraControl/Yaw/Pitch/SpringArm3D"]
+fov = 45.0
+
+[node name="MercyFrame" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="CollectUnits" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 47
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollectUnits"]
+shape = SubResource("CylinderShape3D_qow3q")
+disabled = true
+
+[node name="UnitCollectionParticles" type="GPUParticles3D" parent="CollectUnits"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+amount = 50
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_qow3q")
+draw_pass_1 = SubResource("SphereMesh_gv87a")
+
+[node name="CallUnits" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 47
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CallUnits"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.258808, 0)
+shape = SubResource("CylinderShape3D_qow3q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CallUnits"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.258808, 0)
+mesh = SubResource("CylinderMesh_mj16b")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_o1g43")
+
+[node name="Respawn" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="ThrowPositionShowcase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231183, -1.72115)
+mesh = SubResource("CylinderMesh_o1g43")
+skeleton = NodePath("../characterMesh/ThrowLocation")
+
+[node name="DoneNothing" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="InteractArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea"]
+shape = SubResource("CylinderShape3D_gv87a")
+
+[node name="Nickname" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00555, 0)
+billboard = 1
+text = "Pewweper"
+font_size = 50
+
+[node name="Chat" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 366.0
+offset_bottom = 198.0
+script = ExtResource("3_qow3q")
+
+[node name="LineEdit" type="LineEdit" parent="Chat"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+grow_horizontal = 2
+grow_vertical = 0
+placeholder_text = "Enter message here..."
+
+[node name="RichTextLabel" type="TextEdit" parent="Chat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "messages should appear here."
+editable = false
+
+[node name="DemolishBuilding" type="Area3D" parent="."]
+collision_mask = 64
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DemolishBuilding"]
+shape = SubResource("CylinderShape3D_xjmh8")
+
+[node name="DemolitionShowcase" type="MeshInstance3D" parent="DemolishBuilding"]
+mesh = SubResource("CylinderMesh_xjmh8")
+
+[node name="BuildingMarker" type="Marker3D" parent="."]
+
+[node name="ShieldShowcase" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56448, 0)
+visible = false
+pixel_size = 0.007
+billboard = 1
+alpha_antialiasing_mode = 1
+texture = ExtResource("5_xjmh8")
+
+[connection signal="body_entered" from="characterMesh/DamageArea" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
+[connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]
+[connection signal="timeout" from="MercyFrame" to="." method="_on_mercy_frame_timeout"]
+[connection signal="body_entered" from="CollectUnits" to="." method="_on_collect_units_body_entered"]
+[connection signal="body_entered" from="CallUnits" to="." method="_on_call_units_body_entered"]
+[connection signal="timeout" from="Respawn" to="." method="_on_respawn_timeout"]
+[connection signal="text_submitted" from="Chat/LineEdit" to="Chat" method="_on_line_edit_text_submitted"]
+[connection signal="body_entered" from="DemolishBuilding" to="." method="_on_demolish_building_body_entered"]

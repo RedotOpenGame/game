@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://dh1csobcf4w2j"]
+
+[ext_resource type="Script" path="res://Scenes/misc/button_wall.gd" id="1_3a13e"]
+[ext_resource type="Material" uid="uid://hv3t5ks2idnj" path="res://assets/materials/black_block.tres" id="1_re4hq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmqha"]
+albedo_color = Color(1, 0.513726, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f0civ"]
+material = SubResource("StandardMaterial3D_dmqha")
+
+[sub_resource type="BoxMesh" id="BoxMesh_5bunc"]
+material = ExtResource("1_re4hq")
+size = Vector3(0.5, 1.5, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nl6bt"]
+
+[node name="Button2" type="Area3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -115.016, 4.75954, -13.9975)
+collision_mask = 2
+script = ExtResource("1_3a13e")
+
+[node name="Orange" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.214844, 0, 0)
+mesh = SubResource("BoxMesh_f0civ")
+
+[node name="Black" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_5bunc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_nl6bt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

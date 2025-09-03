@@ -1,0 +1,343 @@
+extends Node3D
+
+var player_char = preload("res://Scenes/players/player_actor.tscn")
+
+@onready var enemy_spawnpoint: Marker3D = $EnemySpawnpoint
+@onready var enemies: Node3D = $Entities/Enemies
+@onready var intermission: Timer = $Intermission
+@onready var wave_counter: Label = $CanvasLayer/WaveCounter
+@onready var resource_spawnpoint: Marker3D = $ResourceSpawnpoint
+@onready var resources: Node3D = $Entities/Resources
+@onready var intermission_bar: ProgressBar = $CanvasLayer/IntermissionBar
+@onready var enemy_spawnpoints: Node3D = $EnemySpawnpoints
+@onready var enemy_spawn_timer: Timer = $EnemySpawnTimer
+@onready var music: Node = $Music
+
+@onready var chosen_track:AudioStreamPlayer = $"Music/Empty Remains" # to track the playing node
+
+
+const second_part_music = "res://assets/Music/Robotic Wasteland.mp3"
+const base_budget:int = 500
+var resource_pile_scene:PackedScene = preload("res://Scenes/misc/resource_pile.tscn")
+#resources will spawn every new wave so player could collect them and make new bots
+
+var game_started:bool = false
+var auto_skip:bool = false
+var multiple_entrances:bool = false
+var curr_wave:int = 0
+var is_in_intermission:bool = false
+var can_spawn:bool = true
+var enemies_in_queue:Array = []
+var health_multiplier:float = 1 #formula: 1 * 1.1^(FLOOR(curr_wave / 10))
+const enemy_list:Dictionary = {
+	#"Example":preload("path/to/enemy/scene.tscn"),
+	"Test_Enemy":[preload("res://Scenes/entities/Enemies/test_enemy.tscn"), 5],
+	"Shooter":[preload("res://Scenes/entities/Enemies/shooting_enemy.tscn"), 7],
+	"Shielder":[preload("res://Scenes/entities/Enemies/shield_enemy.tscn"), 9],
+	"Test_Boss":[preload("res://Scenes/entities/Enemies/test_boss.tscn"), 30],
+	"Test_Enemy_t2":[preload("res://Scenes/entities/Enemies/test_enemy_tier_two.tscn"), 10],
+	"Shooter_t2":[preload("res://Scenes/entities/Enemies/shooting_enemy_tier_two.tscn"), 14],
+	"Altefo":[preload("res://Scenes/entities/Enemies/altefo_boss.tscn"), 250],
+	"Shielder_t2":[preload("res://Scenes/entities/Enemies/shield_enemy_tier_two.tscn"), 18],
+	"Medic":[preload("res://Scenes/entities/Enemies/enemy_medic.tscn"), 17],
+	"Test_Enemy_t3":[preload("res://Scenes/entities/Enemies/test_enemy_tier_three.tscn"), 20],
+	"Shielder_t3":[preload("res://Scenes/entities/Enemies/shield_enemy_tier_three.tscn"), 25],
+	"Shooter_t3":[preload("res://Scenes/entities/Enemies/shooting_enemy_tier_three.tscn"), 30],
+	"Test_Boss_t2":[preload("res://Scenes/entities/Enemies/test_boss_tier_two.tscn"), 60],
+}
+const wave_structure:Dictionary = {
+	1:{"Test_Enemy":1}, #just a single enemy.
+	2:{"Test_Enemy":6}, #more of them.
+	3:{"Test_Enemy":4, "Shooter":3}, #enemies have guns now.
+	4:{"Test_Enemy":3, "Shooter":5}, #nothing new.
+	5:{"Test_Boss":1, "Test_Enemy":4}, #boss enemy???
+	6:{"Test_Enemy_t2":1, "Shooter":4, "Shielder":2}, #new tier, and also shielders to ruin your life
+	7:{"Test_Enemy_t2":6, "Test_Enemy":5, "Shielder":4}, #more of them are coming, no shooters
+	8:{"Test_Boss":1, "Shooter_t2":5, "Test_Enemy":12, "Shielder":3},
+	9:{"Test_Boss":1, "Test_Enemy":4, "Shooter":4, "Shooter_t2":4, "Test_Enemy_t2":4, "Shielder":5}, #little bit of this, little bit of that ahh wave
+	10:{"Altefo":1}, #Altefo is attacking!
+	11:{"Test_Enemy":12, "Test_Enemy_t2":8, "Shielder":5},
+	12:{"Shooter":8, "Shooter_t2":6, "Shielder":12},
+	13:{"Test_Boss":2, "Shooter_t2":5, "Test_Enemy":9, "Test_Enemy_t2":6},
+	14:{"Shielder":15, "Shielder_t2":10},
+	15:{"Test_Boss":2, "Test_Enemy":12, "Test_Enemy_t2":4, "Medic":4},
+	16:{"Shooter":8, "Shooter_t2":6, "Shielder":15, "Medic":6},
+	17:{"Shielder_t2":10, "Shooter_t2":13, "Shooter":7},
+	18:{"Shielder_t2":10, "Shooter_t2":17, "Test_Boss":2},
+	19:{"Shielder_t2":5, "Shielder":5, "Shooter_t2":5, "Shooter":5, "Test_Enemy_t2":5, "Test_Enemy":5, "Medic":5, "Test_Boss":5}, #little bit of this, little bit of that ahh wave part 2
+	20:{"Altefo":1, "Medic":5, "Test_Boss":3, "Test_Enemy_t2":14}, #altefo is back for fucking revenge, and he brought friends
+	21:{"Test_Enemy_t3":2, "Test_Enemy_t2":15, "Medic":8}, #introducing tier 3 basic enemies
+	22:{"Test_Boss":4, "Shielder_t2":12, "Shooter_t2":10},
+	23:{"Test_Enemy_t3":5, "Shooter_t2":12, "Medic":7},
+	24:{"Test_Boss_t2":1, "Test_Enemy_t2":18}, #first tier 2 boss
+	25:{"Shielder_t3":3, "Shielder_t2":12, "Medic":10},
+	26:{"Test_Boss":3, "Test_Enemy_t3":6, "Shooter_t2":15},
+	27:{"Shooter_t3":4, "Shooter_t2":10, "Test_Enemy_t2":15},
+	28:{"Test_Boss_t2":1, "Shielder_t3":4, "Medic":12},
+	29:{"Test_Enemy_t3":8, "Shielder_t3":5, "Shooter_t3":4, "Medic":8}, #triple threat tier 3
+	30:{"Altefo":2, "Test_Boss_t2":1, "Medic":15}, #double Altefo with tier 2 boss
+	31:{"Test_Enemy_t3":12, "Shooter_t3":6, "Medic":10},
+	32:{"Test_Boss_t2":2, "Shielder_t2":18, "Shielder_t3":8},
+	33:{"Shooter_t3":10, "Test_Enemy_t3":15, "Medic":12},
+	34:{"Test_Boss":6, "Test_Boss_t2":1, "Shielder_t3":8},
+	35:{"Test_Enemy_t3":15, "Shooter_t3":12, "Shielder_t3":10},
+	36:{"Test_Boss_t2":2, "Shooter_t3":10, "Medic":20},
+	37:{"Test_Enemy_t3":20, "Shielder_t3":15, "Shooter_t3":12},
+	38:{"Test_Boss_t2":3, "Test_Boss":5, "Medic":25},
+	39:{"Test_Enemy_t3":25, "Shielder_t3":20, "Shooter_t3":15, "Medic":20}, #massive tier 3 army
+	40:{"Altefo":4, "Test_Boss_t2":2, "Medic":30}, #quadruple Altefo finale
+}
+
+func _ready() -> void:
+	intermission_bar.max_value = intermission.wait_time
+	for i in MultiplayerHelper.Players:
+		var player = player_char.instantiate()
+		player.name = str(MultiplayerHelper.Players[i].id)
+		player.position = $PlayerSpawnpoint.position + Vector3(randi_range(-5, 5), 0, randi_range(-5, 5))
+		$Players.add_child(player)
+	if MultiplayerHelper.Players == {}:
+		var player = player_char.instantiate()
+		player.position = $PlayerSpawnpoint.global_position
+		$Players.add_child(player)
+	$CanvasLayer/Button.text = str("Autoskip: ", auto_skip)
+	start_vote()
+
+func _process(_delta: float) -> void:
+	if enemies_in_queue != [] and can_spawn and multiplayer.is_server():
+		can_spawn = false
+		enemy_spawn_timer.start()
+		spawn_enemy.rpc(enemies_in_queue.pop_front(), Vector3(randf_range(-10, 10), 0, randf_range(-10, 10)), enemy_spawnpoints.get_children().pick_random())
+	if enemies.get_child_count() == 0 and !is_in_intermission and game_started and enemies_in_queue == []:
+		is_in_intermission = true
+		intermission.start()
+		if auto_skip:
+			_on_skip_intermission_pressed()
+		for i in get_tree().get_nodes_in_group("Ally"):
+			i.heal_func(666)
+		
+	intermission_bar.value = intermission.time_left
+
+#@rpc("call_local", )
+func new_wave() -> void:
+	for i in get_tree().get_nodes_in_group("Farm"):
+		i.get_resource()
+
+	is_in_intermission = false
+	curr_wave += 1
+	health_multiplier = 1.1 ** floor(curr_wave / 10)
+	#if curr_wave == 10:
+		#$Music.stream = load(second_part_music)
+	if curr_wave % 5 == 0:
+		chosen_track.stop()
+		$BossMusic.play()
+		if curr_wave >= 10:
+			chosen_track = music.get_children().pick_random()
+			
+	else:
+		$BossMusic.stop()
+		if !chosen_track.playing:
+			chosen_track.play()
+	wave_counter.text = str("Wave: ", curr_wave)
+	if !wave_structure.has(curr_wave): #If there are no pre-made waves, we will make them ourselves.
+		wave_counter.text = str("Wave: ", curr_wave)
+		enemies_in_queue = pick_enemies_for_wave()
+		return
+	for i in wave_structure[curr_wave]:
+		
+		for j in wave_structure[curr_wave][i]:
+			enemies_in_queue.append(i)
+	#print(enemies_in_queue)
+	@warning_ignore("integer_division")
+	for i in range(floor(curr_wave / 5) + 1):
+		spawn_resource_pile()
+
+#Code for function generated by Deepseek-r1
+func pick_enemies_for_wave() -> Array:
+	var budget = base_budget + curr_wave * 15
+	var remaining_budget = budget
+	var selected_enemies = []
+	
+	while true:
+		var candidates = []
+		# Collect all enemies that can fit into the remaining budget
+		for enmy_name in enemy_list:
+			var cost = enemy_list[enmy_name][1]
+			if cost <= remaining_budget:
+				candidates.append(enmy_name)
+		# If no candidates left, break the loop
+		if candidates.is_empty():
+			break
+		# Randomly pick one enemy from the candidates
+		var chosen = candidates[randi() % candidates.size()]
+		selected_enemies.append(chosen)
+		remaining_budget -= enemy_list[chosen][1]
+	
+	return selected_enemies
+
+@rpc("any_peer", "call_local")
+func spawn_enemy(enmy_name:String, pos_addition:Vector3, sel_spawn) -> void:
+	var enemy = enemy_list[enmy_name][0].instantiate()
+	enemy.max_health *= health_multiplier
+	if multiple_entrances:
+		enemy.position = sel_spawn.position + pos_addition
+	else:
+		enemy.position = enemy_spawnpoint.position + pos_addition
+	enemies.add_child(enemy)
+
+@rpc("any_peer", "call_local")
+func spawn_resource_pile() -> void:
+		var scene = resource_pile_scene.instantiate()
+		scene.position = resource_spawnpoint.position + Vector3(randf_range(-20, 20), 0.5, randf_range(-20, 20))
+		scene.scrap = 5
+		scene.scale = Vector3(1.8, 1.8, 1.8)
+		resources.add_child(scene)
+
+func _on_intermission_timeout() -> void:
+	new_wave()
+
+
+func _on_new_wave_now_pressed() -> void:
+	new_wave()
+	restart_intermission.rpc()
+	$CanvasLayer/NewWaveNow.release_focus()
+
+@rpc("any_peer", "call_local")
+func restart_intermission() -> void:
+	intermission.start()
+
+func _on_single_entrance_pressed() -> void:
+	if $Players.get_child_count() == 1:
+		game_started = true
+		multiple_entrances = false
+		select_mode.visible = false
+		submit_vote("mode1")
+	else:
+		if multiplayer.is_server():
+		# Host votes locally
+			submit_vote("mode1")
+		else:
+		# Client sends vote to host (peer ID 1)
+			submit_vote.rpc_id(1, "mode1")
+
+
+func _on_multiple_entrance_2_pressed() -> void:
+	if $Players.get_child_count() == 1:
+		game_started = true
+		multiple_entrances = true
+		select_mode.visible = false
+		submit_vote("mode2")
+		
+	else:
+		if multiplayer.is_server():
+		# Host votes locally
+			submit_vote("mode2")
+		else:
+		# Client sends vote to host (peer ID 1)
+			submit_vote.rpc_id(1, "mode2")
+
+#Code below generated by Deepseek-r1
+#Modified by Pewweper
+var votes = {}
+var is_voting = false
+@onready var vote_timer = $VoteTimer
+@onready var select_mode: Control = $CanvasLayer/SelectMode
+@onready var votes_1: Label = $CanvasLayer/SelectMode/Votes1
+@onready var votes_2: Label = $CanvasLayer/SelectMode/Votes2
+
+
+# Host starts the vote
+func start_vote():
+	votes_1.visible = true
+	votes_2.visible = true
+	if is_voting:
+		return
+	is_voting = true
+	votes.clear()
+	vote_timer.start(30)  # 30-second voting period
+	print("voting started")
+	#rpc("show_vote_ui")  # Show UI on all clients
+
+# Clients send votes to the server
+@rpc("any_peer")
+func submit_vote(mode):
+	# Only the server processes votes
+	if not multiplayer.is_server() or not is_voting:
+		return
+
+	# Get the sender's ID (clients use RPC, host calls directly)
+	var sender_id:int = 0
+	if multiplayer.get_remote_sender_id() == 0:
+		# This is the host voting locally (sender_id = 1)
+		sender_id = 1
+	else:
+		# This is a client (sender_id = remote peer ID)
+		sender_id = multiplayer.get_remote_sender_id()
+
+	# Prevent duplicate votes
+	if sender_id in votes:
+		return
+
+	# Validate sender is connected (including host)
+	var peers = multiplayer.get_peers()
+	if sender_id != 1 and not peers.has(sender_id):
+		return  # Invalid sender
+
+	votes[sender_id] = mode
+	# Check if all players (host + peers) have voted
+	print("vote made for: ", mode)
+	if votes.size() == peers.size() + 1:
+		end_vote()
+
+func end_vote():
+	vote_timer.stop()
+	is_voting = false
+	var tally = {"mode1": 0, "mode2": 0}
+	for vote in votes.values():
+		tally[vote] += 1
+	var winner = "mode1" if tally["mode1"] >= tally["mode2"] else "mode2"
+	rpc("announce_winner", winner)  # Inform all clients
+
+@rpc("call_local")
+func announce_winner(mode):
+	select_mode.visible = false
+	game_started = true
+	print("Game mode selected: ", mode)
+	# Update game mode here (e.g., reload scene or adjust settings)
+	if mode == "mode1":
+		multiple_entrances = false
+	elif mode == "mode2":
+		multiple_entrances = true
+
+func _on_vote_timer_timeout():
+	if multiplayer.is_server() and $Players.get_child_count() != 1:
+		end_vote()
+
+
+func _on_kill_all_enemies_pressed() -> void:
+	for i in enemies.get_children():
+		i.queue_free()
+
+
+func _on_killzone_body_entered(body: Node3D) -> void:
+	body.position = $EnemySpawnpoint.position
+
+
+func _on_enemy_spawn_timer_timeout() -> void:
+	can_spawn = true
+
+
+func _on_skip_intermission_pressed() -> void:
+	if multiplayer.is_server() and !intermission.is_stopped():
+		skip_intermission.rpc()
+		$CanvasLayer/SkipIntermission.release_focus()
+	
+
+@rpc("any_peer", "call_local")
+func skip_intermission() -> void:
+	intermission.stop()
+	new_wave()
+
+
+func _on_button_toggled(toggled_on: bool) -> void:
+	auto_skip = toggled_on
+	$CanvasLayer/Button.text = str("Autoskip: ", auto_skip)

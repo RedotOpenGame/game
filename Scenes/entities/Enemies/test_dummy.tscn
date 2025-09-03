@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://birbcka7avuqd"]
+
+[ext_resource type="Script" path="res://Scenes/entities/Enemies/test_dummy.gd" id="1_qyaog"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxwsa"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_eqbof"]
+material = SubResource("StandardMaterial3D_nxwsa")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nfn8w"]
+
+[node name="TestDummy" type="CharacterBody3D" groups=["Hostile"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00113, 0)
+collision_layer = 8
+collision_mask = 31
+script = ExtResource("1_qyaog")
+
+[node name="characterMesh" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="characterMesh"]
+mesh = SubResource("CapsuleMesh_eqbof")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_nfn8w")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.21906, 0)
+billboard = 1
+text = "I am a test hostile. Damage me."
+
+[node name="Damage" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46436, 0)
+billboard = 1
+text = "Damage: 0"

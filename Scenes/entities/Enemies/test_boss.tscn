@@ -1,0 +1,124 @@
+[gd_scene load_steps=15 format=3 uid="uid://bqfrw11fc20gv"]
+
+[ext_resource type="PackedScene" uid="uid://citu714ddbl12" path="res://Scenes/meshes/enemy_bot.tscn" id="1_eo4kf"]
+[ext_resource type="Script" path="res://Scenes/entities/Enemies/test_boss.gd" id="1_k1j27"]
+[ext_resource type="Texture2D" uid="uid://ctkgno2fj8aio" path="res://assets/EVIL_KILLBLORB.png" id="2_6r674"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6r674"]
+radius = 1.02975
+height = 3.56329
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k1j27"]
+albedo_color = Color(0.111197, 0.111197, 0.111197, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4oukh"]
+material = SubResource("StandardMaterial3D_k1j27")
+size = Vector3(0.8, 0.2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kh3so"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k1j27"]
+material = SubResource("StandardMaterial3D_kh3so")
+size = Vector3(0.2, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d1qnq"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_n31h5"]
+material = SubResource("StandardMaterial3D_d1qnq")
+size = Vector3(0.2, 0.4, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k1j27"]
+size = Vector3(1, 1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c66dd"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.235294)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k40ub"]
+material = SubResource("StandardMaterial3D_c66dd")
+size = Vector3(1, 1, 0.5)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_k1j27"]
+radius = 20.0
+
+[node name="TestBoss" type="CharacterBody3D" groups=["Hostile"]]
+collision_layer = 8
+collision_mask = 95
+script = ExtResource("1_k1j27")
+attacking_range = 15.0
+movement_speed = 3.0
+max_health = 300.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42487, 0)
+shape = SubResource("CapsuleShape3D_6r674")
+
+[node name="mesh" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(0.820222, 0.572046, 0, -0.572046, 0.820222, 0, 0, 0, 1, -0.349113, 3.20859, -0.786017)
+mesh = SubResource("BoxMesh_4oukh")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(-0.820152, -0.572146, -8.74228e-08, -0.572146, 0.820152, 0, 7.17e-08, 5.00186e-08, -1, 0.35083, 3.20859, -0.786017)
+mesh = SubResource("BoxMesh_4oukh")
+
+[node name="Pistol?" type="Node3D" parent="mesh"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.197865, 1.98604, -0.020523)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh/Pistol?"]
+transform = Transform3D(0.851022, -0.52513, 0, 0.52513, 0.851022, 0, 0, 0, 1, 0.800931, 0.185594, -1.14214)
+mesh = SubResource("BoxMesh_k1j27")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh/Pistol?"]
+transform = Transform3D(0.837766, -0.546029, 0, 0.546029, 0.837766, 0, 0, 0, 1, 0.97758, -0.0827577, -0.747901)
+mesh = SubResource("BoxMesh_n31h5")
+
+[node name="GunBarrel" type="Marker3D" parent="mesh/Pistol?"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.775223, 0.188307, -1.65037)
+
+[node name="Decal" type="Decal" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.21137, -1.02081)
+texture_albedo = ExtResource("2_6r674")
+texture_normal = ExtResource("2_6r674")
+
+[node name="enemy_bot" parent="mesh" instance=ExtResource("1_eo4kf")]
+
+[node name="DamageArea" type="Area3D" parent="mesh/enemy_bot"]
+transform = Transform3D(-2.27273, 0, -1.98688e-07, 0, 2.27273, 0, 1.98688e-07, 0, -2.27273, 0, 1.93182, 0)
+collision_layer = 32
+collision_mask = 67
+monitoring = false
+monitorable = false
+
+[node name="AttackCollision" type="CollisionShape3D" parent="mesh/enemy_bot/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)
+shape = SubResource("BoxShape3D_k1j27")
+
+[node name="HitscanPreview" type="MeshInstance3D" parent="mesh/enemy_bot/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.84)
+visible = false
+mesh = SubResource("BoxMesh_k40ub")
+
+[node name="Attackrate" type="Timer" parent="."]
+wait_time = 1.4
+one_shot = true
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.95529, 0)
+billboard = 1
+text = "Health:CURR/MAX"
+font_size = 80
+
+[node name="HostileSeeker" type="Area3D" parent="."]
+collision_layer = 32
+collision_mask = 67
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HostileSeeker"]
+shape = SubResource("CylinderShape3D_k1j27")
+
+[connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]
+[connection signal="body_entered" from="HostileSeeker" to="." method="_on_hostile_seeker_body_entered"]
+[connection signal="body_exited" from="HostileSeeker" to="." method="_on_hostile_seeker_body_exited"]

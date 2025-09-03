@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://slp88hyjpj6v"]
+
+[ext_resource type="Texture2D" uid="uid://dsvcm4kvcqlru" path="res://addons/cyclops_level_builder/art/textures/vertex.png" id="1_m6fsr"]
+
+[resource]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_color = Color(1, 1, 0, 1)
+albedo_texture = ExtResource("1_m6fsr")
+use_point_size = true
+point_size = 8.0

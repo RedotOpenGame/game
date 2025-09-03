@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dc6l2y57w6o87"]
+
+[ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="1_r0eh0"]
+
+[node name="TestEnemyTierTwo" instance=ExtResource("1_r0eh0")]
+movement_speed = 6.0
+enemy_tier = 2
+max_health = 80.0
+damage = 12.0

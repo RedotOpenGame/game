@@ -1,0 +1,180 @@
+[gd_scene load_steps=12 format=3 uid="uid://sn7iym1fxs5h"]
+
+[ext_resource type="Script" path="res://Scenes/entities/buildings/starting_building.gd" id="1_dctpj"]
+[ext_resource type="Theme" uid="uid://bs82q6pwnfd3m" path="res://assets/themes/workshop_buttons.tres" id="2_8hsgy"]
+
+[sub_resource type="Gradient" id="Gradient_1gd33"]
+colors = PackedColorArray(0, 1, 1, 1, 1, 1, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dctpj"]
+gradient = SubResource("Gradient_1gd33")
+fill_from = Vector2(0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8hsgy"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = SubResource("GradientTexture2D_dctpj")
+
+[sub_resource type="BoxMesh" id="BoxMesh_aqk8h"]
+material = SubResource("StandardMaterial3D_8hsgy")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ly48w"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8hsgy"]
+height = 2.34085
+radius = 1.66954
+
+[sub_resource type="Animation" id="Animation_aqk8h"]
+resource_name = "ui_appear"
+
+[sub_resource type="Animation" id="Animation_ly48w"]
+resource_name = "ui_disappear"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nfbqd"]
+_data = {
+"ui_appear": SubResource("Animation_aqk8h"),
+"ui_disappear": SubResource("Animation_ly48w")
+}
+
+[node name="StartingBuilding" type="CharacterBody3D" groups=["PlayerWorkshop"]]
+collision_layer = 4
+collision_mask = 43
+script = ExtResource("1_dctpj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_aqk8h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ly48w")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.929432, 0)
+billboard = 1
+text = "I am your workshop."
+
+[node name="ScrapCounter" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22325, 0)
+billboard = 1
+text = "Scrap: CURR"
+
+[node name="interactionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="interactionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.151514, 0)
+shape = SubResource("CylinderShape3D_8hsgy")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Remove" type="Button" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -186.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Press me to remove."
+
+[node name="UnitMaker" type="VBoxContainer" parent="UI"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -273.0
+offset_top = -94.0
+offset_bottom = 94.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="MakeCombatant" type="Button" parent="UI/UnitMaker"]
+modulate = Color(1, 0.490196, 1, 1)
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme = ExtResource("2_8hsgy")
+text = "Make combatant unit: 2 scrap"
+
+[node name="MakeConstructor" type="Button" parent="UI/UnitMaker"]
+modulate = Color(0, 1, 1, 1)
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme = ExtResource("2_8hsgy")
+text = "Make constructor unit: 2 scrap"
+
+[node name="MakeCollector" type="Button" parent="UI/UnitMaker"]
+modulate = Color(0.188235, 1, 0.192157, 1)
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme = ExtResource("2_8hsgy")
+text = "Make collector unit: 2 scrap"
+
+[node name="BuildTurret" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "BuildTurret: 5 scrap
+"
+
+[node name="BuildUnitFactory" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Build unit factory: 8 scrap"
+
+[node name="BuildMiningRig" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Build mining rig: 16 scrap"
+
+[node name="BuildMortar" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Build Mortar: 20 scrap"
+
+[node name="BuildSniperTurret" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Build sniper turret: 35 scrap"
+
+[node name="AddShoulderGun" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Add a gun to yourself: 6 scrap"
+
+[node name="AddBackArtillery" type="Button" parent="UI/UnitMaker"]
+layout_mode = 2
+text = "Add backpack artillery: 60 scrap"
+
+[node name="Help" type="Label" parent="UI"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -258.0
+offset_top = 230.0
+offset_bottom = 279.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Press X to place down a blueprint
+Press R to rotate it by 45 degress"
+
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54745, 0)
+visible = false
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nfbqd")
+}
+
+[connection signal="body_entered" from="interactionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="interactionArea" to="." method="_on_interaction_area_body_exited"]
+[connection signal="pressed" from="UI/Remove" to="." method="_on_remove_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/MakeCombatant" to="." method="_on_make_combatant_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/MakeConstructor" to="." method="_on_make_constructor_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/MakeCollector" to="." method="_on_make_collector_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildTurret" to="." method="_on_build_turret_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildUnitFactory" to="." method="_on_build_unit_factory_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildMiningRig" to="." method="_on_build_mining_rig_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildMortar" to="." method="_on_build_mortar_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/BuildSniperTurret" to="." method="_on_build_sniper_turret_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/AddShoulderGun" to="." method="_on_add_shoulder_gun_pressed"]
+[connection signal="pressed" from="UI/UnitMaker/AddBackArtillery" to="." method="_on_add_back_artillery_pressed"]

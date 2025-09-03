@@ -1,0 +1,202 @@
+[gd_scene load_steps=3 format=3 uid="uid://brok83wpxo8id"]
+
+[ext_resource type="Script" path="res://Scenes/Levels/multiplayer_test.gd" id="1_143sx"]
+[ext_resource type="Script" path="res://Scenes/menus/chat.gd" id="2_3og6k"]
+
+[node name="MultiplayerMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_143sx")
+
+[node name="Stuff" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HostGame" type="Button" parent="Stuff"]
+layout_mode = 0
+offset_right = 158.0
+offset_bottom = 60.0
+text = "Host"
+
+[node name="HotkeyHelp" type="Label" parent="Stuff/HostGame"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 39.0
+text = "Hotkey:H"
+
+[node name="JoinGame" type="Button" parent="Stuff"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 84.0
+offset_right = 159.0
+offset_bottom = 143.0
+text = "Join"
+
+[node name="HotkeyHelp" type="Label" parent="Stuff/JoinGame"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 39.0
+text = "Hotkey:J"
+
+[node name="StartGame" type="Button" parent="Stuff"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 171.0
+offset_right = 155.0
+offset_bottom = 230.0
+text = "Start"
+
+[node name="HotkeyHelp" type="Label" parent="Stuff/StartGame"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 39.0
+text = "Hotkey:K"
+
+[node name="StartSurvival" type="Button" parent="Stuff"]
+layout_mode = 0
+offset_left = 355.0
+offset_top = 170.0
+offset_right = 508.0
+offset_bottom = 229.0
+text = "Start survival"
+
+[node name="HotkeyHelp" type="Label" parent="Stuff/StartSurvival"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 39.0
+text = "Hotkey:K"
+
+[node name="Entername" type="LineEdit" parent="Stuff"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 278.0
+offset_right = 436.0
+offset_bottom = 309.0
+placeholder_text = "Pewweper"
+max_length = 50
+
+[node name="SetRandomName" type="Button" parent="Stuff/Entername"]
+layout_mode = 0
+offset_top = 45.0
+offset_right = 265.0
+offset_bottom = 89.0
+text = "Set random name"
+
+[node name="Nicknamehelp" type="Label" parent="Stuff/Entername"]
+layout_mode = 0
+offset_top = 102.0
+offset_right = 40.0
+offset_bottom = 125.0
+text = "tip:make sure to change nickname BEFORE you join a game 
+to avoid unexpected behaviour
+I think it's a bug we should fix later. - Pewweper"
+
+[node name="Name" type="Label" parent="Stuff"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 251.0
+offset_right = 145.0
+offset_bottom = 274.0
+text = "Enter name here:"
+
+[node name="GameHostStatus" type="Label" parent="Stuff"]
+visible = false
+layout_mode = 0
+offset_left = 303.0
+offset_top = 23.0
+offset_right = 507.0
+offset_bottom = 46.0
+text = "Game hosted successfully!"
+
+[node name="GameJoinStatus" type="Label" parent="Stuff"]
+visible = false
+layout_mode = 0
+offset_left = 310.0
+offset_top = 105.0
+offset_right = 509.0
+offset_bottom = 128.0
+text = "Game joined successfully!"
+
+[node name="ServerStuff" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 679.0
+offset_top = 68.0
+offset_right = 719.0
+offset_bottom = 108.0
+
+[node name="Address" type="LineEdit" parent="ServerStuff"]
+layout_mode = 0
+offset_right = 307.0
+offset_bottom = 31.0
+placeholder_text = "127.0.0.1"
+
+[node name="Port" type="SpinBox" parent="ServerStuff"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 84.0
+offset_right = 88.5625
+offset_bottom = 115.0
+max_value = 65535.0
+
+[node name="Chat" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 635.0
+offset_top = 356.0
+offset_right = 1150.0
+offset_bottom = 647.0
+script = ExtResource("2_3og6k")
+
+[node name="LineEdit" type="LineEdit" parent="Chat"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+grow_horizontal = 2
+grow_vertical = 0
+placeholder_text = "Enter message here..."
+
+[node name="RichTextLabel" type="TextEdit" parent="Chat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "messages should appear here."
+editable = false
+
+[node name="ReturnToMenu" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 560.0
+offset_right = 226.0
+offset_bottom = 646.0
+grow_vertical = 0
+text = "Go back to Overworld"
+
+[connection signal="pressed" from="Stuff/HostGame" to="." method="_on_host_game_pressed"]
+[connection signal="pressed" from="Stuff/JoinGame" to="." method="_on_join_game_pressed"]
+[connection signal="pressed" from="Stuff/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="Stuff/StartSurvival" to="." method="_on_start_survival_pressed"]
+[connection signal="text_submitted" from="Stuff/Entername" to="." method="_on_entername_text_submitted"]
+[connection signal="pressed" from="Stuff/Entername/SetRandomName" to="." method="_on_set_random_name_pressed"]
+[connection signal="text_submitted" from="ServerStuff/Address" to="." method="_on_address_text_submitted"]
+[connection signal="value_changed" from="ServerStuff/Port" to="." method="_on_port_value_changed"]
+[connection signal="text_submitted" from="Chat/LineEdit" to="Chat" method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="ReturnToMenu" to="." method="_on_return_to_menu_pressed"]

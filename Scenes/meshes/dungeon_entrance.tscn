@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://bevcp75fxaeuc"]
+
+[ext_resource type="Script" path="res://Scenes/meshes/dungeon_entrance.gd" id="1_1vjtw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_1vjtw"]
+size = Vector3(0.8, 5, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ujd00"]
+size = Vector3(2.82031, 4.51703, 0.208984)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mwekb"]
+blend_mode = 3
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_p041k"]
+material = SubResource("StandardMaterial3D_mwekb")
+size = Vector3(2.8, 4.5, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mwekb"]
+size = Vector3(4, 5, 0.1)
+
+[node name="DungeonEntrance" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 11
+script = ExtResource("1_1vjtw")
+
+[node name="Pillar1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79652, 2.27647, 0)
+mesh = SubResource("BoxMesh_1vjtw")
+
+[node name="Pillar2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75781, 2.27647, 0)
+mesh = SubResource("BoxMesh_1vjtw")
+
+[node name="Pillar3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.00245929, 4.71061, 0)
+mesh = SubResource("BoxMesh_1vjtw")
+
+[node name="TouchMe" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TouchMe"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.07632, 0)
+shape = SubResource("BoxShape3D_ujd00")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TouchMe"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06007, 0)
+mesh = SubResource("BoxMesh_p041k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.28409, 0)
+shape = SubResource("BoxShape3D_mwekb")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5265, 0)
+billboard = 1
+text = "Dungeon entrance here."
+
+[connection signal="body_entered" from="TouchMe" to="." method="_on_touch_me_body_entered"]

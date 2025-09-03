@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://71fws1jvbyxx"]
+
+[ext_resource type="Script" path="res://Scenes/entities/buildings/mining_rig.gd" id="1_m38p7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1s1kw"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m38p7"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bnyao"]
+material = SubResource("StandardMaterial3D_m38p7")
+size = Vector3(1, 2, 1)
+
+[node name="MiningRig" type="CharacterBody3D" groups=["Ally", "Farm"]]
+collision_layer = 64
+collision_mask = 40
+script = ExtResource("1_m38p7")
+dropped_scrap = 13
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_1s1kw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_bnyao")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50992, 0)
+billboard = 1
+text = "I give 2 scrap each time new wave starts.
+(Survival mode only)"
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93551, 0)
+billboard = 1
+text = "Health:CURR/MAX
+"
+
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.44674, 0)
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50

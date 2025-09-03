@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://bnrwudfk4n435"]
+
+[ext_resource type="Script" path="res://Scenes/entities/buildings/blueprint_box.gd" id="1_hxwhm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2g6nf"]
+size = Vector3(5, 5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hxwhm"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(0, 1, 1, 0.121569)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hxwhm"]
+material = SubResource("StandardMaterial3D_hxwhm")
+size = Vector3(5, 5, 5)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hxwhm"]
+top_radius = 0.2
+bottom_radius = 0.2
+
+[sub_resource type="PrismMesh" id="PrismMesh_1lf62"]
+size = Vector3(0.5, 1, 0.5)
+
+[node name="BlueprintBox" type="Area3D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_hxwhm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_2g6nf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_hxwhm")
+
+[node name="ConstructorReq" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.29676, 0)
+billboard = 1
+text = "Constructors in the area: CURR/REQ"
+font_size = 64
+
+[node name="PlannedBuilding" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9098, 0)
+billboard = 1
+text = "Planned building: BUILDING_NAME"
+font_size = 64
+
+[node name="ScrapCost" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.47984, 0)
+billboard = 1
+text = "Scrap cost: CURR_SCRAP/SCRAP_COST"
+font_size = 64
+
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.07836, 0)
+visible = false
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50
+
+[node name="arrow" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="arrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -3.74226)
+mesh = SubResource("CylinderMesh_hxwhm")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="arrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -5.0579)
+mesh = SubResource("PrismMesh_1lf62")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

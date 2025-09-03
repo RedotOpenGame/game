@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bq585m7tgnhaj"]
+
+[ext_resource type="PackedScene" uid="uid://o0qg176pagng" path="res://Scenes/entities/Enemies/shield_enemy_tier_two.tscn" id="1_u1uul"]
+
+[node name="ShieldEnemyTierThree" instance=ExtResource("1_u1uul")]
+movement_speed = 5.0
+enemy_tier = 3
+damage = 18.0
+max_health = 180.0

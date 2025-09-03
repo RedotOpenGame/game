@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://bkusk72fdr812"]
+
+[ext_resource type="Script" path="res://Scenes/meshes/dungeon_exit.gd" id="1_oi120"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rsweu"]
+size = Vector3(0.8, 5, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oi120"]
+size = Vector3(2.82031, 4.51703, 0.208984)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uxrd8"]
+blend_mode = 3
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ly3lw"]
+material = SubResource("StandardMaterial3D_uxrd8")
+size = Vector3(2.8, 4.5, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lflwb"]
+size = Vector3(4, 5, 0.1)
+
+[node name="DungeonExit" type="StaticBody3D"]
+script = ExtResource("1_oi120")
+
+[node name="Pillar1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79652, 2.27647, 0)
+mesh = SubResource("BoxMesh_rsweu")
+
+[node name="Pillar2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75781, 2.27647, 0)
+mesh = SubResource("BoxMesh_rsweu")
+
+[node name="Pillar3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.00245929, 4.71061, 0)
+mesh = SubResource("BoxMesh_rsweu")
+
+[node name="TouchMe" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TouchMe"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.07632, 0)
+shape = SubResource("BoxShape3D_oi120")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TouchMe"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06007, 0)
+mesh = SubResource("BoxMesh_ly3lw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.28409, 0)
+shape = SubResource("BoxShape3D_lflwb")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5265, 0)
+billboard = 1
+text = "Dungeon exit here."
+
+[connection signal="body_entered" from="TouchMe" to="." method="_on_touch_me_body_entered"]

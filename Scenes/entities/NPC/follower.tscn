@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://by1vby6cuwjab"]
+
+[ext_resource type="Script" path="res://Scenes/entities/NPC/follower.gd" id="1_lskuk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lskuk"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lskuk"]
+material = SubResource("StandardMaterial3D_lskuk")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6wbai"]
+
+[node name="Follower" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00816488, 0, -0.00135088)
+script = ExtResource("1_lskuk")
+
+[node name="characterMesh" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="characterMesh"]
+mesh = SubResource("CapsuleMesh_lskuk")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_6wbai")

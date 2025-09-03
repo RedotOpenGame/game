@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://dcggovnuu1fq3"]
+
+[ext_resource type="Script" path="res://Scenes/players/upgrades/shouldergun.gd" id="1_v7wxu"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_p4cgj"]
+size = Vector3(0.2, 0.7, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7wxu"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rk5c2"]
+material = SubResource("StandardMaterial3D_v7wxu")
+top_radius = 0.16
+bottom_radius = 0.16
+height = 0.8
+
+[node name="Shouldergun" type="Node3D"]
+script = ExtResource("1_v7wxu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.791629, 0.335356, 0.510745, 0, 0.835913, -0.548862, -0.611002, 0.434495, 0.661733, 0.425536, 0.372096, 0.46149)
+mesh = SubResource("BoxMesh_p4cgj")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.791629, 0.335356, 0.510745, -0.451298, 0.884434, 0.118769, -0.41189, -0.324519, 0.851489, 0.640489, 0.901, 0.502485)
+mesh = SubResource("BoxMesh_p4cgj")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.774233, 1.28151, 0.118487)
+mesh = SubResource("CylinderMesh_rk5c2")
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.772281, 1.28765, -0.277935)
+
+[node name="Firerate" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[connection signal="timeout" from="Firerate" to="." method="_on_firerate_timeout"]

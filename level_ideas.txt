@@ -1,0 +1,11 @@
+
+
+Level 3: a large maze where player would have to utilize all types of units: 
+	Combatant to destroy blocks, 
+	Constructor to build bridges
+	Collector to collect scrap
+The player would need to make the bridge to the end, by collecting all the scrap from the maze.
+The maze's entrance is too small for player to enter, but big enough for units to go
+Player would force call all units towards them as they lead them through the maze.
+
+Level 4: Player would go from room to room and use Combatants to push different buttons to open the door.

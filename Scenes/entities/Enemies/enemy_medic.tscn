@@ -1,0 +1,115 @@
+[gd_scene load_steps=6 format=3 uid="uid://546jv5g03qxt"]
+
+[ext_resource type="PackedScene" uid="uid://d2h2qa3y4k0mp" path="res://Scenes/entities/Enemies/test_enemy.tscn" id="1_4766n"]
+[ext_resource type="PackedScene" uid="uid://blsy4mq7b18te" path="res://assets/unsorted meshes/Wrench.glb" id="2_8qak4"]
+
+[sub_resource type="GDScript" id="GDScript_4766n"]
+script/source = "extends GeneralEnemy
+
+
+func _ready():
+	enemy_bot.set_tier(enemy_tier)
+	spawned_point = global_position
+	# Get player from 'Player' group once at start
+	health_label.text = str(\"Health: \", health, \"/\", max_health)
+
+func _process(delta: float) -> void:
+	if !is_on_floor():
+		velocity += get_gravity() * delta
+	curr_target = find_closest_target_that_isnt_self(hostile_seeker, \"Hostile\")
+	if is_instance_valid(curr_target):
+		move_towards_target(curr_target.global_position,movement_speed)
+		rotate_towards_target(curr_target.global_position,mesh,0.2)
+	else:
+
+		if global_position.distance_to(Vector3(spawned_point.x, global_position.y, spawned_point.z)) < movement_speed / 32:
+			global_position = Vector3(spawned_point.x, global_position.y, spawned_point.z)
+			velocity = Vector3(0, velocity.y, 0)
+		else:
+			move_towards_target(spawned_point,movement_speed)
+			rotate_towards_target(spawned_point,mesh,0.2)
+	move_and_slide()
+
+func _on_damage_area_body_entered(body: Node3D) -> void:
+	if \"damage_func\" in body:
+		body.heal_func(damage)
+		attack_collision.set_deferred(\"disabled\", true)
+		hitscan_preview.visible = false
+		attackrate.start()
+
+
+
+
+func _on_hostile_seeker_body_entered(body: Node3D) -> void:
+	if body.is_in_group(\"Hostile\") and body != self:
+		nearby_hostiles.append(body)
+
+
+func _on_hostile_seeker_body_exited(body: Node3D) -> void:
+	nearby_hostiles.erase(body)
+	if curr_target == body:
+		curr_target = null
+
+func damage_func(amount:float) -> void:
+	health -= amount
+	health_label.text = str(\"Health: \", health, \"/\", max_health)
+	if health <= 0:
+		death.rpc()
+		
+
+@rpc(\"any_peer\", \"call_local\")
+func death() -> void:
+	queue_free()
+
+func _on_attackrate_timeout() -> void:
+	attack_collision.disabled = false
+	hitscan_preview.visible = true
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4766n"]
+radius = 0.19879
+height = 0.825688
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4766n"]
+height = 6.0
+radius = 25.0
+
+[node name="EnemyMedic" instance=ExtResource("1_4766n")]
+script = SubResource("GDScript_4766n")
+movement_speed = 7.0
+damage = 20.0
+max_health = 60.0
+
+[node name="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.341195, 0.000368472)
+shape = SubResource("CapsuleShape3D_4766n")
+
+[node name="HostileSeeker" parent="." index="3"]
+collision_layer = 4
+collision_mask = 8
+
+[node name="CollisionShape3D" parent="HostileSeeker" index="0"]
+shape = SubResource("CylinderShape3D_4766n")
+
+[node name="mesh" parent="." index="5"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, 0.395874, 0)
+
+[node name="DamageArea" parent="mesh/enemy_bot" index="1"]
+collision_mask = 8
+
+[node name="Label3D" type="Label3D" parent="." index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98253, 0)
+billboard = 1
+text = "I am an enemy medic!!!
+"
+
+[node name="Label3D2" type="Label3D" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58992, 0)
+billboard = 1
+modulate = Color(0, 1, 0, 1)
+text = "➕
+"
+font_size = 96
+
+[node name="Wrench" parent="." index="8" instance=ExtResource("2_8qak4")]
+transform = Transform3D(0.592714, -0.202195, -0.77962, 0.801892, 0.057742, 0.594672, -0.0752232, -0.977642, 0.196364, -0.387414, 0.40186, -0.297293)

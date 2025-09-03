@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dof4lm726lly1"]
+
+[ext_resource type="PackedScene" uid="uid://b03hwqfd67cch" path="res://Scenes/entities/Enemies/shooting_enemy_tier_two.tscn" id="1_t2yy4"]
+
+[node name="ShootingEnemyTierThree" instance=ExtResource("1_t2yy4")]
+enemy_tier = 3
+damage = 12.0
+max_health = 120.0

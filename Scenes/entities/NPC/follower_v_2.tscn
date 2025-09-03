@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://cfwclg1bc1icc"]
+
+[ext_resource type="Script" path="res://Scenes/entities/NPC/follower_v_2.gd" id="1_0q7fp"]
+[ext_resource type="PackedScene" uid="uid://ch7sbjrry22bh" path="res://Scenes/meshes/ally_bot.tscn" id="2_y6wky"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8ujt7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y6wky"]
+size = Vector3(1, 1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_acisy"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.235294)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ieg0y"]
+material = SubResource("StandardMaterial3D_acisy")
+size = Vector3(1, 1, 0.5)
+
+[node name="follower_v2" type="CharacterBody3D" groups=["Ally"]]
+collision_layer = 2
+collision_mask = 12
+script = ExtResource("1_0q7fp")
+
+[node name="characterMesh" type="Node3D" parent="."]
+
+[node name="AllyBot2" parent="characterMesh" instance=ExtResource("2_y6wky")]
+transform = Transform3D(-0.44, 0, -3.8466e-08, 0, 0.44, 0, 3.8466e-08, 0, -0.44, 0, -0.84, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8ujt7")
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22067, 0)
+billboard = 1
+text = "Health:CURR/MAX"
+
+[node name="DamageArea" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 8
+
+[node name="AttackCollision" type="CollisionShape3D" parent="DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.840175)
+shape = SubResource("BoxShape3D_y6wky")
+
+[node name="HitscanPreview" type="MeshInstance3D" parent="DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.84)
+mesh = SubResource("BoxMesh_ieg0y")
+
+[node name="Attackrate" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]
+[connection signal="timeout" from="Attackrate" to="." method="_on_attackrate_timeout"]

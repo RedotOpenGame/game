@@ -1,0 +1,113 @@
+[gd_scene load_steps=11 format=3 uid="uid://ck7y6yayturu4"]
+
+[ext_resource type="Script" path="res://Scenes/entities/buildings/unit_factory.gd" id="1_0gbt1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_43oaj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0gbt1"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6amti"]
+material = SubResource("StandardMaterial3D_0gbt1")
+size = Vector3(0.15, 0.3, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8dy24"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cclss"]
+material = SubResource("StandardMaterial3D_8dy24")
+size = Vector3(0.45, 0.6, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6amti"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8dy24"]
+material = SubResource("StandardMaterial3D_6amti")
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cclss"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c3rib"]
+size = Vector3(2, 2, 2)
+
+[node name="UnitFactory" type="CharacterBody3D" groups=["Ally", "Farm"]]
+collision_layer = 64
+collision_mask = 40
+script = ExtResource("1_0gbt1")
+dropped_scrap = 6
+max_health = 120.0
+
+[node name="mesh" type="Node3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="Body" type="MeshInstance3D" parent="mesh"]
+mesh = SubResource("BoxMesh_43oaj")
+
+[node name="Tube" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389806, 0.565939, 0.0648516)
+mesh = SubResource("BoxMesh_6amti")
+
+[node name="Tube2" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389806, 0.565939, 0.326205)
+mesh = SubResource("BoxMesh_6amti")
+
+[node name="Door" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.191004, -0.492501)
+mesh = SubResource("BoxMesh_cclss")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="mesh"]
+
+[node name="button" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0307995, 0, 0.536649)
+mesh = SubResource("BoxMesh_8dy24")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="mesh/button"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0271628, 0.353993, -0.0350469)
+text = "press me to 
+change unit type"
+font_size = 20
+outline_size = 8
+
+[node name="Area3D" type="Area3D" parent="mesh/button"]
+collision_layer = 4294967295
+input_capture_on_drag = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="mesh/button/Area3D"]
+shape = SubResource("BoxShape3D_cclss")
+
+[node name="UnitSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.186424, -0.889173)
+
+[node name="UnitProductionLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14359, 0)
+billboard = 1
+text = "Current unit production: Combatant"
+
+[node name="InfoLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45921, 0)
+billboard = 1
+text = "(Survival mode only, spawns 1 unit per wave)"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_c3rib")
+
+[node name="UnitSpawn2" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="HealthLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76299, 0)
+billboard = 1
+text = "Health:CURR/MAX"
+
+[node name="PlayerOwner" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.20195, 0)
+billboard = 1
+text = "Placed by:Pewweper"
+font_size = 50
+
+[connection signal="input_event" from="mesh/button/Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="mouse_entered" from="mesh/button/Area3D" to="." method="_on_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="mesh/button/Area3D" to="." method="_on_area_3d_mouse_exited"]
+[connection signal="timeout" from="UnitSpawn2" to="." method="_on_unit_spawn_2_timeout"]
